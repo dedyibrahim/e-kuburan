@@ -6,9 +6,10 @@ parent::__construct();
 $this->load->library('Session');      
 $this->load->model('M_proses_login');
 
-if($this->session->userdata('username')){
-    redirect(base_url('Dashboard'));    
+if($this->session->userdata('username') != NULL && $this->session->userdata('status') != NULL  && $this->session->userdata('level') != NULL && $this->session->userdata('nama_lengkap') != NULL && $this->session->userdata('username') != NULL){
+redirect(base_url('Dashboard'));
 }
+
 }
 
 public function index(){
@@ -26,7 +27,10 @@ $data_sesi = $query->row_array();
 if($query->num_rows() > 0){
 
 $set_sesi = array(
-'username' => $data_sesi['username'],
+'username'      => $data_sesi['username'],
+'nama_lengkap'  => $data_sesi['nama_lengkap'],
+'level'         => $data_sesi['level'],
+'status'        => $data_sesi['status'],
 );
 $this->session->set_userdata($set_sesi);
 

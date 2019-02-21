@@ -35,14 +35,14 @@
  $(document).ready(function(){
 
 $("#proses_login").click(function(){
-
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 var username = $("#username").val();
 var password = $("#password").val();
 
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Login/proses_login') ?>",
-data:"username="+username+"&password="+password,
+data:"token="+token+"&username="+username+"&password="+password,
 success:function(data){
 var r =JSON.parse(data);
 
