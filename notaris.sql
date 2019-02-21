@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 19, 2019 at 04:17 PM
+-- Generation Time: Feb 21, 2019 at 04:33 PM
 -- Server version: 5.7.25-0ubuntu0.18.04.2
 -- PHP Version: 7.2.15-0ubuntu0.18.04.1
 
@@ -98,16 +98,23 @@ CREATE TABLE `data_syarat_jenis_dokumen` (
 
 CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
+  `no_user` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `nama_lengkap` varchar(255) NOT NULL,
+  `level` varchar(255) NOT NULL,
+  `tanggal_daftar` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  `password` varchar(255) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `username`, `password`) VALUES
-(1, 'dedi', '21232f297a57a5a743894a0e4a801fc3');
+INSERT INTO `user` (`id_user`, `no_user`, `username`, `nama_lengkap`, `level`, `tanggal_daftar`, `password`, `foto`, `status`) VALUES
+(14, '0001', 'Dedi', 'Dedy Ibrahim', 'Admin', '2019-02-21 08:57:53.123384', '21232f297a57a5a743894a0e4a801fc3', NULL, 'Aktif'),
+(15, '0002', 'zaenudin', 'zaenudin al bughuri', 'Admin', '2019-02-21 07:58:30.892528', '7815696ecbf1c96e6894b779456d330e', NULL, 'Aktif');
 
 --
 -- Indexes for dumped tables
@@ -154,7 +161,8 @@ ALTER TABLE `data_syarat_jenis_dokumen`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`);
+  ADD PRIMARY KEY (`id_user`),
+  ADD KEY `no_user` (`no_user`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -189,7 +197,7 @@ ALTER TABLE `data_syarat_jenis_dokumen`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- Constraints for dumped tables
 --
