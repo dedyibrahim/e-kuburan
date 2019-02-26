@@ -9281,3 +9281,38 @@ color:#08a6ac;
   background-color: rgba(244, 244, 245, 0.63);;  
   
   }
+           
+.ui-autocomplete{
+    position:absolute;
+    z-index:1000;
+    cursor:default;
+    padding:10px;
+    margin-top:2px;
+    color:#fff;
+    list-style:none;
+    background-color:#058085;
+    border:1px solid #ccc;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -webkit-box-shadow:0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow:0 5px 10px rgba(0,0,0,.2);
+    box-shadow:0 5px 10px rgba(0,0,0,.2)}
+.ui-autocomplete>li{
+    padding:3px 20px
+}
+.ui-autocomplete>li.ui-state-focus{
+    background-color:rgba(244, 244, 245, 0.63);
+    color:#fff
+}
+.ui-autocomplete>li.ui-state-focus:hover{
+    background-color:#f60;
+    color:#fff
+}
+.ui-helper-hidden-accessible{
+    display:none
+}
+ul.ui-autocomplete {
+    z-index: 1100;
+}
+  
