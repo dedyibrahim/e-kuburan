@@ -4,6 +4,7 @@ class Dashboard extends CI_Controller{
         parent::__construct();
 $this->load->library('session');
 $this->load->model('M_dashboard');
+$this->load->library('Datatables');
 
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
@@ -25,16 +26,33 @@ redirect (base_url('Login'));
 }
 
 public function setting(){
-$user = $this->M_dashboard->data_user();
+$user           = $this->M_dashboard->data_user();
+$nama_dokumen   = $this->M_dashboard->data_nama_dokumen();
+$nama_jenis   = $this->M_dashboard->data_jenis();
 
 $this->load->view('umum/V_header');
-$this->load->view('dashboard/V_setting',['user'=>$user]);
+$this->load->view('dashboard/V_setting',['user'=>$user,'nama_dokumen'=>$nama_dokumen,'nama_jenis'=>$nama_jenis]);
 }
 
 public function simpan_jenis_dokumen(){
 if($this->input->post()){
 
-echo print_r($this->input->post());
+$jumlah_jenis        = $this->M_dashboard->data_jenis()->num_rows()+1;
+$no_jenis            = str_pad($jumlah_jenis,4 ,"0",STR_PAD_LEFT);
+
+    
+$data = array(
+'no_jenis_dokumen' =>"J_".$no_jenis,
+'pekerjaan'        =>$this->input->post('pekerjaan'),
+'nama_jenis'       =>$this->input->post('jenis_dokumen'),
+'pembuat_jenis'    => $this->session->userdata('nama_lengkap'),  
+);    
+$this->M_dashboard->simpan_jenis($data);
+
+$status = array(
+"status"=>"Berhasil"
+);
+echo json_encode($status);
 
 }else{
 redirect(404);    
@@ -99,5 +117,89 @@ echo json_encode($status);
 redirect(404);    
 }
 }
+
+
+public function simpan_nama_dokumen(){
+if($this->input->post()){
+
+$jumlah_nama_dokumen        = $this->M_dashboard->data_nama_dokumen()->num_rows()+1;
+$no_nama_dokumen            = str_pad($jumlah_nama_dokumen,4 ,"0",STR_PAD_LEFT);
+
     
+$data = array(
+'no_nama_dokumen'   => "N_".$no_nama_dokumen,
+'nama_dokumen'      => $this->input->post('nama_dokumen'),
+'pembuat'           => $this->session->userdata('nama_lengkap'),   
+);
+$this->M_dashboard->simpan_nama_dokumen($data);
+
+$status = array(
+"status"=>"Berhasil"
+ );
+echo json_encode($status);
+
+}else{    
+redirect(404);    
+}    
+    
+}
+public function getJenis(){
+if($this->input->post()){
+$data_jenis = $this->M_dashboard->getJenis($this->input->post('id_jenis_dokumen'))->row_array();
+
+$data = array(
+'id_jenis_dokumen' => $data_jenis['id_jenis_dokumen'],    
+'no_jenis_dokumen' => $data_jenis['no_jenis_dokumen'],
+'nama_jenis'       => $data_jenis['nama_jenis'],   
+);
+echo json_encode($data);
+
+}else{
+redirect(404);    
+}
+    
+}
+public function cari_nama_dokumen(){
+$term = strtolower($this->input->get('term'));    
+$query = $this->M_dashboard->cari_nama_dokumen($term);
+
+foreach ($query as $d) {
+$json[]= array(
+'label'                    => $d->nama_dokumen,   
+'id_nama_dokumen'          => $d->id_nama_dokumen,
+'no_nama_dokumen'          => $d->no_nama_dokumen,
+'nama_dokumen'             => $d->nama_dokumen,
+);   
+}
+echo json_encode($json);
+}
+
+public function simpan_syarat(){
+if($this->input->post()){
+  
+$data = array(
+    'no_jenis_dokumen' => $this->input->post('no_jenis_dokumen'),
+    'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
+    'nama_syarat'      => $this->input->post('nama_syarat'),
+    'status_syarat'    => $this->input->post('status_syarat'),
+    'pembuat_syarat'  => $this->session->userdata('nama_lengkap'),
+    );
+
+$this->M_dashboard->simpan_syarat($data);
+
+$status = array(
+"status"=>"Berhasil"
+ );
+echo json_encode($status);
+}else{
+redirect(404);    
+}
+}
+public function json_data_jenis_dokumen(){
+echo $this->M_dashboard->json_data_jenis_dokumen();       
+}
+public function json_data_nama_dokumen(){
+echo $this->M_dashboard->json_data_nama_dokumen();       
+}
+
 }
