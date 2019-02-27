@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 26, 2019 at 04:48 PM
+-- Generation Time: Feb 27, 2019 at 04:35 PM
 -- Server version: 5.7.25-0ubuntu0.18.04.2
 -- PHP Version: 7.2.15-0ubuntu0.18.04.1
 
@@ -70,7 +70,12 @@ CREATE TABLE `data_jenis_dokumen` (
 INSERT INTO `data_jenis_dokumen` (`id_jenis_dokumen`, `no_jenis_dokumen`, `pekerjaan`, `nama_jenis`, `tanggal_dibuat`, `pembuat_jenis`) VALUES
 (19, 'J_0001', 'NOTARIS', 'Akta pendirian PT (Perseroan Terbatas)', '2019-02-26 07:28:02.515110', 'Dedy Ibrahim'),
 (20, 'J_0002', 'NOTARIS', 'Akta pendirian CV', '2019-02-26 09:23:23.668040', 'Dedy Ibrahim'),
-(21, 'J_0003', 'NOTARIS', 'Akta Pendirian Firma', '2019-02-26 09:23:42.930930', 'Dedy Ibrahim');
+(21, 'J_0003', 'NOTARIS', 'Akta Pendirian Firma', '2019-02-26 09:23:42.930930', 'Dedy Ibrahim'),
+(22, 'J_0004', 'NOTARIS', 'Perjanjian Hutang', '2019-02-27 01:43:26.810944', 'Dedy Ibrahim'),
+(23, 'J_0005', 'PPAT', 'Akta Peralihan Hak Jual Beli', '2019-02-27 01:43:56.315881', 'Dedy Ibrahim'),
+(24, 'J_0006', 'PPAT', 'Akta Peralihan Hak Hibah', '2019-02-27 06:49:57.007134', 'Dedy Ibrahim'),
+(25, 'J_0007', 'PPAT', 'Akta Peralihan Hak Tukar Menukar', '2019-02-27 06:50:33.959891', 'Dedy Ibrahim'),
+(26, 'J_0008', 'NOTARIS', 'Akta Peralihan Hak Pembagian Hak', '2019-02-27 07:08:16.622642', 'Dedy Ibrahim');
 
 -- --------------------------------------------------------
 
@@ -93,14 +98,19 @@ CREATE TABLE `data_syarat_jenis_dokumen` (
 --
 
 INSERT INTO `data_syarat_jenis_dokumen` (`id_syarat_dokumen`, `no_jenis_dokumen`, `no_nama_dokumen`, `nama_syarat`, `status_syarat`, `tanggal_dibuat`, `pembuat_syarat`) VALUES
-(4, 'J_0001', 'N_0002', 'KK (Kartu Keluarga)', 'undefined', '2019-02-26 09:04:08.116198', 'Dedy Ibrahim'),
-(5, 'J_0001', 'N_0007', 'SK Kehakiman', 'undefined', '2019-02-26 09:04:08.174397', 'Dedy Ibrahim'),
-(6, 'J_0001', 'N_0005', 'Akta pendirian', 'undefined', '2019-02-26 09:04:08.255904', 'Dedy Ibrahim'),
-(7, 'J_0001', 'N_0010', 'DOMISILI', 'wajib', '2019-02-26 09:04:08.378428', 'Dedy Ibrahim'),
-(8, 'J_0001', 'N_0002', 'KK (Kartu Keluarga)', 'undefined', '2019-02-26 09:04:08.672878', 'Dedy Ibrahim'),
-(9, 'J_0001', 'N_0005', 'Akta pendirian', 'undefined', '2019-02-26 09:04:08.724673', 'Dedy Ibrahim'),
-(10, 'J_0001', 'N_0007', 'SK Kehakiman', 'undefined', '2019-02-26 09:04:08.775933', 'Dedy Ibrahim'),
-(11, 'J_0001', 'N_0010', 'DOMISILI', 'wajib', '2019-02-26 09:04:08.826828', 'Dedy Ibrahim');
+(43, 'J_0005', 'N_0002', 'KK (Kartu Keluarga)', 'undefined', '2019-02-27 07:13:56.710589', 'Dedy Ibrahim'),
+(44, 'J_0008', 'N_0002', 'KK (Kartu Keluarga)', 'wajib', '2019-02-27 07:25:03.056056', 'Dedy Ibrahim'),
+(45, 'J_0008', 'N_0001', 'Akta nikah', 'wajib', '2019-02-27 07:56:34.153895', 'Dedy Ibrahim'),
+(46, 'J_0008', 'N_0004', 'NPWP (Nomor pokok wajib pajak)', 'wajib', '2019-02-27 07:56:34.270698', 'Dedy Ibrahim'),
+(47, 'J_0008', 'N_0002', 'KK (Kartu Keluarga)', 'wajib', '2019-02-27 07:56:34.495391', 'Dedy Ibrahim'),
+(48, 'J_0008', 'N_0006', 'Akta perubahan', 'wajib', '2019-02-27 07:56:34.536271', 'Dedy Ibrahim'),
+(49, 'J_0008', 'N_0005', 'Akta pendirian', 'wajib', '2019-02-27 07:56:34.576968', 'Dedy Ibrahim'),
+(50, 'J_0008', 'N_0003', 'KTP (Kartu tanda penduduk)', 'wajib', '2019-02-27 07:56:34.668862', 'Dedy Ibrahim'),
+(51, 'J_0008', 'N_0007', 'SK Kehakiman', 'wajib', '2019-02-27 07:56:34.710041', 'Dedy Ibrahim'),
+(52, 'J_0008', 'N_0008', 'SIUP', 'wajib', '2019-02-27 07:56:34.761470', 'Dedy Ibrahim'),
+(53, 'J_0008', 'N_0011', 'Voucher Bayar', 'wajib', '2019-02-27 07:56:34.802068', 'Dedy Ibrahim'),
+(54, 'J_0008', 'N_0009', 'TDP', 'wajib', '2019-02-27 07:56:34.842758', 'Dedy Ibrahim'),
+(55, 'J_0008', 'N_0010', 'DOMISILI', 'wajib', '2019-02-27 07:56:34.924660', 'Dedy Ibrahim');
 
 -- --------------------------------------------------------
 
@@ -144,6 +154,8 @@ CREATE TABLE `user` (
   `no_user` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `nama_lengkap` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
   `level` varchar(255) NOT NULL,
   `tanggal_daftar` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   `password` varchar(255) NOT NULL,
@@ -155,9 +167,11 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id_user`, `no_user`, `username`, `nama_lengkap`, `level`, `tanggal_daftar`, `password`, `foto`, `status`) VALUES
-(14, '0001', 'Dedi', 'Dedy Ibrahim', 'Admin', '2019-02-21 08:57:53.123384', '21232f297a57a5a743894a0e4a801fc3', NULL, 'Aktif'),
-(15, '0002', 'zaenudin', 'zaenudin al bughuri', 'Admin', '2019-02-21 07:58:30.892528', '7815696ecbf1c96e6894b779456d330e', NULL, 'Aktif');
+INSERT INTO `user` (`id_user`, `no_user`, `username`, `nama_lengkap`, `email`, `phone`, `level`, `tanggal_daftar`, `password`, `foto`, `status`) VALUES
+(14, '0001', 'Dedi', 'Dedy Ibrahim', 'dedyibrahym23@gmail.com', '0887487772', 'Admin', '2019-02-27 06:36:37.309694', '21232f297a57a5a743894a0e4a801fc3', NULL, 'Aktif'),
+(15, '0002', 'zaenudin', 'zaenudin al bughuri', 'sajarudin', '082381109774', 'Admin', '2019-02-27 06:36:18.564278', '7815696ecbf1c96e6894b779456d330e', NULL, 'Aktif'),
+(16, '0003', 'Fajri', 'Fajri Ja', 'fajri@gmail.com', '081873772', 'Admin', '2019-02-27 06:35:46.434698', '21232f297a57a5a743894a0e4a801fc3', NULL, 'Aktif'),
+(17, '0004', 'Wisnu', 'nugroho', 'wisnu@gmail.com', '081289903664', 'Admin', '2019-02-27 06:12:13.449046', '21232f297a57a5a743894a0e4a801fc3', NULL, 'Aktif');
 
 --
 -- Indexes for dumped tables
@@ -225,12 +239,12 @@ ALTER TABLE `data_client`
 -- AUTO_INCREMENT for table `data_jenis_dokumen`
 --
 ALTER TABLE `data_jenis_dokumen`
-  MODIFY `id_jenis_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_jenis_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `data_syarat_jenis_dokumen`
 --
 ALTER TABLE `data_syarat_jenis_dokumen`
-  MODIFY `id_syarat_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_syarat_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `nama_dokumen`
 --
@@ -240,7 +254,7 @@ ALTER TABLE `nama_dokumen`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- Constraints for dumped tables
 --

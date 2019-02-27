@@ -74,6 +74,8 @@ $data = array(
 'nama_lengkap' => $input['nama_lengkap'],
 'level'        => $input['level'],
 'status'       => $input['status'],
+'email'        => $input['email'],
+'phone'        => $input['phone'],
 'password'     => md5($input['password'])
 );
 $this->M_dashboard->simpan_user($data);
@@ -89,12 +91,12 @@ redirect(404);
 public function getUser(){
 if($this->input->post()){
 $query = $this->M_dashboard->ambil_user($this->input->post('id_user'))->row_array();
-
-
 echo json_encode($query);
+
 }else{
 redirect(404);    
-}   
+}  
+   
 }
 
 public function update_user(){
@@ -106,6 +108,8 @@ $data = array(
 'nama_lengkap'  => $input['nama_lengkap'],
 'level'         => $input['level'],
 'status'        => $input['status'],        
+'email'         => $input['email'],        
+'phone'         => $input['phone'],        
 );
 
 $this->M_dashboard->update_user($data,$this->input->post('id_user'));
@@ -157,6 +161,33 @@ echo json_encode($data);
 }else{
 redirect(404);    
 }
+}
+public function getSyarat(){
+if($this->input->post()){
+$query= $this->M_dashboard->getSyarat($this->input->post('no_jenis_dokumen'));
+
+if($query->num_rows() > 0){
+
+foreach ($query->result_array() as $data_jenis){
+$data[] = array(
+'id_syarat_dokumen' => $data_jenis['id_syarat_dokumen'],    
+'no_jenis_dokumen'  => $data_jenis['no_jenis_dokumen'],
+'no_nama_dokumen'   => $data_jenis['no_nama_dokumen'],
+'nama_syarat'       => $data_jenis['nama_syarat'],   
+'status_syarat'     => $data_jenis['status_syarat'],   
+);
+}
+echo json_encode($data);
+}else{
+ $status = array(
+"status"=>"null"
+ );
+echo json_encode($status);   
+    
+}
+}else{
+redirect(404);    
+}
     
 }
 public function cari_nama_dokumen(){
@@ -198,8 +229,35 @@ redirect(404);
 public function json_data_jenis_dokumen(){
 echo $this->M_dashboard->json_data_jenis_dokumen();       
 }
+
+public function json_data_user(){
+echo $this->M_dashboard->json_data_user();       
+}
+public function json_data_jenis(){
+echo $this->M_dashboard->json_data_jenis();       
+}
+
 public function json_data_nama_dokumen(){
 echo $this->M_dashboard->json_data_nama_dokumen();       
 }
+public function hapus_syarat(){
+if($this->input->post()){
+$this->M_dashboard->hapus_syarat_dokumen($this->input->post('id_syarat_dokumen'));    
+}else{
+redirect(404);    
+}
+}
+public function jenis_dokumen(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_jenis_dokumen');
+
+    
+}
+public function nama_dokumen(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_nama_dokumen');
+   
+}
+
 
 }

@@ -12,8 +12,9 @@
 <h4>Create New Client</h4>
 </div>
 <hr>
-<label>Jenis Perizinan</label>
-<select name="jenis" class="form-control">
+<label>Pilih Jenis client</label>
+<select name="jenis" id="pilih_jenis" class="form-control">
+<option> </option>
 <option value="Perorangan">Perorangan</option>
 <option value="Badan Hukum">Badan Hukum</option>	
 </select>
@@ -23,4 +24,11 @@
 </div>
 </div>
 </div>
+<script type="text/javascript">
+$("#pilih_jenis").on("change",function(){
+    
+alert("halo");    
+});    
+    
+</script>        
 </body>
