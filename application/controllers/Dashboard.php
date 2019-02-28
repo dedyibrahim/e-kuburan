@@ -5,7 +5,7 @@ class Dashboard extends CI_Controller{
 $this->load->library('session');
 $this->load->model('M_dashboard');
 $this->load->library('Datatables');
-
+$this->load->library('form_validation');
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
 }else if($this->session->userdata('status') != 'Aktif'){
@@ -257,6 +257,30 @@ public function nama_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_nama_dokumen');
    
+}
+
+public function create_client(){
+if($this->input->post()){
+$data = $this->input->post();
+if($data['data'][0]['jenis_client'] == "Badan Hukum"){
+
+$h = count($data['data']);
+echo $data['data'][1]['jenis_akta'];
+echo $data['data'][2]['badan_hukum'];
+echo $data['data'][3]['alamat_badan_hukum'];
+
+echo print_r($this->input->post());
+
+}else{
+echo "perorangan";    
+}
+
+  
+    
+}else{
+redirect(404);    
+}
+    
 }
 
 

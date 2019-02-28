@@ -16,4 +16,6 @@
 <link href="<?php echo base_url() ?>assets/sweetalert2/dist/animate.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url() ?>assets/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
 <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1/jquery-ui.js" type="text/javascript"></script>
-</head>    
+<script src="<?php echo base_url() ?>assets/jqueryvalidation/dist/jquery.validate.js" type="text/javascript"></script>
+<script src="<?php echo base_url() ?>assets/jqueryvalidation/dist/additional-methods.js" type="text/javascript"></script>
+</head> 
