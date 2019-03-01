@@ -18,4 +18,15 @@
 <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1/jquery-ui.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/jqueryvalidation/dist/jquery.validate.js" type="text/javascript"></script>
 <script src="<?php echo base_url() ?>assets/jqueryvalidation/dist/additional-methods.js" type="text/javascript"></script>
+<link href="<?php echo base_url() ?>assets/npprogress/nprogress.css" rel="stylesheet" type="text/css"/>
+<script src="<?php echo base_url() ?>assets/npprogress/nprogress.js" type="text/javascript"></script>
 </head> 
+<script type="text/javascript">
+jQuery( document ).ajaxStart(function() {
+  NProgress.start();
+});
+
+jQuery( document ).ajaxStop(function() {
+  NProgress.done();
+});
+</script>

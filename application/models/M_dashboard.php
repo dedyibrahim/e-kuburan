@@ -54,6 +54,16 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_jenis_dokumen($term){
+$this->db->from("data_jenis_dokumen");
+$this->db->limit(15);
+$array = array('nama_jenis' => $term);
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
 
 public function simpan_syarat($data){
 $this->db->insert('data_syarat_jenis_dokumen',$data);    

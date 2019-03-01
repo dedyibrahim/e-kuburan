@@ -204,6 +204,18 @@ $json[]= array(
 }
 echo json_encode($json);
 }
+public function cari_jenis_dokumen(){
+$term = strtolower($this->input->get('term'));    
+$query = $this->M_dashboard->cari_jenis_dokumen($term);
+
+foreach ($query as $d) {
+$json[]= array(
+'label'                    => $d->nama_jenis,   
+'no_jenis_dokumen'         => $d->no_jenis_dokumen,
+);   
+}
+echo json_encode($json);
+}
 
 public function simpan_syarat(){
 if($this->input->post()){
@@ -264,15 +276,23 @@ if($this->input->post()){
 $data = $this->input->post();
 if($data['data'][0]['jenis_client'] == "Badan Hukum"){
 
-$h = count($data['data']);
 echo $data['data'][1]['jenis_akta'];
-echo $data['data'][2]['badan_hukum'];
-echo $data['data'][3]['alamat_badan_hukum'];
+echo $data['data'][2]['id_jenis'];
+echo $data['data'][3]['badan_hukum'];
+echo $data['data'][4]['alamat_badan_hukum'];
 
-echo print_r($this->input->post());
+
+$b = count($data['data'][5]);
+
+for($i=0; $i<$b; $i++){
+ echo $data['data'][5][$i]['ktp'];   
+ echo $data['data'][5][$i]['nik'];   
+ echo $data['data'][5][$i]['status'];   
+}
 
 }else{
-echo "perorangan";    
+$target_path= "./berkas/000001";
+mkdir($target_path);
 }
 
   
