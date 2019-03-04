@@ -119,16 +119,40 @@ $this->datatables->add_column('view','<button class="btn btn-success btn-sm"><i 
 return $this->datatables->generate();
 }
 
+function json_dokumen_proses(){
+    
+$this->datatables->select('id_data_berkas,'
+.'data_berkas.no_berkas as no_berkas,'
+.'data_berkas.tanggal_dibuat as tanggal_dibuat,'
+.'data_berkas.jenis_client as jenis_client,'
+.'data_berkas.jenis_perizinan as jenis_perizinan,'
+.'data_berkas.nama as nama,'
+);
+$this->datatables->from('data_berkas');
+$this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Proses</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
+return $this->datatables->generate();
+}
+
 public function hapus_syarat_dokumen($id_syarat_dokumen){
 $this->db->delete('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$id_syarat_dokumen));    
 }
 
 public function hitung_berkas(){
 $query = $this->db->get('data_berkas');
-
 return $query;
-    
 }
+
+public function data_berkas($id){
+$this->db->select('*');
+$this->db->where('data_berkas.no_berkas', base64_decode($id));
+$this->db->from('data_berkas');
+$this->db->join('data_perorangan', 'data_perorangan.no_berkas_perorangan = data_berkas.no_berkas');
+$this->db->join('data_syarat_jenis_dokumen', 'data_syarat_jenis_dokumen.no_jenis_dokumen = data_berkas.id_jenis');
+$query = $this->db->get();  
+ 
+return $query;
+}
+
 
 }
 ?>

@@ -248,6 +248,9 @@ echo $this->M_dashboard->json_data_user();
 public function json_data_jenis(){
 echo $this->M_dashboard->json_data_jenis();       
 }
+public function json_dokumen_proses(){
+echo $this->M_dashboard->json_dokumen_proses();       
+}
 
 public function json_data_nama_dokumen(){
 echo $this->M_dashboard->json_data_nama_dokumen();       
@@ -285,7 +288,7 @@ $data_r = array(
 'no_berkas'          => $no_berkas,    
 'folder_berkas'      => $no_berkas,    
 'status_berkas'      => "Proses",    
-'tanggal_dibuat'     => date('d/m/Y'),    
+'tanggal_dibuat'     => date('Y/m/d'),    
 'no_user'            => $this->session->userdata('no_user'),    
 'jenis_client'       => $data['data'][0]['jenis_client'],    
 'jenis_perizinan'    => $data['data'][1]['jenis_akta'],
@@ -318,6 +321,18 @@ echo json_encode($status);
 redirect(404);    
 }
     
+}
+
+public function proses_berkas(){
+$data = $this->M_dashboard->data_berkas($this->uri->segment(3));    
+
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_proses_berkas',['data'=>$data]);
+}
+
+public function dokumen_proses(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_dokumen_proses');
 }
 
 

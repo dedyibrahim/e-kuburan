@@ -27,6 +27,12 @@
 <li>
 <a href="<?php echo base_url('Dashboard/nama_dokumen'); ?>">Nama Dokumen</a>
 </li>
+<li>
+<a href="<?php echo base_url('Dashboard/dokumen_proses'); ?>">Dokumen Proses</a>
+</li>
+<li>
+<a href="<?php echo base_url('Dashboard/dokumen_selesai'); ?>">Dokumen Selesai</a>
+</li>
 </ul>
 </li>
 

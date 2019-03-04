@@ -21,7 +21,7 @@
 <div class="container-fluid">
 <div class="row">
 
-<div class="col ">
+<div class="col-md-3 ">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-file-word float-right fa-4x sticky-top"></span>
@@ -32,7 +32,7 @@ Dokumen Total <br>
 </div>	
 </div>	
 
-<div class="col  ">
+<div class="col-md-3 ">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-user-tie float-right fa-4x sticky-top"></span>
@@ -43,7 +43,8 @@ Client Total <br>
 </div>	
 </div>	
 
-<div class="col  ">
+    
+        <div class="col-md-3  "><a href="<?php echo base_url('Dashboard/dokumen_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-exchange-alt float-right fa-4x sticky-top"></span>
@@ -58,10 +59,10 @@ echo $query;
 ?>
 </div>
 </div>
-</div>	
-</div>
+</div>	</a>
+        </div>
 
-<div class="col  ">
+<div class="col-md-3 ">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-users float-right fa-4x sticky-top"></span>
