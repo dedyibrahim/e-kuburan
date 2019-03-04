@@ -27,6 +27,7 @@ $data_sesi = $query->row_array();
 if($query->num_rows() > 0){
 
 $set_sesi = array(
+'no_user'       => $data_sesi['no_user'],
 'username'      => $data_sesi['username'],
 'nama_lengkap'  => $data_sesi['nama_lengkap'],
 'level'         => $data_sesi['level'],

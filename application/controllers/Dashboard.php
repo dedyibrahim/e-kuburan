@@ -274,29 +274,46 @@ $this->load->view('dashboard/V_nama_dokumen');
 public function create_client(){
 if($this->input->post()){
 $data = $this->input->post();
-if($data['data'][0]['jenis_client'] == "Badan Hukum"){
 
-echo $data['data'][1]['jenis_akta'];
-echo $data['data'][2]['id_jenis'];
-echo $data['data'][3]['badan_hukum'];
-echo $data['data'][4]['alamat_badan_hukum'];
+$h_berkas = $this->M_dashboard->hitung_berkas()->num_rows();
+$no_berkas= str_pad($h_berkas,8 ,"0",STR_PAD_LEFT);
 
+$id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
+
+$data_r = array(
+'id_berkas'          => $id_berkas,
+'no_berkas'          => $no_berkas,    
+'folder_berkas'      => $no_berkas,    
+'status_berkas'      => "Proses",    
+'tanggal_dibuat'     => date('d/m/Y'),    
+'no_user'            => $this->session->userdata('no_user'),    
+'jenis_client'       => $data['data'][0]['jenis_client'],    
+'jenis_perizinan'    => $data['data'][1]['jenis_akta'],
+'id_jenis'           => $data['data'][2]['id_jenis'],
+'nama'               => $data['data'][3]['badan_hukum'],
+'alamat'             => $data['data'][4]['alamat_badan_hukum'],
+);
+
+$this->db->insert('data_berkas',$data_r);
 
 $b = count($data['data'][5]);
-
 for($i=0; $i<$b; $i++){
- echo $data['data'][5][$i]['ktp'];   
- echo $data['data'][5][$i]['nik'];   
- echo $data['data'][5][$i]['status'];   
+$data_perorangan = array(
+'no_berkas_perorangan'           => $no_berkas,    
+'nama_identitas'                 => $data['data'][5][$i]['nama_identitas'],   
+'no_identitas'                   => $data['data'][5][$i]['no_identitas'],   
+'status'                         => $data['data'][5][$i]['status'],   
+'jenis_identitas'                => $data['data'][5][$i]['jenis_identitas']
+ );
+$this->db->insert('data_perorangan',$data_perorangan);
 }
-
-}else{
-$target_path= "./berkas/000001";
-mkdir($target_path);
-}
-
-  
-    
+mkdir("berkas/".$no_berkas);
+$status = array(
+"status"     =>"Berhasil",
+"no_berkas"  => base64_encode($no_berkas) 
+ );
+echo json_encode($status);
+     
 }else{
 redirect(404);    
 }

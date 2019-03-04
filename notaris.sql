@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
--- https://www.phpmyadmin.net/
+-- version 4.5.4.1deb2ubuntu2.1
+-- http://www.phpmyadmin.net
 --
--- Host: localhost:3306
--- Generation Time: Feb 27, 2019 at 04:35 PM
--- Server version: 5.7.25-0ubuntu0.18.04.2
--- PHP Version: 7.2.15-0ubuntu0.18.04.1
+-- Host: localhost
+-- Generation Time: Mar 04, 2019 at 08:36 AM
+-- Server version: 5.7.24-0ubuntu0.16.04.1
+-- PHP Version: 7.0.32-0ubuntu0.16.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,11 +28,47 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `data_berkas` (
   `id_data_berkas` int(11) NOT NULL,
-  `no_client` varchar(255) NOT NULL,
-  `no_jenis_dokumen` varchar(255) NOT NULL,
-  `tanggal_upload` varchar(255) NOT NULL,
-  `pengupload` varchar(255) NOT NULL
+  `id_berkas` varchar(255) NOT NULL,
+  `no_berkas` varchar(255) NOT NULL,
+  `status_berkas` varchar(255) NOT NULL,
+  `tanggal_dibuat` varchar(255) NOT NULL,
+  `tanggal_selesai` varchar(255) DEFAULT NULL,
+  `folder_berkas` varchar(255) NOT NULL,
+  `no_user` varchar(255) NOT NULL,
+  `jenis_client` varchar(255) NOT NULL,
+  `jenis_perizinan` varchar(255) NOT NULL,
+  `id_jenis` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `alamat` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_berkas`
+--
+
+INSERT INTO `data_berkas` (`id_data_berkas`, `id_berkas`, `no_berkas`, `status_berkas`, `tanggal_dibuat`, `tanggal_selesai`, `folder_berkas`, `no_user`, `jenis_client`, `jenis_perizinan`, `id_jenis`, `nama`, `alamat`) VALUES
+(4, '', '20190303/0001/00000000', 'Proses', '03/03/2019', NULL, '00000000', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(5, '', '20190303/0001/00000001', 'Proses', '03/03/2019', NULL, '00000001', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(6, '', '20190303/0001/00000002', 'Proses', '03/03/2019', NULL, '00000002', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(7, '', '20190303/0001/00000003', 'Proses', '03/03/2019', NULL, '00000003', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(8, '', '20190303/0001/00000004', 'Proses', '03/03/2019', NULL, '00000004', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(9, '', '20190303/0001/00000005', 'Proses', '03/03/2019', NULL, '00000005', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(10, '', '20190303/0001/00000006', 'Proses', '03/03/2019', NULL, '00000006', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(11, '', '20190303/0001/00000007', 'Proses', '03/03/2019', NULL, '00000007', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(12, '', '20190303/0001/00000008', 'Proses', '03/03/2019', NULL, '00000008', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(13, '', '20190303/0001/00000009', 'Proses', '03/03/2019', NULL, '00000009', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(14, '', '20190303/0001/00000010', 'Proses', '03/03/2019', NULL, '00000010', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(15, '', '20190303/0001/00000011', 'Proses', '03/03/2019', NULL, '00000011', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(16, '', '20190303/0001/00000012', 'Proses', '03/03/2019', NULL, '00000012', '0001', 'Badan Hukum', 'Akta Peralihan Hak Pembagian Hak', 'J_0008', 'PT BAL', 'asd'),
+(17, '', '20190303/0001/00000013', 'Proses', '03/03/2019', NULL, '00000013', '0001', 'Perorangan', 'Perjanjian Hutang', 'J_0004', 'PT BAL', 'asdasd'),
+(18, '', '20190303/0001/00000014', 'Proses', '03/03/2019', NULL, '00000014', '0001', 'Badan Hukum', 'Akta Pendirian Firma', 'J_0003', 'PT BAL', 'Kp.Sumurwangi Kel.Lebak Bulus'),
+(19, '', '20190303/0001/00000015', 'Proses', '03/03/2019', NULL, '00000015', '0001', 'Perorangan', 'Akta Peralihan Hak Hibah', 'J_0006', 'PT BAL', 'Kp.Sumurwangi Kel.kayumanis Kec.Tanah sareal KOta Bogor'),
+(20, '', '20190303/0001/00000016', 'Proses', '03/03/2019', NULL, '00000016', '0001', 'Perorangan', 'Akta Peralihan Hak Jual Beli', 'J_0005', 'JAMALUDIN', 'KP.SUmurwangi Kel.kayumanis Bogor'),
+(21, '20190303/0001/00000017', '00000017', 'Proses', '03/03/2019', NULL, '00000017', '0001', 'Badan Hukum', 'Akta Peralihan Hak Jual Beli', 'J_0005', 'JAMALUDIN', 'KP.SUmurwangi Kel.kayumanis Bogor'),
+(22, '20190303/0001/00000018', '00000018', 'Proses', '03/03/2019', NULL, '00000018', '0001', 'Perorangan', 'Akta Peralihan Hak Jual Beli', 'J_0005', 'JAMALUDIN', 'KP.SUmurwangi Kel.kayumanis Bogor'),
+(23, '20190303/0001/00000019', '00000019', 'Proses', '03/03/2019', NULL, '00000019', '0001', 'Badan Hukum', 'Perjanjian Hutang', 'J_0004', 'bogot', 'asd'),
+(24, '20190303/0001/00000020', '00000020', 'Proses', '03/03/2019', NULL, '00000020', '0001', 'Badan Hukum', 'Perjanjian Hutang', 'J_0004', 'bogot', 'asd'),
+(25, '20190303/0001/00000021', '00000021', 'Proses', '03/03/2019', NULL, '00000021', '0001', 'Badan Hukum', 'Perjanjian Hutang', 'J_0004', 'bogot', 'asd');
 
 -- --------------------------------------------------------
 
@@ -59,9 +95,8 @@ CREATE TABLE `data_jenis_dokumen` (
   `no_jenis_dokumen` varchar(255) NOT NULL,
   `pekerjaan` varchar(255) NOT NULL,
   `nama_jenis` varchar(255) NOT NULL,
-  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `pembuat_jenis` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ;
 
 --
 -- Dumping data for table `data_jenis_dokumen`
@@ -80,6 +115,50 @@ INSERT INTO `data_jenis_dokumen` (`id_jenis_dokumen`, `no_jenis_dokumen`, `peker
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `data_perorangan`
+--
+
+CREATE TABLE `data_perorangan` (
+  `id_perorangan` int(11) NOT NULL,
+  `no_berkas_perorangan` varchar(255) NOT NULL,
+  `nama_identitas` varchar(255) NOT NULL,
+  `no_identitas` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `jenis_identitas` varchar(255) NOT NULL,
+  `lampiran_perorangan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_perorangan`
+--
+
+INSERT INTO `data_perorangan` (`id_perorangan`, `no_berkas_perorangan`, `nama_identitas`, `no_identitas`, `status`, `jenis_identitas`, `lampiran_perorangan`) VALUES
+(5, '20190303/0001/00000000', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(6, '20190303/0001/00000001', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(7, '20190303/0001/00000002', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(8, '20190303/0001/00000003', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(9, '20190303/0001/00000004', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(10, '20190303/0001/00000005', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(11, '20190303/0001/00000006', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(12, '20190303/0001/00000007', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(13, '20190303/0001/00000008', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(14, '20190303/0001/00000009', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(15, '20190303/0001/00000010', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(16, '20190303/0001/00000011', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(17, '20190303/0001/00000012', 'Dedy Ibrahim', '327106230198', 'Komisaris Utama', 'KTP', NULL),
+(18, '20190303/0001/00000013', 'Dedy Ibrahim', '327106230198', 'Presiden Direktur', 'KTP', NULL),
+(19, '20190303/0001/00000014', 'asd', 'asd', 'Presiden Komisaris', 'KTP', NULL),
+(20, '20190303/0001/00000015', 'Dedy Ibrahim', '327106230198', 'Presiden Komisaris', 'KTP', NULL),
+(21, '20190303/0001/00000016', 'Dedy Ibrahim', '327106230198', 'Komisaris ', 'PASSPOR ', NULL),
+(22, '00000017', 'Dedy Ibrahim', '327106230198', 'Komisaris ', 'PASSPOR ', NULL),
+(23, '00000018', 'Dedy Ibrahim', '327106230198', 'Komisaris ', 'PASSPOR ', NULL),
+(24, '00000019', 'asd', 'asd', 'Komisaris ', 'KTP', NULL),
+(25, '00000020', 'asd', 'asd', 'Komisaris ', 'KTP', NULL),
+(26, '00000021', 'asd', 'asd', 'Komisaris ', 'KTP', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `data_syarat_jenis_dokumen`
 --
 
@@ -89,9 +168,8 @@ CREATE TABLE `data_syarat_jenis_dokumen` (
   `no_nama_dokumen` varchar(255) NOT NULL,
   `nama_syarat` varchar(255) NOT NULL,
   `status_syarat` varchar(255) NOT NULL,
-  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `pembuat_syarat` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ;
 
 --
 -- Dumping data for table `data_syarat_jenis_dokumen`
@@ -122,9 +200,8 @@ CREATE TABLE `nama_dokumen` (
   `id_nama_dokumen` int(11) NOT NULL,
   `no_nama_dokumen` varchar(255) NOT NULL,
   `nama_dokumen` varchar(255) NOT NULL,
-  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `pembuat` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `tanggal_dibuat` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ;
 
 --
 -- Dumping data for table `nama_dokumen`
@@ -157,11 +234,8 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `level` varchar(255) NOT NULL,
-  `tanggal_daftar` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  `password` varchar(255) NOT NULL,
-  `foto` varchar(255) DEFAULT NULL,
-  `status` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `tanggal_daftar` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ;
 
 --
 -- Dumping data for table `user`
@@ -182,8 +256,8 @@ INSERT INTO `user` (`id_user`, `no_user`, `username`, `nama_lengkap`, `email`, `
 --
 ALTER TABLE `data_berkas`
   ADD PRIMARY KEY (`id_data_berkas`),
-  ADD KEY `no_jenis_dokumen` (`no_jenis_dokumen`),
-  ADD KEY `no_client` (`no_client`);
+  ADD KEY `no_berkas` (`no_berkas`),
+  ADD KEY `id_jenis` (`id_jenis`);
 
 --
 -- Indexes for table `data_client`
@@ -193,33 +267,11 @@ ALTER TABLE `data_client`
   ADD KEY `no_client` (`no_client`);
 
 --
--- Indexes for table `data_jenis_dokumen`
+-- Indexes for table `data_perorangan`
 --
-ALTER TABLE `data_jenis_dokumen`
-  ADD PRIMARY KEY (`id_jenis_dokumen`),
-  ADD KEY `no_jenis_dokumen` (`no_jenis_dokumen`);
-
---
--- Indexes for table `data_syarat_jenis_dokumen`
---
-ALTER TABLE `data_syarat_jenis_dokumen`
-  ADD PRIMARY KEY (`id_syarat_dokumen`),
-  ADD KEY `no_syarat_dokumen` (`no_jenis_dokumen`),
-  ADD KEY `no_nama_dokumen` (`no_nama_dokumen`);
-
---
--- Indexes for table `nama_dokumen`
---
-ALTER TABLE `nama_dokumen`
-  ADD PRIMARY KEY (`id_nama_dokumen`),
-  ADD KEY `no_nama_dokumen` (`no_nama_dokumen`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id_user`),
-  ADD KEY `no_user` (`no_user`);
+ALTER TABLE `data_perorangan`
+  ADD PRIMARY KEY (`id_perorangan`),
+  ADD KEY `no_berkas_perorangan` (`no_berkas_perorangan`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -229,7 +281,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `data_berkas`
 --
 ALTER TABLE `data_berkas`
-  MODIFY `id_data_berkas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_data_berkas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `data_client`
 --
@@ -239,22 +291,27 @@ ALTER TABLE `data_client`
 -- AUTO_INCREMENT for table `data_jenis_dokumen`
 --
 ALTER TABLE `data_jenis_dokumen`
-  MODIFY `id_jenis_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_jenis_dokumen` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `data_perorangan`
+--
+ALTER TABLE `data_perorangan`
+  MODIFY `id_perorangan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `data_syarat_jenis_dokumen`
 --
 ALTER TABLE `data_syarat_jenis_dokumen`
-  MODIFY `id_syarat_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id_syarat_dokumen` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `nama_dokumen`
 --
 ALTER TABLE `nama_dokumen`
-  MODIFY `id_nama_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_nama_dokumen` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -263,15 +320,13 @@ ALTER TABLE `user`
 -- Constraints for table `data_berkas`
 --
 ALTER TABLE `data_berkas`
-  ADD CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `data_berkas_ibfk_2` FOREIGN KEY (`no_jenis_dokumen`) REFERENCES `data_jenis_dokumen` (`no_jenis_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `data_jenis_dokumen` (`no_jenis_dokumen`);
 
 --
--- Constraints for table `data_syarat_jenis_dokumen`
+-- Constraints for table `data_perorangan`
 --
-ALTER TABLE `data_syarat_jenis_dokumen`
-  ADD CONSTRAINT `data_syarat_jenis_dokumen_ibfk_1` FOREIGN KEY (`no_jenis_dokumen`) REFERENCES `data_jenis_dokumen` (`no_jenis_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `data_syarat_jenis_dokumen_ibfk_2` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `data_perorangan`
+  ADD CONSTRAINT `data_perorangan_ibfk_1` FOREIGN KEY (`no_berkas_perorangan`) REFERENCES `data_berkas` (`no_berkas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

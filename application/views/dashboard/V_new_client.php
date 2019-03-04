@@ -32,14 +32,19 @@
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
 <label>ID Jenis</label>
 <input type="text" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+
 <div id="form_badan_hukum">
-<label>Nama Badan Hukum</label>
+ <label id="label_nama_perorangan">Nama Perorangan</label>
+  <label id="label_nama_hukum">Nama Badan Hukum</label>
 <input type="text" name="badan_hukum" id="badan_hukum" class="form-control required"  accept="text/plain">
 </div>
+
 <div id="form_alamat_hukum">
-<label>Alamat Badan Hukum</label>
+ <label id="label_alamat_hukum">Alamat Badan Hukum</label>
+ <label id="label_alamat_perorangan">Alamat Perorangan</label>
 <textarea id="alamat_badan_hukum" class="form-control required"  accept="text/plain"></textarea>
 </div>
+
 </div>
 <div class="col">
 <button type="button" class="btn btn-success btn-sm float-right" id="tambah_perorangan">Tambah Perorangan <i class="fa fa-plus"></i></button>
@@ -48,12 +53,12 @@
 <div class="data_orang skroll p-3">
 <div class="row hitung_orang">
 <div class="col">
-<label>Nama KTP</label>
-<input type="text" name="ktp1" id="ktp1"  class="form-control required" accept="text/plain" placeholder="Nama . . .">
+<label>Nama Identitas</label>
+<input type="text" name="nama_identitas1" id="nama_identitas1"  class="form-control required" accept="text/plain" placeholder="Nama . . .">
 </div>
 <div class="col">
-<label>NIK KTP</label>
-<input type="text" name="nik1" id="nik1"  class="form-control required" accept="text/plain" placeholder="NIK . . .">
+<label>No Identitas</label>
+<input type="text" name="no_identitas1" id="no_identitas1"  class="form-control required" accept="text/plain" placeholder="No . . .">
 </div>
 <div class="col">
 <label>Status Jabatan</label>
@@ -68,6 +73,14 @@
 <option>Pemegang Saham</option>
 </select>
 </div>
+<div class="col">
+<label>Jenis Identitas</label>
+<select name="jenis_identitas1" id="jenis_identitas1" class="form-control required" accept="text/plain">
+<option></option>
+<option>KTP</option>
+<option>PASSPOR </option>
+</select>
+</div>    
 
 </div>    
 </div>
@@ -76,7 +89,7 @@
 
 
 </div>
-    <hr>
+ <hr>
 <button type="submit" class="btn btn-success col-md-6 mx-auto btn-block simpan_perizinan">Simpan & Proses Perizinan <i class="fa fa-save"></i></button>
 </form>
 </div>    
@@ -89,10 +102,12 @@ $("#pilih_jenis").on("change",function(){
 var client = $("#pilih_jenis option:selected").text();
 if(client == "Perorangan"){
 $("#form_client").show(100);
-$("#form_alamat_hukum,#form_badan_hukum").hide(100);
+$("#label_alamat_perorangan,#label_nama_perorangan").fadeIn(100);
+$("#label_alamat_hukum,#label_nama_hukum").fadeOut(100);
 }else if(client == "Badan Hukum"){
 $("#form_client").show(100);
-$("#form_alamat_hukum,#form_badan_hukum").show(100);
+$("#label_alamat_hukum,#label_nama_hukum").fadeIn(100);
+$("#label_alamat_perorangan,#label_nama_perorangan").fadeOut(100);
 }else{
 const Toast = Swal.mixin({
 toast: true,
@@ -108,7 +123,6 @@ type: 'warning',
 title: 'Silahkan pilih jenis client terlebih dahulu.'
 })
 $("#form_client").hide(100);
-$("#form_alamat_hukum,#form_badan_hukum").hide(100);
 
 }
 
@@ -119,11 +133,11 @@ var h = $(".hitung_orang").length+1;
 
 var data = "<div class='row hitung_orang'>\n\
 <div class='col'>\n\
-<label>Nama KTP</label>\n\
-<input type='text' name='ktp"+h+"'  id='ktp"+h+"' value='' class='form-control required' placeholder='Nama . . .'></div>\n\
+<label>Nama Identitas</label>\n\
+<input type='text' name='nama_identitas"+h+"'  id='nama_identitas"+h+"' value='' class='form-control required' placeholder='Nama . . .'></div>\n\
 <div class='col'>\n\
-<label>NIK KTP</label>\n\
-<input type='text' name='nik"+h+"' id='nik"+h+"' value='' class='form-control required' placeholder='NIK . . .'>\n\
+<label>No Identitas</label>\n\
+<input type='text' name='no_identitas"+h+"' id='no_identitas"+h+"' value='' class='form-control required' placeholder='No . . .'>\n\
 </div>\n\
 <div class='col' >\n\
 <label>Status Jabatan</label>\n\
@@ -136,6 +150,12 @@ var data = "<div class='row hitung_orang'>\n\
 <option>Direktur</option>\n\
 <option>Direktur Utama</option>\n\
 <option>Pemegang Saham</option></select></div>\n\
+<div class='col' >\n\
+<label>Jenis Identitas</label>\n\
+<select name='jenis_identitas"+h+"' id='jenis_identitas"+h+"' class='form-control required'>\n\
+<option></option>\n\
+<option>KTP</option>\n\
+<option>PASSPOR</option>\n\
 </div> ";
 $(data).appendTo('.data_orang').fadeIn( "slow", function() {
 });       
@@ -159,9 +179,10 @@ var values = [];
 
 for(i=1; i<data_orang; i++){
 values.push({
-ktp: $("#ktp"+i).val(),
-nik: $("#nik"+i).val(),
-status: $("#status"+i+" option:selected").text()
+nama_identitas: $("#nama_identitas"+i).val(),
+no_identitas: $("#no_identitas"+i).val(),
+status: $("#status"+i+" option:selected").text(),
+jenis_identitas: $("#jenis_identitas"+i+" option:selected").text()
 });
 }
 
@@ -182,7 +203,42 @@ url: form.action,
 type: form.method,
 data: { 'token' : token,data},
 success: function(response) {
-$('#answers').html(response);
+    
+var r = JSON.parse(response);
+if(r.status == "Berhasil" ){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: 'Dokumen Berhasil di proses.'
+}).then(function() {
+window.location.href = "<?php echo base_url('Dashboard/proses_berkas'); ?>"+"/"+r.no_berkas;
+})
+
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: 'Terdapat Kesalahan hubungi administrator.'
+})
+
+}
+
 }            
 });
 

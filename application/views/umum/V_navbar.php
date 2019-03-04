@@ -50,7 +50,14 @@ Client Total <br>
 Dokumen Di Proses <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data di proses</div>
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data di proses 
+    <div class="float-right"><?php 
+$query = $this->db->get_where('data_berkas',array('status_berkas'=>"Proses"))->num_rows();
+
+echo $query;
+?>
+</div>
+</div>
 </div>	
 </div>
 

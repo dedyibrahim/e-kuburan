@@ -123,5 +123,12 @@ public function hapus_syarat_dokumen($id_syarat_dokumen){
 $this->db->delete('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$id_syarat_dokumen));    
 }
 
+public function hitung_berkas(){
+$query = $this->db->get('data_berkas');
+
+return $query;
+    
+}
+
 }
 ?>
