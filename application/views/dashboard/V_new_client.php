@@ -7,7 +7,7 @@
 <div class="data_content card p-2 m-3 ">
 <div class="row">
 <div class="col-md-4 mx-auto p-2">
-<div class="text-center color_fa">
+<div class="text-center ">
 <i class=" text-center fa-3x  fa fa-user-tie"></i>
 <h4>Create New Client</h4>
 </div>

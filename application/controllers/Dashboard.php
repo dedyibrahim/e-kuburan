@@ -282,7 +282,13 @@ $h_berkas = $this->M_dashboard->hitung_berkas()->num_rows();
 $no_berkas= str_pad($h_berkas,8 ,"0",STR_PAD_LEFT);
 
 $id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
-
+if(file_exists("berkas/".$no_berkas)){
+$status = array(
+"status"     =>"Gagal",
+"pesan"     =>"File direktori sudah dibuat"   
+ );
+echo json_encode($status);    
+}else{
 $data_r = array(
 'id_berkas'          => $id_berkas,
 'no_berkas'          => $no_berkas,    
@@ -316,7 +322,7 @@ $status = array(
 "no_berkas"  => base64_encode($no_berkas) 
  );
 echo json_encode($status);
-     
+}    
 }else{
 redirect(404);    
 }

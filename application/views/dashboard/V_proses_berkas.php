@@ -87,16 +87,54 @@ $data2 = $data->row_array();
 
 <script type="text/javascript">
 $(document).ready(function(){
-$('#smartwizard').smartWizard();
+$('#smartwizard').smartWizard({
+  theme: 'arrows'       
+});
 });
 </script>
 
 </div>    
-
 <!----------------------------Jenis PERIZINAN------------------------------>
 <div class="tab-pane container " id="upload_perizinan">
-<?php echo $data2['nama_syarat'] ?>    
-<?php echo $data2['status_syarat'] ?>    
+<div class="row">
+<div class="col">
+    <h4 align="center">Upload Suporting Documment</h4>
+<hr>    
+<?php 
+$query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_jenis_dokumen'=>$data2['id_jenis']));
+foreach ($query->result_array() as $persyaratan){
+?>
+<div class="row ">
+    <div class="col ">
+        <label>Upload <?php echo $persyaratan['nama_syarat']; ?></label>
+<input type="file" class="form-control">    
+
+    </div>    
+    <div class="col-md-4"></div>    
+</div>
+    
+<?php }  ?>
+</div>
+
+<div class="col">
+ <h4 align="center">Upload Documment Perorangan</h4>
+<hr>    
+<?php 
+$query = $this->db->get_where('data_perorangan',array('no_berkas_perorangan'=> base64_decode($this->uri->segment(3))));
+foreach ($query->result_array() as $perorangan){
+?>
+<div class="row">
+    <div class="col">
+        <label>Upload <?php echo $perorangan['jenis_identitas'];  echo $perorangan['nama_identitas'];?> </label>
+<input type="file" class="form-control">    
+
+    </div>    
+</div>
+    
+<?php }  ?>
+
+</div>
+</div>
 </div>
 
 </div>

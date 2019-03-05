@@ -78,7 +78,7 @@ $this->datatables->select('id_jenis_dokumen,'
 );
 
 $this->datatables->from('data_jenis_dokumen');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success'  onclick='buat_syarat($1);' data-toggle='modal' data-target='#tambah_syarat'> Syarat <i class='fa fa-plus'></i></button> || <button class='btn btn-sm btn-success '  onclick=lihat_syarat('$2'); > Lihat syarat <i class='fa fa-eye'></i></button>",'id_jenis_dokumen , no_jenis_dokumen');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=lihat_syarat('$2'); > Lihat Jenis <i class='fa fa-eye'></i></button>",'id_jenis_dokumen , no_jenis_dokumen');
 return $this->datatables->generate();
 }
 function json_data_jenis(){
@@ -147,7 +147,6 @@ $this->db->select('*');
 $this->db->where('data_berkas.no_berkas', base64_decode($id));
 $this->db->from('data_berkas');
 $this->db->join('data_perorangan', 'data_perorangan.no_berkas_perorangan = data_berkas.no_berkas');
-$this->db->join('data_syarat_jenis_dokumen', 'data_syarat_jenis_dokumen.no_jenis_dokumen = data_berkas.id_jenis');
 $query = $this->db->get();  
  
 return $query;

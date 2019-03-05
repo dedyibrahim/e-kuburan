@@ -144,39 +144,7 @@
 </div>
 <!------------- Modal Edit---------------->
 
-<!------------- Modal Tambah Syarat---------------->
-<div class="modal fade bd-example-modal-lg" id="tambah_syarat" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
-<div class="modal-dialog modal-md" role="document">
-<div class="modal-content">
-<div class="modal-header">
-<h6 class="modal-title" id="tambah_syarat1">Tambahkan Syarat <span id="title"> </span> </h6>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body">
-<div class="row">
-<div class="col-md-12 mx-auto text-center">
-<input type="text" class="form-control" id="cari_nama_dokumen" placeholder="cari nama dokumen">
-</div>
-</div>
 
-<hr>
-
-<form id="tambahkan_data" action="<?php echo base_url('Dashboard/simpan_syarat') ?>" method="post">
-<input type="hidden" name="token" id="id_jenis" value="">    
-
-</form>
-
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<button type="button" class="btn btn-success"  id="simpan_syarat">Simpan Syarat</button>
-</div>
-</div>
-</div>
-</div>
-<!------------- Modal Tambah Syarat---------------->
 <!------------- Modal Tambah jenis dokumen---------------->
 <div class="modal fade bd-example-modal-lg" id="tambah_jenis_dokumen" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
 <div class="modal-dialog modal-md" role="document">
@@ -250,127 +218,13 @@
 </div>
 </div>
 <!------------- Modal Lihat Syarat---------------->
-<!------------- Modal Lihat Syarat---------------->
-<div class="modal fade bd-example-modal-lg" id="modal_data_user" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
-<div class="modal-dialog modal-md" role="document">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title" >Tambah Data User <span id="title"> </span> </h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body p-3 " >
-<label>Username</label>
-<input type="text" class="form-control" id="username" placeholder="Username . . .">
-<label>Nama Lengkap</label>
-<input type="text" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap . . .">
-
-<label>Email</label>
-<input type="text" class="form-control" id="email" placeholder="Email . . .">
-<label>Phone</label>
-<input type="text" class="form-control" id="phone" placeholder="Phone . . .">
-
-<label>Level</label>
-<select class="form-control" id="level">
-<option value="Admin">Admin</option>
-<option Value="Super Admin">Super Admin</option>
-</select>
-
-<label>Status</label>
-<select class="form-control" id="status">
-<option value="Admin">Aktif</option>
-<option Value="Super Admin">Tidak Aktif</option>
-</select>
-
-<hr>
-<label>Password</label>
-<input type="password" id="password" class="form-control" placeholder="Username . . .">
-<label>Ulangi Password</label>
-<input type="password" id="ulangi_password" class="form-control" placeholder="Username . . .">
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<button class="btn btn-block btn-success" id="simpan_user">Simpan</button> 
-</div>
-</div>
-</div>
-</div>
-<!------------- Modal Lihat Syarat---------------->
 
 
 <script type="text/javascript">
 
-function lihat_syarat(no_jenis){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$(".data_syarat").remove();
-$.ajax({
-type:"POST",
-url:"<?php echo base_url('Dashboard/getSyarat') ?>",
-data:"token="+token+"&no_jenis_dokumen="+no_jenis,
-success:function(data){
-var r = JSON.parse(data);
-if(r.status == "null" ){
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
 
-Toast.fire({
-type: 'warning',
-title: 'Data persyaratan masih kosong.'
-})
 
-}else{
-$('#modal_lihat_syarat').modal('show');    
-for(i=0 ; i<r.length; i++){
-$(".data_modal_lihat_syarat").append("<div class='data_syarat hapus"+r[i].id_syarat_dokumen+" row m-2'>\n\
-<div class='col-md-10'>"+r[i].nama_syarat+"</div>\n\
-<div classs='col-md-2'><button class='btn btn-danger' onclick='hapus_syarat("+r[i].id_syarat_dokumen+")'><i class='fa fa-trash'></i> </button></div>\n\
-</div>");
 
-}
-}
-}    
-});
-
-}
-
-function hapus_syarat(id_syarat_dokumen){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-url :"<?php echo base_url('Dashboard/hapus_syarat') ?>",
-data:"token="+token+"&id_syarat_dokumen="+id_syarat_dokumen,
-success:function(data){
-$(".hapus"+id_syarat_dokumen).hide(100);
-}       
-});
-}
-
-function buat_syarat(id_jenis){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$("#cari_nama_dokumen").val("");
-$.ajax({
-type:"POST",
-url:"<?php echo base_url('Dashboard/getJenis') ?>",
-data:"token="+token+"&id_jenis_dokumen="+id_jenis,
-success:function(data){
-var r = JSON.parse(data);
-$("#title").html(r.nama_jenis);
-$("#id_jenis").val(r.no_jenis_dokumen);
-$(".data_syarat").remove();
-
-}
-
-});
-
-}
 
 function getUser(id_user){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
