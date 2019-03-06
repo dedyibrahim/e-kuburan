@@ -67,7 +67,7 @@ columns: [
 "orderable": false
 },
 {"data": "no_berkas"},
-{"data": "nama"},
+{"data": "nama_client"},
 {"data": "jenis_client"},
 {"data": "jenis_perizinan"},
 {"data": "tanggal_dibuat"},

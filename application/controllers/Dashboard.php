@@ -219,21 +219,35 @@ echo json_encode($json);
 
 public function simpan_syarat(){
 if($this->input->post()){
-  
-$data = array(
-    'no_jenis_dokumen' => $this->input->post('no_jenis_dokumen'),
-    'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
-    'nama_syarat'      => $this->input->post('nama_syarat'),
-    'status_syarat'    => $this->input->post('status_syarat'),
-    'pembuat_syarat'  => $this->session->userdata('nama_lengkap'),
-    );
+$cek_array = array('no_berkas' => base64_decode($this->input->post('no_berkas')), 'no_nama_dokumen' => $this->input->post('no_nama_dokumen'));
+$hasil_cek = $this->db->get_where('data_syarat_jenis_dokumen',$cek_array)->num_rows();
 
+
+if($hasil_cek == 0){
+ 
+$data = array(
+    'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
+    'nama_dokumen'     => $this->input->post('nama_dokumen'),
+    'no_berkas'        => base64_decode($this->input->post('no_berkas')),
+    );
 $this->M_dashboard->simpan_syarat($data);
 
 $status = array(
 "status"=>"Berhasil"
  );
 echo json_encode($status);
+
+}else{
+    
+$status = array(
+"status"=>"Gagal",
+'pesan'=>"Dokumen sudah ditambahkan"   
+ );
+echo json_encode($status);
+    
+}
+
+
 }else{
 redirect(404);    
 }
@@ -278,8 +292,11 @@ public function create_client(){
 if($this->input->post()){
 $data = $this->input->post();
 
-$h_berkas = $this->M_dashboard->hitung_berkas()->num_rows();
-$no_berkas= str_pad($h_berkas,8 ,"0",STR_PAD_LEFT);
+$h_berkas = $this->M_dashboard->hitung_berkas()->num_rows()+1;
+$h_client = $this->M_dashboard->data_client()->num_rows()+1;
+
+$no_client= str_pad($h_client,6 ,"0",STR_PAD_LEFT);
+$no_berkas= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
 
 $id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
 if(file_exists("berkas/".$no_berkas)){
@@ -288,36 +305,38 @@ $status = array(
 "pesan"     =>"File direktori sudah dibuat"   
  );
 echo json_encode($status);    
+
+
 }else{
+
+$data_client = array(
+'no_client'                 => "C_".$no_client,    
+'jenis_client'              => $data['data'][0]['jenis_client'],    
+'nama_client'               => $data['data'][3]['badan_hukum'],
+'alamat_client'             => $data['data'][4]['alamat_badan_hukum'],    
+'tanggal_daftar'            => date('Y/m/d'),    
+);    
+
+$this->db->insert('data_client',$data_client);
+   
+
 $data_r = array(
+'no_client'          => "C_".$no_client,    
 'id_berkas'          => $id_berkas,
 'no_berkas'          => $no_berkas,    
-'folder_berkas'      => $no_berkas,    
+'folder_berkas'      => "file_".$no_berkas,    
 'status_berkas'      => "Proses",    
 'tanggal_dibuat'     => date('Y/m/d'),    
 'no_user'            => $this->session->userdata('no_user'),    
-'jenis_client'       => $data['data'][0]['jenis_client'],    
 'jenis_perizinan'    => $data['data'][1]['jenis_akta'],
 'id_jenis'           => $data['data'][2]['id_jenis'],
-'nama'               => $data['data'][3]['badan_hukum'],
-'alamat'             => $data['data'][4]['alamat_badan_hukum'],
 );
 
 $this->db->insert('data_berkas',$data_r);
 
-$b = count($data['data'][5]);
-for($i=0; $i<$b; $i++){
-$data_perorangan = array(
-'no_berkas_perorangan'           => $no_berkas,    
-'nama_identitas'                 => $data['data'][5][$i]['nama_identitas'],   
-'no_identitas'                   => $data['data'][5][$i]['no_identitas'],   
-'status'                         => $data['data'][5][$i]['status'],   
-'jenis_identitas'                => $data['data'][5][$i]['jenis_identitas']
- );
-$this->db->insert('data_perorangan',$data_perorangan);
-}
-mkdir("berkas/".$no_berkas);
-$status = array(
+mkdir("berkas/"."file_".$no_berkas);
+
+ $status = array(
 "status"     =>"Berhasil",
 "no_berkas"  => base64_encode($no_berkas) 
  );
@@ -339,6 +358,54 @@ $this->load->view('dashboard/V_proses_berkas',['data'=>$data]);
 public function dokumen_proses(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_dokumen_proses');
+}
+
+public function form_perizinan(){
+if($this->input->post()){
+$data = $this->M_dashboard->data_form_perizinan($this->input->post('no_berkas'));
+
+
+foreach ($data->result_array() as $form){
+echo "<div class='row m-2' id='syarat".$form['id_syarat_dokumen']."'>"
+. "<div class='col card p-3'>"
+. "<label>Upload dokumen ".$form['nama_dokumen']."</label>"
+. "<input type='file' class='form-control'>"
+. "</div>"
+. "<div class='col-md-2'>"
+. "<button class='btn btn-danger m-2' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>"
+. "<button class='btn btn-success m-2' onclick='upload_syarat(".$form['id_syarat_dokumen'].")'>Upload syarat <i class='fa fa-upload'></i></button>"
+. "</div>"
+. "</div>";    
+}
+
+}else{
+redirect(404);    
+}
+    
+}
+
+public function create_perorangan(){
+if($this->input->post()){
+$data = $this->input->post();
+$h_identitas = $this->M_dashboard->data_perorangan()->num_rows()+1;
+$no_identitas="I_".str_pad($h_identitas,6 ,"0",STR_PAD_LEFT);
+
+
+
+$data_perorangan = array(
+'no_nama_perorangan' => $no_identitas,
+'nama_identitas'     => $data['data'][1]['nama_identitas'],
+'no_identitas'       => $data['data'][2]['no_identitas'],
+'jenis_identitas'    => $data['data'][0]['jenis_identitas'],       
+);
+
+
+$this->M_dashboard->simpan_data_perorangan($data_perorangan);
+
+}else{
+redirect(404);    
+}
+    
 }
 
 

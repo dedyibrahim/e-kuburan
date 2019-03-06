@@ -198,26 +198,7 @@
 </div>
 </div>
 <!------------- Modal Tambah jenis dokumen---------------->
-<!------------- Modal Lihat Syarat---------------->
-<div class="modal fade bd-example-modal-lg" id="modal_lihat_syarat" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
-<div class="modal-dialog modal-md" role="document">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title" id="tambah_syarat1">Data persyaratan <span id="title"> </span> </h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body p-3 data_modal_lihat_syarat" >
 
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-</div>
-</div>
-</div>
-</div>
-<!------------- Modal Lihat Syarat---------------->
 
 
 <script type="text/javascript">

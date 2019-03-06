@@ -22,75 +22,38 @@
 </div>
 
 <div style="display:none;" class="container" id="form_client">
-<hr>
+
 <form  id="fileForm" method="post" action="<?php echo base_url('Dashboard/create_client') ?>">
 <div class="row">
    
-<div class="col-md-4">
-<h5 align="center">Data Client</h5><hr>
+<div class="col-md-6">
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
 <label>ID Jenis</label>
 <input type="text" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
-
 <div id="form_badan_hukum">
  <label id="label_nama_perorangan">Nama Perorangan</label>
   <label id="label_nama_hukum">Nama Badan Hukum</label>
 <input type="text" name="badan_hukum" id="badan_hukum" class="form-control required"  accept="text/plain">
 </div>
 
+</div>
+    <div class="col">   
+
 <div id="form_alamat_hukum">
  <label id="label_alamat_hukum">Alamat Badan Hukum</label>
  <label id="label_alamat_perorangan">Alamat Perorangan</label>
-<textarea id="alamat_badan_hukum" class="form-control required"  accept="text/plain"></textarea>
+ <textarea rows="6" id="alamat_badan_hukum" class="form-control required"  accept="text/plain"></textarea>
 </div>
+    </div>
 
-</div>
-<div class="col">
-<button type="button" class="btn btn-success btn-sm float-right" id="tambah_perorangan">Tambah Perorangan <i class="fa fa-plus"></i></button>
-<h5 align="center">Data Perorangan</h5>
-<hr>
-<div class="data_orang skroll p-3">
-<div class="row hitung_orang">
-<div class="col">
-<label>Nama Identitas</label>
-<input type="text" name="nama_identitas1" id="nama_identitas1"  class="form-control required" accept="text/plain" placeholder="Nama . . .">
-</div>
-<div class="col">
-<label>No Identitas</label>
-<input type="text" name="no_identitas1" id="no_identitas1"  class="form-control required" accept="text/plain" placeholder="No . . .">
-</div>
-<div class="col">
-<label>Status Jabatan</label>
-<select name="status1" id="status1" class="form-control required" accept="text/plain">
-<option></option>
-<option>Presiden Komisaris</option>
-<option>Komisaris </option>
-<option>Komisaris Utama</option>
-<option>Presiden Direktur</option>
-<option>Direktur</option>
-<option>Direktur Utama</option>
-<option>Pemegang Saham</option>
-</select>
-</div>
-<div class="col">
-<label>Jenis Identitas</label>
-<select name="jenis_identitas1" id="jenis_identitas1" class="form-control required" accept="text/plain">
-<option></option>
-<option>KTP</option>
-<option>PASSPOR </option>
-</select>
-</div>    
 
-</div>    
-</div>
-</div>
 
 
 
 </div>
  <hr>
-<button type="submit" class="btn btn-success col-md-6 mx-auto btn-block simpan_perizinan">Simpan & Proses Perizinan <i class="fa fa-save"></i></button>
+<button type="submit" class="btn btn-success col-md-6 mx-auto btn-block simpan_perizinan">Simpan & Buat Perizinan <i class="fa fa-save"></i></button>
 </form>
 </div>    
 
@@ -128,44 +91,11 @@ $("#form_client").hide(100);
 
 });
 
-$("#tambah_perorangan").on("click",function(){
-var h = $(".hitung_orang").length+1;
-
-var data = "<div class='row hitung_orang'>\n\
-<div class='col'>\n\
-<label>Nama Identitas</label>\n\
-<input type='text' name='nama_identitas"+h+"'  id='nama_identitas"+h+"' value='' class='form-control required' placeholder='Nama . . .'></div>\n\
-<div class='col'>\n\
-<label>No Identitas</label>\n\
-<input type='text' name='no_identitas"+h+"' id='no_identitas"+h+"' value='' class='form-control required' placeholder='No . . .'>\n\
-</div>\n\
-<div class='col' >\n\
-<label>Status Jabatan</label>\n\
-<select name='status"+h+"' id='status"+h+"' class='form-control required'>\n\
-<option></option>\n\
-<option>Presiden Komisaris</option>\n\
-<option>Komisaris </option>\n\
-<option>Komisaris Utama</option>\n\
-<option>Presiden Direktur</option>\n\
-<option>Direktur</option>\n\
-<option>Direktur Utama</option>\n\
-<option>Pemegang Saham</option></select></div>\n\
-<div class='col' >\n\
-<label>Jenis Identitas</label>\n\
-<select name='jenis_identitas"+h+"' id='jenis_identitas"+h+"' class='form-control required'>\n\
-<option></option>\n\
-<option>KTP</option>\n\
-<option>PASSPOR</option>\n\
-</div> ";
-$(data).appendTo('.data_orang').fadeIn( "slow", function() {
-});       
-});
 
 
 </script>        
 <script>
 $(document).ready(function() {
-
 $.validator.messages.required = '';
 $("#fileForm").validate({
 highlight: function (element, errorClass) {
@@ -174,25 +104,13 @@ $(element).closest('.form-control').addClass('is-invalid');
 unhighlight: function (element, errorClass) {
 $(element).closest(".form-control").removeClass("is-invalid");
 },submitHandler: function(form) {
-var data_orang = $(".hitung_orang").length+1;
-var values = [];
-
-for(i=1; i<data_orang; i++){
-values.push({
-nama_identitas: $("#nama_identitas"+i).val(),
-no_identitas: $("#no_identitas"+i).val(),
-status: $("#status"+i+" option:selected").text(),
-jenis_identitas: $("#jenis_identitas"+i+" option:selected").text()
-});
-}
 
 var data = [
 {jenis_client       :$("#pilih_jenis option:selected").text()},
 {jenis_akta         :$("#jenis_akta").val()},
 {id_jenis           :$("#id_jenis_akta").val()},
 {badan_hukum        :$("#badan_hukum").val()},
-{alamat_badan_hukum :$("textarea#alamat_badan_hukum").val()},
-values
+{alamat_badan_hukum :$("textarea#alamat_badan_hukum").val()}
 
 ];
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -219,7 +137,7 @@ Toast.fire({
 type: 'success',
 title: 'Dokumen Berhasil di proses.'
 }).then(function() {
-window.location.href = "<?php echo base_url('Dashboard/proses_berkas'); ?>"+"/"+r.no_berkas;
+window.location.href = "<?php echo base_url('Dashboard/proses_berkas'); ?>"+"/"+r.no_berkas+"/";
 })
 
 }else{
