@@ -112,11 +112,21 @@ theme: 'arrows'
 
 <!----------------------------Jenis PERorangan------------------------------>
 <div class="tab-pane container " id="upload_dokumen_perorangan">
-<div class="row">
-<div class="col-md-5 mx-auto">
+<div class="row" >
+<div class="col">    
+    <input type="text" class="form-control" id="cari_data_perorangan" placeholder="Cari Dokumen Perorangan">
+</div>    
+
+<div class="col-md-4 ">
 <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_perorangan" >Tambah Perorangan <i class="fa fa-plus"></i></button>
 </div>
+</div>
+    <hr>
+<div class="data_perorangan" id="data_perorangan">
 
+</div>
+
+    
 </div>
 </div>
 
@@ -147,6 +157,18 @@ theme: 'arrows'
 <option>KTP</option>    
 <option>PASSPOR</option>    
 </select>
+<label>Status Jabatan</label>
+<select name='status_jabatan' id='status_jabatan' class='form-control required'>
+<option></option>
+<option>Presiden Komisaris</option>
+<option>Komisaris </option>
+<option>Komisaris Utama</option>
+<option>Presiden Direktur</option>
+<option>Direktur</option>
+<option>Direktur Utama</option>
+<option>Pemegang Saham</option>
+<option>-</option>
+</select>
 </div>
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -160,51 +182,6 @@ theme: 'arrows'
 
     
 <script type="text/javascript">
-var data_orang = $(".hitung_orang").length+1;
-var values = [];
-
-for(i=1; i<data_orang; i++){
-values.push({
-nama_identitas: $("#nama_identitas"+i).val(),
-no_identitas: $("#no_identitas"+i).val(),
-status: $("#status"+i+" option:selected").text(),
-jenis_identitas: $("#jenis_identitas"+i+" option:selected").text()
-});
-}
-$("#tambah_perorangan").on("click",function(){
-var h = $(".hitung_orang").length+1;
-
-var data = "<div class='row hitung_orang'>\n\
-<div class='col'>\n\
-<label>Nama Identitas</label>\n\
-<input type='text' name='nama_identitas"+h+"'  id='nama_identitas"+h+"' value='' class='form-control required' placeholder='Nama . . .'></div>\n\
-<div class='col'>\n\
-<label>No Identitas</label>\n\
-<input type='text' name='no_identitas"+h+"' id='no_identitas"+h+"' value='' class='form-control required' placeholder='No . . .'>\n\
-</div>\n\
-<div class='col' >\n\
-<label>Status Jabatan</label>\n\
-<select name='status"+h+"' id='status"+h+"' class='form-control required'>\n\
-<option></option>\n\
-<option>Presiden Komisaris</option>\n\
-<option>Komisaris </option>\n\
-<option>Komisaris Utama</option>\n\
-<option>Presiden Direktur</option>\n\
-<option>Direktur</option>\n\
-<option>Direktur Utama</option>\n\
-<option>Pemegang Saham</option></select></div>\n\
-<div class='col' >\n\
-<label>Jenis Identitas</label>\n\
-<select name='jenis_identitas"+h+"' id='jenis_identitas"+h+"' class='form-control required'>\n\
-<option></option>\n\
-<option>KTP</option>\n\
-<option>PASSPOR</option>\n\
-</div> ";
-$(data).appendTo('.data_orang').fadeIn( "slow", function() {
-});       
-});
-
-  
 
 $(function () {
 
@@ -253,8 +230,56 @@ refresh();
 );
 });
 
+$(function () {
+$("#cari_data_perorangan").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_data_perorangan') ?>',
+select:function(event, ui){
+var no_berkas = "<?php echo $this->uri->segment(3) ?>";
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/simpan_syarat_perorangan') ?>",
+data:"token="+token+"&no_berkas="+no_berkas+"&no_nama_perorangan="+ui.item.no_nama_perorangan+"&nama_identitas="+ui.item.nama_identitas+"&jenis_identitas="+ui.item.jenis_identitas+"&file_berkas="+ui.item.file_berkas+"&file_lampiran="+ui.item.file_lampiran+"&no_identitas="+ui.item.no_identitas+"&status_jabatan="+ui.item.status_jabatan,
+success:function(data){
+
+var r = JSON.parse(data);
+if(r.status =="Berhasil"){
+$("#cari_data_perorangan").val("");    
+refresh();    
+
+refresh()
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title:r.pesan
+})
+}
+}  
+
+});
+
+}
+
+}
+);
+});
+
 function refresh(){
 load_form_perizinan();
+load_form_perorangan();
 }
 
 
@@ -272,6 +297,20 @@ $("#form_perizinan").html(data);
 });
 }
 
+function load_form_perorangan(){
+var no_berkas = "<?php echo $this->uri->segment(3) ?>";
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/form_perorangan') ?>",
+data:"token="+token+"&no_berkas="+no_berkas,
+success:function(data){
+$("#data_perorangan").html(data);  
+}
+});
+}
+
 function hapus_syarat(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
@@ -281,6 +320,18 @@ url:"<?php echo base_url('Dashboard/hapus_syarat') ?>",
 data:"token="+token+"&id_syarat_dokumen="+id,
 success:function(data){
 $("#syarat"+id).hide('slow');
+}
+});
+}
+function hapus_perorangan(id){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/hapus_data_syarat_perorangan') ?>",
+data:"token="+token+"&id_data_syarat_perorangan="+id,
+success:function(data){
+$("#syarat_perorangan"+id).hide('slow');
 }
 });
 }
@@ -299,7 +350,9 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 var data = [
 {jenis_identitas    :$("#jenis_identitas option:selected").text()},
 {nama_identitas     :$("#nama_identitas").val()},
-{no_identitas       :$("#no_identitas").val()}
+{no_identitas       :$("#no_identitas").val()},
+{file_berkas        :"<?php echo $this->uri->segment(3) ?>"},
+{status_jabatan     :$("#status_jabatan option:selected").text()}
 ];
     
 $.ajax({
@@ -307,6 +360,39 @@ url: form.action,
 type: form.method,
 data: { 'token' : token,data},
 success: function(response) {
+    
+var r = JSON.parse(response);
+if(r.status =="Gagal"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+})
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: r.pesan
+})
+
+}
+
 
 }            
 });

@@ -54,6 +54,16 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_data_perorangan($term){
+$this->db->from("data_perorangan");
+$this->db->limit(15);
+$array = array('nama_identitas' => $term);
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
 public function cari_jenis_dokumen($term){
 $this->db->from("data_jenis_dokumen");
 $this->db->limit(15);
@@ -138,6 +148,10 @@ public function hapus_syarat_dokumen($id_syarat_dokumen){
 $this->db->delete('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$id_syarat_dokumen));    
 }
 
+public function hapus_data_syarat_perorangan($id_data_syarat_perorangan){
+$this->db->delete('data_syarat_perorangan',array('id_data_syarat_perorangan'=>$id_data_syarat_perorangan));    
+}
+
 public function hitung_berkas(){
 $query = $this->db->get('data_berkas');
 return $query;
@@ -162,7 +176,15 @@ return $query;
 }
 
 public function  data_form_perizinan($no_berkas){
+         $this->db->order_by('id_syarat_dokumen',"DESC");
 $query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_berkas'=> base64_decode($no_berkas)));    
+    
+return $query;    
+}
+
+public function  data_form_perorangan($no_berkas){
+         $this->db->order_by('id_data_syarat_perorangan',"DESC");
+$query = $this->db->get_where('data_syarat_perorangan',array('no_berkas'=> base64_decode($no_berkas)));    
     
 return $query;    
 }
@@ -176,6 +198,10 @@ return $query;
 
 public function simpan_data_perorangan($data){
 $this->db->insert('data_perorangan',$data);    
+}
+
+public function simpan_syarat_perorangan($data){
+$this->db->insert('data_syarat_perorangan',$data);    
 }
 
 
