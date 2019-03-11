@@ -284,6 +284,11 @@ echo $this->M_dashboard->json_data_user();
 public function json_data_jenis(){
 echo $this->M_dashboard->json_data_jenis();       
 }
+
+public function json_data_client(){
+echo $this->M_dashboard->json_data_client();       
+}
+
 public function json_dokumen_proses(){
 echo $this->M_dashboard->json_dokumen_proses();       
 }
@@ -359,6 +364,7 @@ $data_r = array(
 'status_berkas'      => "Proses",    
 'tanggal_dibuat'     => date('Y/m/d'),    
 'no_user'            => $this->session->userdata('no_user'),    
+'pembuat_berkas'     => $this->session->userdata('nama_lengkap'),    
 'jenis_perizinan'    => $data['data'][1]['jenis_akta'],
 'id_jenis'           => $data['data'][2]['id_jenis'],
 );
@@ -535,5 +541,79 @@ redirect(404);
 }
 }
 
-
+public function data_client(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_data_client');
+    
 }
+
+
+public function getCLient(){
+if($this->input->post()){
+$query = $this->M_dashboard->cari_client($this->input->post('no_client'))->row_array();
+
+$data = array(
+'no_client'         =>  $query['no_client'],
+'nama_client'       =>  $query['nama_client'],
+'alamat_client'     =>  $query['alamat_client'],    
+);
+
+echo json_encode($data);
+}else{
+redirect(404);
+}    
+}
+
+public function simpan_data_berkas(){
+if($this->input->post()){
+
+$h_berkas = $this->M_dashboard->hitung_berkas()->num_rows()+1;
+
+$no_berkas= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
+
+$id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
+if(file_exists("berkas/".$no_berkas)){
+$status = array(
+"status"     =>"Gagal",
+"pesan"     =>"File direktori sudah dibuat"   
+ );
+echo json_encode($status);    
+
+
+}else{
+ $data_r = array(
+'no_client'          => $this->input->post('no_client'),    
+'id_berkas'          => $id_berkas,
+'no_berkas'          => $no_berkas,    
+'folder_berkas'      => "file_".$no_berkas,    
+'status_berkas'      => "Proses",    
+'tanggal_dibuat'     => date('Y/m/d'),    
+'no_user'            => $this->session->userdata('no_user'),    
+'pembuat_berkas'     => $this->session->userdata('nama_lengkap'),    
+'jenis_perizinan'    => $this->input->post('jenis_akta'),
+'id_jenis'           =>$this->input->post('id_jenis_akta'),
+);
+
+$this->db->insert('data_berkas',$data_r);
+
+mkdir("berkas/"."file_".$no_berkas);
+
+$status = array(
+"status"     =>"Berhasil",
+"no_berkas"  => base64_encode($no_berkas) 
+);
+ 
+echo json_encode($status);
+
+
+}        
+}else{
+redirect(404);    
+}
+
+    
+}
+    
+}
+
+

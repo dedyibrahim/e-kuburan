@@ -198,7 +198,52 @@
 </div>
 </div>
 <!------------- Modal Tambah jenis dokumen---------------->
+<div class="modal fade bd-example-modal-lg" id="modal_data_user" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" >Tambah Data User <span id="title"> </span> </h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body p-3 " >
+<label>Username</label>
+<input type="text" class="form-control" id="username" placeholder="Username . . .">
+<label>Nama Lengkap</label>
+<input type="text" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap . . .">
 
+<label>Email</label>
+<input type="text" class="form-control" id="email" placeholder="Email . . .">
+<label>Phone</label>
+<input type="text" class="form-control" id="phone" placeholder="Phone . . .">
+
+<label>Level</label>
+<select class="form-control" id="level">
+<option value="Admin">Admin</option>
+<option Value="Super Admin">Super Admin</option>
+</select>
+
+<label>Status</label>
+<select class="form-control" id="status">
+<option value="Admin">Aktif</option>
+<option Value="Super Admin">Tidak Aktif</option>
+</select>
+
+<hr>
+<label>Password</label>
+<input type="password" id="password" class="form-control" placeholder="Username . . .">
+<label>Ulangi Password</label>
+<input type="password" id="ulangi_password" class="form-control" placeholder="Username . . .">
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button class="btn btn-block btn-success" id="simpan_user">Simpan</button> 
+</div>
+</div>
+</div>
+</div>
+<!------------- Modal Lihat Syarat---------------->
 
 
 <script type="text/javascript">

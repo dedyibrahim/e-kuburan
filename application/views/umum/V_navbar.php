@@ -7,7 +7,10 @@
 </button>
 
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    
 <ul class="nav navbar-nav ml-auto">
+<li class="nav-item active">  <input type="text" class="form-control mt-1 mr-5" placeholder="Cari Berkas . . . ">  </li>
 <li class="nav-item active">
 <a class="nav-link" href="#"><i class="color_fa fa-2x fa fa-user"></i></a>
 </li>
@@ -32,15 +35,20 @@ Dokumen Total <br>
 </div>	
 </div>	
 
-<div class="col-md-3 ">
+<div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-user-tie float-right fa-4x sticky-top"></span>
 Client Total <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data client</div>
-</div>	
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right"><?php 
+$query1 = $this->db->get('data_client')->num_rows();
+
+echo $query1;
+?>
+</div></div>
+</div></a>	
 </div>	
 
     

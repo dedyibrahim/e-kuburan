@@ -134,13 +134,25 @@ function json_dokumen_proses(){
 $this->datatables->select('id_data_berkas,'
 .'data_berkas.no_berkas as no_berkas,'
 .'data_berkas.tanggal_dibuat as tanggal_dibuat,'
-.'data_client.jenis_client as jenis_client,'
 .'data_berkas.jenis_perizinan as jenis_perizinan,'
 .'data_client.nama_client as nama_client,'
+.'data_client.jenis_client as jenis_client,'
 );
 $this->datatables->from('data_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->datatables->join('data_client', 'data_client.no_client = data_berkas.no_client');
 $this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Proses</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
+return $this->datatables->generate();
+}
+function json_data_client(){
+    
+$this->datatables->select('id_data_client,'
+.'data_client.no_client as no_client,'
+.'data_client.pembuat_client as pembuat_client,'
+.'data_client.jenis_client as jenis_client,'
+.'data_client.nama_client as nama_client,'
+);
+$this->datatables->from('data_client');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Tambah pekerjaan <i class='fa fa-plus'></i></button>",'no_client');
 return $this->datatables->generate();
 }
 
@@ -167,6 +179,13 @@ $query = $this->db->get();
 return $query;
 }
 
+
+public function cari_client($no_client){
+$query = $this->db->get_where('data_client',array('no_client'=>$no_client));  
+ 
+return $query;
+    
+}
 
 public function data_client(){
 $query = $this->db->get('data_client');  
