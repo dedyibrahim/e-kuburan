@@ -18,6 +18,7 @@ redirect(base_url('Login'));
 public function index(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_new_client');
+
 } 
 
 public function keluar(){
@@ -343,6 +344,8 @@ $data_client = array(
 'nama_client'               => $data['data'][3]['badan_hukum'],
 'alamat_client'             => $data['data'][4]['alamat_badan_hukum'],    
 'tanggal_daftar'            => date('Y/m/d'),    
+'pembuat_client'            => $this->session->userdata('nama_lengkap'),    
+'no_user'                   => $this->session->userdata('no_user'),    
 );    
 
 $this->db->insert('data_client',$data_client);
