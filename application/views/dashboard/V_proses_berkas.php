@@ -1,10 +1,10 @@
 <body onload="refresh();">
-<div class="wrapper">
+<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
-<div id="content">
+<div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
-
-<div class="data_content card p-2 m-3 ">
+<div class="container-fluid">
+<div class="card p-2 mt-2">
 
 <?php 
 
@@ -390,6 +390,7 @@ Toast.fire({
 type: 'success',
 title: r.pesan
 })
+$('#modal_perorangan').modal('hide');
 
 }
 
@@ -415,6 +416,62 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 );
 });
 </script>
+<!---------------------script upload file perorangan------------------------>
+<script type="text/javascript">
+    
+function upload_perorangan(no_nama_perorangan){
+$(".loading_perorangan"+no_nama_perorangan).show();
 
+var file_perorangan      = $('#file_perorangan'+no_nama_perorangan).get(0).files[0];
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+formData = new FormData();
+formData.append('token',token);         
+formData.append('file_perorangan',file_perorangan);
+formData.append('id_data_peroangan',no_nama_perorangan);
+
+ $.ajax({
+url        : '<?php echo base_url('Dashboard/simpan_file_perorangan') ?>',
+type       : 'POST',
+contentType: false,
+cache      : false,
+processData: false,
+data       : formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
+}else{
+jqXHR = new window.XMLHttpRequest();
+}
+
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+console.log(percentComplete);
+$("#progress_file"+no_nama_perorangan).attr('style',  'width:'+percentComplete+'%');
+}
+
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+//$(".loading_perorangan"+no_nama_perorangan).hide();
+//refresh();
+         
+
+}
+
+});
+
+
+}
+</script>
+<!---------------------script upload file perorangan------------------------>
 
 </body>

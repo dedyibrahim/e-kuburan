@@ -156,6 +156,22 @@ $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  o
 return $this->datatables->generate();
 }
 
+function json_data_perorangan(){
+    
+$this->datatables->select('id_perorangan,'
+.'data_perorangan.id_perorangan as id_perorangan,'
+.'data_perorangan.no_nama_perorangan as no_nama_perorangan,'
+.'data_perorangan.nama_identitas as nama_identitas,'
+.'data_perorangan.no_identitas as no_identitas,'
+.'data_perorangan.jenis_identitas as jenis_identitas,'
+.'data_perorangan.status_jabatan as status_jabatan,'
+);
+$this->datatables->from('data_perorangan');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
+return $this->datatables->generate();
+}
+
+
 public function hapus_syarat_dokumen($id_syarat_dokumen){
 $this->db->delete('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$id_syarat_dokumen));    
 }

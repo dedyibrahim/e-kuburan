@@ -1,10 +1,11 @@
 <body>
-<div class="wrapper">
+<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
-<div id="content">
+<div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
+<div class="container-fluid">
+<div class="card p-2 mt-2">
 
-<div class="data_content card p-2 m-3 ">
     <div class="row">
         <div class="col">
             <h5 align="center"><i class="fa fa-3x fa-user-tie"></i><br>Data Client</h5>

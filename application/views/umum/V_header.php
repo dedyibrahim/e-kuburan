@@ -23,6 +23,7 @@
 <script src="<?php echo base_url() ?>assets/SmartWizard/dist/js/jquery.smartWizard.js" type="text/javascript"></script>
 <link href="<?php echo base_url() ?>assets/SmartWizard/dist/css/smart_wizard.css" rel="stylesheet" type="text/css"/>
 <link href="<?php echo base_url() ?>assets/SmartWizard/dist/css/smart_wizard_theme_arrows.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo base_url() ?>assets/bootstrap-4.1.3/dist/css/simple-sidebar.css" rel="stylesheet" type="text/css"/>
 </head> 
 <script type="text/javascript">
 jQuery( document ).ajaxStart(function() {

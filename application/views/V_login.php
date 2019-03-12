@@ -26,7 +26,7 @@
 <div class=" fixed-bottom">
 <div class="row">
 <div class="mx-auto">    
-<p class="text-dark">App Management Notarian V.1.0</p>
+<p class="text-dark">App Management</p>
 </div>
 </div>
 </div>   

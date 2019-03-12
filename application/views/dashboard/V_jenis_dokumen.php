@@ -1,10 +1,11 @@
 <body>
-<div class="wrapper">
+<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
-<div id="content">
+<div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
+<div class="container-fluid">
+<div class="card p-2 mt-2">
 
-<div class="data_content card p-2 m-3 ">
     <h3 align="center">Data Jenis Dokumen</h3>
 <hr>    
 <table style="width:100%;"  id="data_jenis_dokumen" class="table table-sm table-bordered table-striped table-condensed  table-hover table-sm"><thead>

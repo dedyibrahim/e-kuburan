@@ -1,28 +1,28 @@
 <?php 
 class Dashboard extends CI_Controller{
-    public function __construct() {
-        parent::__construct();
+public function __construct() {
+parent::__construct();
 $this->load->library('session');
 $this->load->model('M_dashboard');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
+$this->load->library('upload');
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
 }else if($this->session->userdata('status') != 'Aktif'){
 redirect(base_url('Login'));
 }
-        
+
 } 
 
 
 public function index(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_new_client');
-
 } 
 
 public function keluar(){
-    $this->session->sess_destroy();
+$this->session->sess_destroy();
 redirect (base_url('Login'));
 }
 
@@ -41,7 +41,7 @@ if($this->input->post()){
 $jumlah_jenis        = $this->M_dashboard->data_jenis()->num_rows()+1;
 $no_jenis            = str_pad($jumlah_jenis,4 ,"0",STR_PAD_LEFT);
 
-    
+
 $data = array(
 'no_jenis_dokumen' =>"J_".$no_jenis,
 'pekerjaan'        =>$this->input->post('pekerjaan'),
@@ -64,7 +64,7 @@ public function simpan_user(){
 if($this->input->post()){
 $input = $this->input->post();
 
-    
+
 $jumlah_user        = $this->M_dashboard->data_user()->num_rows()+1;
 $angka              = 4;
 $no_user            = str_pad($jumlah_user, $angka ,"0",STR_PAD_LEFT);
@@ -97,7 +97,7 @@ echo json_encode($query);
 }else{
 redirect(404);    
 }  
-   
+
 }
 
 public function update_user(){
@@ -116,7 +116,7 @@ $data = array(
 $this->M_dashboard->update_user($data,$this->input->post('id_user'));
 $status = array(
 "status"=>"Berhasil"
- );
+);
 echo json_encode($status);
 }else{
 redirect(404);    
@@ -130,7 +130,7 @@ if($this->input->post()){
 $jumlah_nama_dokumen        = $this->M_dashboard->data_nama_dokumen()->num_rows()+1;
 $no_nama_dokumen            = str_pad($jumlah_nama_dokumen,4 ,"0",STR_PAD_LEFT);
 
-    
+
 $data = array(
 'no_nama_dokumen'   => "N_".$no_nama_dokumen,
 'nama_dokumen'      => $this->input->post('nama_dokumen'),
@@ -140,13 +140,13 @@ $this->M_dashboard->simpan_nama_dokumen($data);
 
 $status = array(
 "status"=>"Berhasil"
- );
+);
 echo json_encode($status);
 
 }else{    
 redirect(404);    
 }    
-    
+
 }
 public function getJenis(){
 if($this->input->post()){
@@ -180,16 +180,16 @@ $data[] = array(
 }
 echo json_encode($data);
 }else{
- $status = array(
+$status = array(
 "status"=>"null"
- );
+);
 echo json_encode($status);   
-    
+
 }
 }else{
 redirect(404);    
 }
-    
+
 }
 public function cari_nama_dokumen(){
 $term = strtolower($this->input->get('term'));    
@@ -246,27 +246,27 @@ $hasil_cek = $this->db->get_where('data_syarat_jenis_dokumen',$cek_array)->num_r
 
 
 if($hasil_cek == 0){
- 
+
 $data = array(
-    'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
-    'nama_dokumen'     => $this->input->post('nama_dokumen'),
-    'no_berkas'        => base64_decode($this->input->post('no_berkas')),
-    );
+'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
+'nama_dokumen'     => $this->input->post('nama_dokumen'),
+'no_berkas'        => base64_decode($this->input->post('no_berkas')),
+);
 $this->M_dashboard->simpan_syarat($data);
 
 $status = array(
 "status"=>"Berhasil"
- );
+);
 echo json_encode($status);
 
 }else{
-    
+
 $status = array(
 "status"=>"Gagal",
 'pesan'=>"Dokumen sudah ditambahkan"   
- );
+);
 echo json_encode($status);
-    
+
 }
 
 
@@ -287,6 +287,9 @@ echo $this->M_dashboard->json_data_jenis();
 
 public function json_data_client(){
 echo $this->M_dashboard->json_data_client();       
+}
+public function json_data_perorangan(){
+echo $this->M_dashboard->json_data_perorangan();       
 }
 
 public function json_dokumen_proses(){
@@ -314,12 +317,12 @@ public function jenis_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_jenis_dokumen');
 
-    
+
 }
 public function nama_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_nama_dokumen');
-   
+
 }
 
 public function create_client(){
@@ -337,7 +340,7 @@ if(file_exists("berkas/".$no_berkas)){
 $status = array(
 "status"     =>"Gagal",
 "pesan"     =>"File direktori sudah dibuat"   
- );
+);
 echo json_encode($status);    
 
 
@@ -354,7 +357,7 @@ $data_client = array(
 );    
 
 $this->db->insert('data_client',$data_client);
-   
+
 
 $data_r = array(
 'no_client'          => "C_".$no_client,    
@@ -373,16 +376,16 @@ $this->db->insert('data_berkas',$data_r);
 
 mkdir("berkas/"."file_".$no_berkas);
 
- $status = array(
+$status = array(
 "status"     =>"Berhasil",
 "no_berkas"  => base64_encode($no_berkas) 
- );
+);
 echo json_encode($status);
 }    
 }else{
 redirect(404);    
 }
-    
+
 }
 
 public function proses_berkas(){
@@ -434,20 +437,25 @@ echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorang
 . "</div>"
 . "<div class='col-md-5'>"
 . "<label>Upload KTP/PASSPOR ".$form['nama_identitas']."</label>"
-. "<input type='file' class='form-control'>"
+. "<input type='file' name='file_perorangan' id='file_perorangan".$form['id_data_syarat_perorangan']."' class='form-control'>"
+."<hr>
+<div style='display:none;' class='progress loading_perorangan".$form['id_data_syarat_perorangan']."'>
+<div id='progress_file".$form['id_data_syarat_perorangan']."' class=' bg-success progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 0%'></div>
+</div>"
+
 . "</div>"
 . "<div class='col'>"
 . "<button class='btn btn-danger m-2' onclick='hapus_perorangan(".$form['id_data_syarat_perorangan'].")'>Hapus perorangan <i class='fa fa-trash'></i></button>"
 . "<button class='btn btn-success m-2' onclick='upload_perorangan(".$form['id_data_syarat_perorangan'].")'>Upload perorangan <i class='fa fa-upload'></i></button>"
 . "</div>"
 . "</div>";    
-    
+
 }
 
 }else{
 redirect(404);    
 }
-    
+
 }
 
 
@@ -468,7 +476,7 @@ $status = array(
 echo json_encode($status);
 
 
-    
+
 }else{
 
 $data_perorangan = array(
@@ -482,7 +490,7 @@ $data_perorangan = array(
 
 
 $this->M_dashboard->simpan_data_perorangan($data_perorangan);
- 
+
 $status = array(
 "status"=>"Berhasil",
 "pesan" => "Data Perorangan berhasil disimpan"
@@ -498,7 +506,7 @@ echo json_encode($status);
 }else{
 redirect(404);    
 }
-    
+
 }
 
 public function simpan_syarat_perorangan(){
@@ -544,7 +552,7 @@ redirect(404);
 public function data_client(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_data_client');
-    
+
 }
 
 
@@ -576,12 +584,12 @@ if(file_exists("berkas/".$no_berkas)){
 $status = array(
 "status"     =>"Gagal",
 "pesan"     =>"File direktori sudah dibuat"   
- );
+);
 echo json_encode($status);    
 
 
 }else{
- $data_r = array(
+$data_r = array(
 'no_client'          => $this->input->post('no_client'),    
 'id_berkas'          => $id_berkas,
 'no_berkas'          => $no_berkas,    
@@ -602,7 +610,7 @@ $status = array(
 "status"     =>"Berhasil",
 "no_berkas"  => base64_encode($no_berkas) 
 );
- 
+
 echo json_encode($status);
 
 
@@ -611,9 +619,19 @@ echo json_encode($status);
 redirect(404);    
 }
 
-    
+
 }
-    
+
+public function data_perorangan(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_data_perorangan');
+
+}
+public function simpan_file_perorangan(){
+echo print_r($_FILES['file_perorangan']);
+
+
+}
 }
 
 

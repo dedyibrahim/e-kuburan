@@ -1,13 +1,11 @@
 <body>
-<div class="wrapper">
+<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
-<div id="content">
+<div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
+<div class="container-fluid">
+<div class="card p-2 mt-2">
 
-<div class="data_content card p-2 m-3 ">
-
-
-<!-- Nav tabs -->
 <ul class="nav nav-tabs">
 <li class="nav-item">
 <a class="nav-link active" data-toggle="tab" href="#jenis">Pengaturan Jenis Dokumen <i class="fas fa-cogs"></i></a>
