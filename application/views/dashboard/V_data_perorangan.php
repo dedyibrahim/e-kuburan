@@ -91,6 +91,53 @@ $('td:eq(0)', row).html(index);
 });
 });
 
+
+function download_lampiran(id){
+window.location="<?php echo base_url('Dashboard/download_lampiran_perorangan') ?>/"+id;
+ 
+/*
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url :"<?php echo base_url('Dashboard/download_lampiran_perorangan') ?>",
+data:"token="+token+"&id_perorangan="+id,
+success:function(response){
+var r = JSON.parse(response);
+if(r.status == "Gagal"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+})    
+}else{
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: r.pesan
+})
+
+}
+}
+});*/
+}
+
 </script>    
 
 

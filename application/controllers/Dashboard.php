@@ -2,11 +2,13 @@
 class Dashboard extends CI_Controller{
 public function __construct() {
 parent::__construct();
+$this->load->helper('download');
 $this->load->library('session');
 $this->load->model('M_dashboard');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
+
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
 }else if($this->session->userdata('status') != 'Aktif'){
@@ -428,7 +430,8 @@ $data = $this->M_dashboard->data_form_perorangan($this->input->post('no_berkas')
 
 
 foreach ($data->result_array() as $form){
-echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorangan']."'>"
+if($form['lampiran'] == NULL){    
+    echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorangan']."'>"
 . "<div class='col-md-4 card p-3'>"
 . "Nama Identitas: ".$form['nama_identitas']."<br>"
 . "No Identitas : ".$form['no_identitas']."<br>"
@@ -444,14 +447,32 @@ echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorang
 </div>"
 
 . "</div>"
-. "<div class='col'>"
-. "<button class='btn btn-danger m-2' onclick='hapus_perorangan(".$form['id_data_syarat_perorangan'].")'>Hapus perorangan <i class='fa fa-trash'></i></button>"
-. "<button class='btn btn-success m-2' onclick='upload_perorangan(".$form['id_data_syarat_perorangan'].")'>Upload perorangan <i class='fa fa-upload'></i></button>"
+. "<div class='col'>" 
+. "<button class='btn btn-danger m-2 btn-block' onclick='hapus_perorangan(".$form['id_data_syarat_perorangan'].")'>Hapus perorangan <i class='fa fa-trash'></i></button>"
+. "<button class='btn btn-success m-2 btn-block' onclick='upload_perorangan(".$form['id_data_syarat_perorangan'].")'>Upload perorangan <i class='fa fa-upload'></i></button>"
 . "</div>"
 . "</div>";    
 
+}else{
+    echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorangan']."'>"
+. "<div class='col-md-4 card p-3'>"
+. "Nama Identitas: ".$form['nama_identitas']."<br>"
+. "No Identitas : ".$form['no_identitas']."<br>"
+. "Jenis Identitas : ".$form['jenis_identitas']."<br>"
+. "Status Jabatan : ".$form['status_jabatan']."<br>"
+. "</div>"
+. "<div class='col-md-5'>"
+. "<img style='width:auto; height:150px;' class='img-thumbnail mx-auto' src='".base_url('berkas/'.$form['file_berkas'].'/'.$form['lampiran'])."'>"
+. "</div>"
+. "<div class='col'>"
+. "<button class='btn btn-danger btn-block m-2' onclick='hapus_perorangan(".$form['id_data_syarat_perorangan'].")'>Hapus perorangan <i class='fa fa-trash'></i></button>"
+. "<button class='btn btn-warning btn-block m-2' onclick='update_foto(".$form['id_data_syarat_perorangan'].")'>Update Foto <i class='fa fa-edit'></i></button>"
+. "</div>"
+. "</div>"; 
+    
 }
 
+}
 }else{
 redirect(404);    
 }
@@ -531,7 +552,7 @@ $data = array(
 'no_identitas'          =>$input['no_identitas'],
 'jenis_identitas'       =>$input['jenis_identitas'],
 'file_berkas'           =>$input['file_berkas'],   
-'file_lampiran'         =>$input['file_lampiran'],
+'lampiran'              =>$input['file_lampiran'],
 'status_jabatan'        =>$input['status_jabatan'],
 );    
 
@@ -628,8 +649,79 @@ $this->load->view('dashboard/V_data_perorangan');
 
 }
 public function simpan_file_perorangan(){
-echo print_r($_FILES['file_perorangan']);
+if($this->input->post()){
 
+    
+    $query = $this->M_dashboard->ambil_data_syarat_perorangan($this->input->post('id_data_perorangan'))->row_array();
+
+$config['upload_path']          = './berkas/'.$query['file_berkas'].'/';
+$config['allowed_types']        = 'gif|jpg|png';
+$config['encrypt_name']         = TRUE;
+
+$this->upload->initialize($config);
+if (!$this->upload->do_upload('file_perorangan')){
+$error = array('error' => $this->upload->display_errors());
+echo print_r($error);
+}else{
+$data = array(
+'lampiran' => $this->upload->data('file_name')
+);
+$where = array('no_nama_perorangan'=>$query['no_nama_perorangan']);
+$this->db->update('data_perorangan',$data,$where);
+$this->db->update('data_syarat_perorangan',$data,$where);
+    
+}
+}else{
+redirect(404);    
+}
+
+}
+public function hapus_lampiran(){
+if($this->input->post()){
+$query = $this->M_dashboard->ambil_data_syarat_perorangan($this->input->post('id_data_perorangan'))->row_array();
+unlink('./berkas/'.$query['file_berkas']."/".$query['lampiran']);
+$data = array(
+'lampiran' => NULL
+);
+$where = array('no_nama_perorangan'=>$query['no_nama_perorangan']);
+$this->db->update('data_perorangan',$data,$where);
+$this->db->update('data_syarat_perorangan',$data,$where);
+}else{
+redirect(404);       
+}   
+}
+
+public function download_lampiran_perorangan(){
+$query = $this->M_dashboard->ambil_data_perorangan($this->uri->segment(3))->row_array();
+  
+force_download('./berkas/'.$query['file_berkas'].'/'.$query['lampiran'], NULL);
+
+/*    
+if($this->input->post()){
+$query = $this->M_dashboard->ambil_data_perorangan($this->input->post('id_perorangan'))->row_array();
+
+$cek_file = FCPATH.'berkas/'.$query['file_berkas'].'/'.$query['lampiran'];
+
+if(file_exists($cek_file)){
+$data =array(
+'status'     =>"Berhasil",   
+'file_berkas'=>$query['file_berkas'],    
+'lampiran'   =>$query['lampiran'],
+'pesan'      =>'File berhasil di download',    
+);
+
+
+}else{
+$data =array(
+'status'     =>"Gagal",   
+'pesan'      =>'File download tidak tersedia',
+);    
+}
+echo json_encode($data);
+
+}else{
+redirect(404);    
+}*/
 
 }
 }

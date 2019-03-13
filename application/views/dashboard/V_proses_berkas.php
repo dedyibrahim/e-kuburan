@@ -171,7 +171,7 @@ theme: 'arrows'
 </select>
 </div>
 <div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
 <button type="submit" class="btn btn-success" >Simpan Perorangan</button>
 </div>
 </form>
@@ -420,14 +420,46 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 <script type="text/javascript">
     
 function upload_perorangan(no_nama_perorangan){
+var file_perorangan      = $('#file_perorangan'+no_nama_perorangan);
+
+if(file_perorangan.get(0).files[0] == undefined){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'warning',
+title: 'File lampiran belum tersedia'
+})
+
+}else if(file_perorangan.get(0).files[0].size > 5000000){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'warning',
+title: 'Maksimal upload 5 MB'
+})
+
+}else{
 $(".loading_perorangan"+no_nama_perorangan).show();
 
-var file_perorangan      = $('#file_perorangan'+no_nama_perorangan).get(0).files[0];
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 formData = new FormData();
 formData.append('token',token);         
-formData.append('file_perorangan',file_perorangan);
-formData.append('id_data_peroangan',no_nama_perorangan);
+formData.append('file_perorangan',file_perorangan.get(0).files[0]);
+formData.append('id_data_perorangan',no_nama_perorangan);
 
  $.ajax({
 url        : '<?php echo base_url('Dashboard/simpan_file_perorangan') ?>',
@@ -455,6 +487,7 @@ $("#progress_file"+no_nama_perorangan).attr('style',  'width:'+percentComplete+'
 jqXHR.addEventListener( "progress", function ( evt ){
 if ( evt.lengthComputable ){
 var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+//refresh();
 
 }
 }, false );
@@ -462,14 +495,28 @@ return jqXHR;
 },
 success    : function ( data ){
 //$(".loading_perorangan"+no_nama_perorangan).hide();
-//refresh();
-         
+refresh();          
 
 }
 
 });
+}
 
+}
 
+function update_foto(id_data_perorangan){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/hapus_lampiran') ?>",
+data:"token="+token+"&id_data_perorangan="+id_data_perorangan,
+success:function(data){
+refresh();
+}
+
+});
+        
 }
 </script>
 <!---------------------script upload file perorangan------------------------>

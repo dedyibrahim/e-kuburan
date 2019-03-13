@@ -167,7 +167,7 @@ $this->datatables->select('id_perorangan,'
 .'data_perorangan.status_jabatan as status_jabatan,'
 );
 $this->datatables->from('data_perorangan');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
 return $this->datatables->generate();
 }
 
@@ -238,6 +238,19 @@ $this->db->insert('data_perorangan',$data);
 public function simpan_syarat_perorangan($data){
 $this->db->insert('data_syarat_perorangan',$data);    
 }
+public function ambil_data_syarat_perorangan($id_syarat){
+ $query = $this->db->get_where('data_syarat_perorangan',array('id_data_syarat_perorangan'=>$id_syarat));
+ return $query;
+    
+    
+}
+public function ambil_data_perorangan($id_perorangan){
+ $query = $this->db->get_where('data_perorangan',array('id_perorangan'=>$id_perorangan));
+ return $query;
+    
+    
+}
+
 
 
 }
