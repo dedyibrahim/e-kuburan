@@ -244,18 +244,33 @@ echo json_encode($json);
 public function simpan_syarat(){
 if($this->input->post()){
 $cek_array = array('no_berkas' => base64_decode($this->input->post('no_berkas')), 'no_nama_dokumen' => $this->input->post('no_nama_dokumen'));
-$hasil_cek = $this->db->get_where('data_syarat_jenis_dokumen',$cek_array)->num_rows();
+$hasil_cek = $this->db->get_where('data_dokumen',$cek_array)->num_rows();
+$this->db->select('no_client');
+$no_client = $this->db->get_where('data_berkas',array('no_berkas' => base64_decode($this->input->post('no_berkas'))))->row_array();
 
-
+$no_data_dokumen = str_pad($this->db->get('data_dokumen')->num_rows()+1, 4 ,"0",STR_PAD_LEFT);
 if($hasil_cek == 0){
 
+$data_dokumen = array(
+'no_data_dokumen'  => "D_".$no_data_dokumen,  
+'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
+'nama_dokumen'     => $this->input->post('nama_dokumen'),
+'no_berkas'        => base64_decode($this->input->post('no_berkas')),
+'no_client'        => $no_client['no_client'],
+'file_berkas'      => "file_".base64_decode($this->input->post('no_berkas')),
+'lampiran'         => NULL,
+);    
+$this->db->insert('data_dokumen',$data_dokumen);    
+    
 $data = array(
 'no_nama_dokumen'  => $this->input->post('no_nama_dokumen'),
 'nama_dokumen'     => $this->input->post('nama_dokumen'),
 'no_berkas'        => base64_decode($this->input->post('no_berkas')),
+'no_client'        => $no_client['no_client'],
 );
 $this->M_dashboard->simpan_syarat($data);
 
+        
 $status = array(
 "status"=>"Berhasil"
 );
@@ -376,7 +391,7 @@ $data_r = array(
 
 $this->db->insert('data_berkas',$data_r);
 
-mkdir("berkas/"."file_".$no_berkas);
+mkdir("berkas/"."file_".$no_berkas,0755);
 
 $status = array(
 "status"     =>"Berhasil",
@@ -454,7 +469,7 @@ if($form['lampiran'] == NULL){
 . "</div>";    
 
 }else{
-    echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorangan']."'>"
+echo "<div class='row m-2' id='syarat_perorangan".$form['id_data_syarat_perorangan']."'>"
 . "<div class='col-md-4 card p-3'>"
 . "Nama Identitas: ".$form['nama_identitas']."<br>"
 . "No Identitas : ".$form['no_identitas']."<br>"
@@ -486,7 +501,7 @@ $data = $this->input->post();
 $h_identitas = $this->M_dashboard->data_perorangan()->num_rows()+1;
 $no_identitas="I_".str_pad($h_identitas,6 ,"0",STR_PAD_LEFT);
 
-$cek_perorangan = $this->db->get_where('data_perorangan',array('no_identitas'=>$data['data'][2]['no_identitas']));
+$cek_perorangan = $this->db->get_where('data_perorangan',array('no_identitas'=>$data['no_identitas']));
 
 if($cek_perorangan->num_rows() >0){
 
@@ -499,25 +514,56 @@ echo json_encode($status);
 
 
 }else{
+$config['upload_path']          = './berkas/file_'.base64_decode($data['file_berkas']).'/';
+$config['allowed_types']        = 'gif|jpg|png';
+$config['encrypt_name']         = TRUE;
 
+$this->upload->initialize($config);
+
+if (!$this->upload->do_upload('file_perorangan')){
+
+$status = array(
+"status"=>"Gagal",
+"pesan" => $this->upload->display_errors()
+);
+echo json_encode($status);
+
+
+}else{
 $data_perorangan = array(
 'no_nama_perorangan' => $no_identitas,
-'nama_identitas'     => $data['data'][1]['nama_identitas'],
-'no_identitas'       => $data['data'][2]['no_identitas'],
-'jenis_identitas'    => $data['data'][0]['jenis_identitas'],       
-'file_berkas'        => "file_".base64_decode($data['data'][3]['file_berkas']),       
-'status_jabatan'     => $data['data'][4]['status_jabatan'],       
+'nama_identitas'     => $data['nama_identitas'],
+'no_identitas'       => $data['no_identitas'],
+'jenis_identitas'    => $data['jenis_identitas'],       
+'file_berkas'        => "file_".base64_decode($data['file_berkas']),       
+'status_jabatan'     => $data['status_jabatan'],
+'lampiran'           => $this->upload->data('file_name')    
 );
 
-
 $this->M_dashboard->simpan_data_perorangan($data_perorangan);
+
+
+$data2 = array(
+'no_berkas'             => base64_decode($data['file_berkas']),
+'no_nama_perorangan'    =>$no_identitas,
+'nama_identitas'        =>$data['nama_identitas'],
+'no_identitas'          =>$data['no_identitas'],
+'jenis_identitas'       =>$data['jenis_identitas'],
+'file_berkas'           =>"file_".base64_decode($data['file_berkas']),   
+'lampiran'              =>$this->upload->data('file_name') ,
+'status_jabatan'        =>$data['status_jabatan'],
+);    
+
+$this->M_dashboard->simpan_syarat_perorangan($data2);    
+
 
 $status = array(
 "status"=>"Berhasil",
 "pesan" => "Data Perorangan berhasil disimpan"
 );
 echo json_encode($status);
-
+}
+    
 
 }
 
@@ -608,7 +654,6 @@ $status = array(
 );
 echo json_encode($status);    
 
-
 }else{
 $data_r = array(
 'no_client'          => $this->input->post('no_client'),    
@@ -625,7 +670,7 @@ $data_r = array(
 
 $this->db->insert('data_berkas',$data_r);
 
-mkdir("berkas/"."file_".$no_berkas);
+mkdir("berkas/"."file_".$no_berkas,0755);
 
 $status = array(
 "status"     =>"Berhasil",

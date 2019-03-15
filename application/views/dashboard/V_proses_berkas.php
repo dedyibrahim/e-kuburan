@@ -145,7 +145,7 @@ theme: 'arrows'
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<form  id="fileForm" method="post" action="<?php echo base_url('Dashboard/create_perorangan') ?>">
+    <form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Dashboard/create_perorangan') ?>">
 <div class="modal-body" >
 <label>Nama Identitas</label>
 <input type="text" name="nama_identitas" id="nama_identitas" class="form-control required" accept="text/plain">
@@ -169,7 +169,15 @@ theme: 'arrows'
 <option>Pemegang Saham</option>
 <option>-</option>
 </select>
+<label>Upload Identitas</label>
+<input type="file" class="form-control required" accept="image/*"  data-rule-required="true" data-msg-accept="Hanya Menerima file gambar" name="upload_identitas" id="upload_identitas">
+<hr>
+<div style="display:none;" class="progress upload_identitas_progress">
+<div id="upload_identitas_progress" class="bg-success progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 70%"></div>
 </div>
+</div>
+        
+
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
 <button type="submit" class="btn btn-success" >Simpan Perorangan</button>
@@ -193,7 +201,6 @@ source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
 select:function(event, ui){
 var no_berkas = "<?php echo $this->uri->segment(3) ?>";
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
 
 $.ajax({
 type:"post",
@@ -325,7 +332,6 @@ $("#syarat"+id).hide('slow');
 }
 function hapus_perorangan(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/hapus_data_syarat_perorangan') ?>",
@@ -336,47 +342,64 @@ $("#syarat_perorangan"+id).hide('slow');
 });
 }
 
-$(document).ready(function() {
+$("#fileForm").submit(function(e) {
+e.preventDefault();
 $.validator.messages.required = '';
-$("#fileForm").validate({
+}).validate({
 highlight: function (element, errorClass) {
 $(element).closest('.form-control').addClass('is-invalid');
 },
 unhighlight: function (element, errorClass) {
 $(element).closest(".form-control").removeClass("is-invalid");
-},submitHandler: function(form) {
+},    
+submitHandler: function(form) {
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$(".upload_identitas_progress").show();
+formData = new FormData();
+formData.append('token',token);
+formData.append('file_perorangan',$("#upload_identitas").get(0).files[0]);
+formData.append('jenis_identitas',$("#jenis_identitas option:selected").text()),
+formData.append('nama_identitas',$("#nama_identitas").val()),
+formData.append('no_identitas',$("#no_identitas").val()),
+formData.append('file_berkas',"<?php echo $this->uri->segment(3) ?>"),
+formData.append('status_jabatan',$("#status_jabatan option:selected").text()),
 
-var data = [
-{jenis_identitas    :$("#jenis_identitas option:selected").text()},
-{nama_identitas     :$("#nama_identitas").val()},
-{no_identitas       :$("#no_identitas").val()},
-{file_berkas        :"<?php echo $this->uri->segment(3) ?>"},
-{status_jabatan     :$("#status_jabatan option:selected").text()}
-];
-    
 $.ajax({
 url: form.action,
+processData: false,
+contentType: false,
 type: form.method,
-data: { 'token' : token,data},
-success: function(response) {
-    
-var r = JSON.parse(response);
-if(r.status =="Gagal"){
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: 'error',
-title: r.pesan
-})
+data: formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
 }else{
+jqXHR = new window.XMLHttpRequest();
+}
+
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+console.log(percentComplete);
+$("#upload_identitas_progress").attr('style',  'width:'+percentComplete+'%');
+$(".upload_identitas_progress").hide();
+
+
+}
+
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+var r = JSON.parse(data);
+
+if(r.status == "Berhasil"){
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',
@@ -389,18 +412,39 @@ customClass: 'animated zoomInDown'
 Toast.fire({
 type: 'success',
 title: r.pesan
-})
-$('#modal_perorangan').modal('hide');
+}).then(function(){
+$('#modal_perorangan').modal('hide');    
+});    
 
+$("#upload_identitas").val("");
+$("#nama_identitas").val("");
+$("#no_identitas").val("");
+refresh();
+}else{
+    
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+});
+}
 }
 
-
-}            
 });
-
+return false; 
 }
 });
-});
+
+
+
 
 $(function () {
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
@@ -443,7 +487,7 @@ toast: true,
 position: 'center',
 showConfirmButton: false,
 timer: 3000,
-animation: false,
+animation: false, 
 customClass: 'animated zoomInDown'
 });
 
