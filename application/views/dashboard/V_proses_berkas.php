@@ -15,14 +15,14 @@ $data2 = $data->row_array();
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
 <li class="nav-item">
-<a class="nav-link active" data-toggle="tab" href="#upload_utama">Upload Dokumen Utama <i class="fas fa-file-upload"></i></a>
+<a class="nav-link active" data-toggle="tab" href="#upload_utama"> Dokumen Utama <i class="fas fa-file-upload"></i></a>
 </li>
 
 <li class="nav-item">
-<a class="nav-link" data-toggle="tab" href="#upload_perizinan">Upload Dokumen Perizinan <i class="fas fa-file-upload"></i></a>
+<a class="nav-link" data-toggle="tab" href="#upload_perizinan"> Supporting Document <i class="fas fa-file-upload"></i></a>
 </li>
 <li class="nav-item">
-<a class="nav-link" data-toggle="tab" href="#upload_dokumen_perorangan">Upload Dokumen Perorangan <i class="fas fa-file-upload"></i></a>
+<a class="nav-link" data-toggle="tab" href="#upload_dokumen_perorangan"> Dokumen Perorangan <i class="fas fa-file-upload"></i></a>
 </li>
 </ul>
 
@@ -39,94 +39,46 @@ Alamat:<?php echo $data2['alamat_client'] ?><br>
 <hr>
 <!----------------------------Jenis UTAMA------------------------------>
 <div class="tab-pane container active p-2" id="upload_utama">
-<div class="container">
-<br />
-<div id="smartwizard">
-<ul>
-<li><a href="#step-1">Step 1<br /><small>Upload Draft</small></a></li>
-<li><a href="#step-2">Step 2<br /><small>Upload Minuta</small></a></li>
-<li><a href="#step-3">Step 3<br /><small>Upload Salinan</small></a></li>
-</ul>
+<div class="row">
 
-<div class="col-md-6 mx-auto">
-<div id="step-1">
-<h2 class="mx-auto text-center">Draft Upload <i class="fa fa-file-upload"></i></h2><hr>
-<div id="form-step-0" role="form" data-toggle="validator">
-<div class="form-group">
-<label for="email">Upload Draft</label>
-<input type="file" class="form-control">
-<div class="help-block with-errors"></div>
-</div>
-</div>
+<div class="col form_utama">
+     
 
-</div>
-<div id="step-2">
-<h2 class="mx-auto text-center">Minuta Upload <i class="fa fa-file-upload"></i></h2><hr>
-<div id="form-step-1" role="form" data-toggle="validator">
-<div class="form-group">
-<label for="email">Upload Minuta</label>
-<input type="file" class="form-control">
-<div class="help-block with-errors"></div>
-</div>
-</div>
-</div>
-<div id="step-3">
-<h2 class="mx-auto text-center">Salinan Upload <i class="fa fa-file-upload"></i></h2><hr>
-<div id="form-step-2" role="form" data-toggle="validator">
-<div class="form-group">
-<label for="email">Upload Salinan</label>
-<input type="file" class="form-control">
-<div class="help-block with-errors"></div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
+</div>    
 
 
-</div>
-
-
-<script type="text/javascript">
-$(document).ready(function(){
-$('#smartwizard').smartWizard({
-theme: 'arrows'       
-});
-});
-</script>
-
+</div>    
 </div>    
 <!----------------------------Jenis PERIZINAN------------------------------>
 <div class="tab-pane container " id="upload_perizinan">
 <div class="row">
 <div class="col-md-5 mx-auto"><input type="text" id="cari_nama_dokumen" placeholder="cari dokumen perizinan yang ingin di upload" class="form-control"></div>    
 </div>
-    <hr>
-    <div class="row">
-        <div class="col" id="form_perizinan">
-            
-        </div>
-    </div>
+<hr>
+<div class="row">
+<div class="col" id="form_perizinan">
+
+</div>
+</div>
 </div>
 
 <!----------------------------Jenis PERorangan------------------------------>
 <div class="tab-pane container " id="upload_dokumen_perorangan">
 <div class="row" >
 <div class="col">    
-    <input type="text" class="form-control" id="cari_data_perorangan" placeholder="Cari Dokumen Perorangan">
+<input type="text" class="form-control" id="cari_data_perorangan" placeholder="Cari Dokumen Perorangan">
 </div>    
 
 <div class="col-md-4 ">
 <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#modal_perorangan" >Tambah Perorangan <i class="fa fa-plus"></i></button>
 </div>
 </div>
-    <hr>
+<hr>
 <div class="data_perorangan" id="data_perorangan">
 
 </div>
 
-    
+
 </div>
 </div>
 
@@ -134,7 +86,7 @@ theme: 'arrows'
 </div>
 </div>
 </div>
-    
+
 <!-----------------modal perorangan --------------> 
 <div class="modal fade bd-example-modal-lg" id="modal_perorangan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
 <div class="modal-dialog modal-md" role="document">
@@ -145,7 +97,7 @@ theme: 'arrows'
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-    <form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Dashboard/create_perorangan') ?>">
+<form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Dashboard/create_perorangan') ?>">
 <div class="modal-body" >
 <label>Nama Identitas</label>
 <input type="text" name="nama_identitas" id="nama_identitas" class="form-control required" accept="text/plain">
@@ -176,7 +128,7 @@ theme: 'arrows'
 <div id="upload_identitas_progress" class="bg-success progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 70%"></div>
 </div>
 </div>
-        
+
 
 <div class="modal-footer">
 <button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
@@ -188,7 +140,7 @@ theme: 'arrows'
 </div>
 <!-----------------modal perorangan --------------> 
 
-    
+
 <script type="text/javascript">
 
 $(function () {
@@ -287,6 +239,7 @@ title:r.pesan
 function refresh(){
 load_form_perizinan();
 load_form_perorangan();
+load_form_utama();
 }
 
 
@@ -421,7 +374,7 @@ $("#nama_identitas").val("");
 $("#no_identitas").val("");
 refresh();
 }else{
-    
+
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',
@@ -462,7 +415,7 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 </script>
 <!---------------------script upload file perorangan------------------------>
 <script type="text/javascript">
-    
+
 function upload_perorangan(no_nama_perorangan){
 var file_perorangan      = $('#file_perorangan'+no_nama_perorangan);
 
@@ -505,7 +458,7 @@ formData.append('token',token);
 formData.append('file_perorangan',file_perorangan.get(0).files[0]);
 formData.append('id_data_perorangan',no_nama_perorangan);
 
- $.ajax({
+$.ajax({
 url        : '<?php echo base_url('Dashboard/simpan_file_perorangan') ?>',
 type       : 'POST',
 contentType: false,
@@ -560,8 +513,121 @@ refresh();
 }
 
 });
-        
+
 }
+
+
+function upload_syarat(id){
+$(".upload_perizinan"+id).show();
+var dokumen_perizinan = $("#dokumen_perizinan"+id).get(0).files[0];
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+formData = new FormData();
+formData.append('token',token);         
+formData.append('dokumen_perizinan',dokumen_perizinan);
+formData.append('id_syarat_dokumen',id);
+
+$.ajax({
+url        : '<?php echo base_url('Dashboard/simpan_file_perizinan') ?>',
+type       : 'POST',
+contentType: false,
+cache      : false,
+processData: false,
+data       : formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
+}else{
+jqXHR = new window.XMLHttpRequest();
+}
+
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+console.log(percentComplete);
+$("#upload_perizinan_progress"+id).attr('style',  'width:'+percentComplete+'%');
+}
+
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+
+var r = JSON.parse(data);
+if(r.status == "Berhasil"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false, 
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: r.pesan
+}).then(function(){
+$(".upload_perizinan"+id).hide();
+refresh();    
+});    
+
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false, 
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+});
+
+}
+
+}
+
+});
+}
+
+function update_perizinan(id){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/update_perizinan') ?>",
+data:"token="+token+"&id_syarat_dokumen="+id,
+success:function(){
+refresh();    
+}
+});
+
+}
+
+function load_form_utama(){
+var no_berkas = "<?php echo $this->uri->segment(3) ?>";
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/form_utama') ?>",
+data:"token="+token+"&no_berkas="+no_berkas,
+success:function(data){
+$(".form_utama").html(data);  
+}
+});
+}
+
 </script>
 <!---------------------script upload file perorangan------------------------>
 
