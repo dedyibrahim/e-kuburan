@@ -24,35 +24,37 @@ $data2 = $data->row_array();
 <li class="nav-item">
 <a class="nav-link" data-toggle="tab" href="#upload_dokumen_perorangan"> Dokumen Perorangan <i class="fas fa-file-upload"></i></a>
 </li>
+<div  class="float-right"id="countdown"></div>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
 <div class="row m-3">
-<div class="col-md-6">
+<div class="col-md-6 card p-2">
 Jenis Perizinan:<?php echo $data2['jenis_perizinan'] ?><br>
 Jenis Client:<?php echo $data2['jenis_client'] ?><br>
 Nama:<?php echo $data2['nama_client'] ?><br>
 Alamat:<?php echo $data2['alamat_client'] ?><br>
 </div>
+
+<div class=" col">
+</div>    
 </div>
 <hr>
 <!----------------------------Jenis UTAMA------------------------------>
 <div class="tab-pane container active p-2" id="upload_utama">
-<div class="row">
+<div class="row form_utama  p-2">
 
-<div class="col form_utama">
-     
 
-</div>    
 
 
 </div>    
 </div>    
 <!----------------------------Jenis PERIZINAN------------------------------>
 <div class="tab-pane container " id="upload_perizinan">
-<div class="row">
-<div class="col-md-5 mx-auto"><input type="text" id="cari_nama_dokumen" placeholder="cari dokumen perizinan yang ingin di upload" class="form-control"></div>    
+<div class="row p-2">
+<div class="col"><input type="text" id="cari_nama_dokumen" placeholder="cari dokumen perizinan yang ingin di upload" class="form-control"></div>    
+<div class="col-md-4"><button class="btn btn-success btn-block" onclick="dokumen_sebelumnya('<?php echo $this->uri->segment(3) ?>')" >Dokumen sebelumnya </button></div>
 </div>
 <hr>
 <div class="row">
@@ -88,7 +90,7 @@ Alamat:<?php echo $data2['alamat_client'] ?><br>
 </div>
 
 <!-----------------modal perorangan --------------> 
-<div class="modal fade bd-example-modal-lg" id="modal_perorangan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg " id="modal_perorangan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
 <div class="modal-dialog modal-md" role="document">
 <div class="modal-content">
 <div class="modal-header">
@@ -141,6 +143,30 @@ Alamat:<?php echo $data2['alamat_client'] ?><br>
 <!-----------------modal perorangan --------------> 
 
 
+<!-----------------modal dokumen lain --------------> 
+<div class="modal fade bd-example-modal-lg" id="modal_dokumen_lain" tabindex="-1" role="dialog" aria-labelledby="modal_dokumen_lain" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="tambah_syarat1">Dokumen sebelumnya <span id="title"> </span> </h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body data_dokumen_sebelumnya" >
+
+
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary " data-dismiss="modal">Close</button>
+<button type="submit" class="btn btn-success" >Simpan Perorangan</button>
+</div>
+</div>
+</div>
+</div>
+<!-----------------modal dokumen lain --------------> 
+
+
 <script type="text/javascript">
 
 $(function () {
@@ -166,14 +192,14 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'center',
 showConfirmButton: false,
-timer: 3000,
+timer: 10000,
 animation: false,
 customClass: 'animated zoomInDown'
 });
 
 Toast.fire({
 type: 'error',
-title: 'Jenis Dokumen sudah ditambahkan'
+title: r.pesan
 })
 }else{
 $("#cari_nama_dokumen").val("");    
@@ -522,6 +548,10 @@ $(".upload_perizinan"+id).show();
 var dokumen_perizinan = $("#dokumen_perizinan"+id).get(0).files[0];
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
+$(".btn_upload_syarat"+id).attr("disabled", true);
+$(".btn_hapus_syarat"+id).attr("disabled", true);
+
+
 formData = new FormData();
 formData.append('token',token);         
 formData.append('dokumen_perizinan',dokumen_perizinan);
@@ -576,6 +606,7 @@ type: 'success',
 title: r.pesan
 }).then(function(){
 $(".upload_perizinan"+id).hide();
+$(".btn").removeAttr("disabled");    
 refresh();    
 });    
 
@@ -593,26 +624,19 @@ Toast.fire({
 type: 'error',
 title: r.pesan
 });
-
-}
-
-}
-
-});
-}
-
-function update_perizinan(id){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/update_perizinan') ?>",
-data:"token="+token+"&id_syarat_dokumen="+id,
-success:function(){
+$(".upload_perizinan"+id).hide();
+$(".btn_hapus_syarat"+id).removeAttr("disabled");    
+$(".btn_upload_syarat"+id).removeAttr("disabled");    
 refresh();    
-}
-});
 
 }
+
+}
+
+});
+}
+
+
 
 function load_form_utama(){
 var no_berkas = "<?php echo $this->uri->segment(3) ?>";
@@ -628,7 +652,329 @@ $(".form_utama").html(data);
 });
 }
 
+
+function upload_utama(no_berkas,jenis){
+var file_utama = $("#file_"+jenis).get(0).files[0];
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$(".upload_"+jenis).attr("disabled", true);
+
+
+$(".upload_utama_"+jenis).show();
+formData = new FormData();
+formData.append('token',token);         
+formData.append('file_utama',file_utama);
+formData.append('file_jenis',jenis);
+formData.append('no_berkas',no_berkas);
+
+$.ajax({
+url        : '<?php echo base_url('Dashboard/simpan_utama') ?>',
+type       : 'POST',
+contentType: false,
+cache      : false,
+processData: false,
+data       : formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
+}else{
+jqXHR = new window.XMLHttpRequest();
+}
+
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+console.log(percentComplete);
+$("#progress_upload_utama_"+jenis).attr('style',  'width:'+percentComplete+'%');
+}
+
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+
+var r = JSON.parse(data);
+
+if(r.status == "Berhasil"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: r.pesan
+}).then(function(){
+refresh();
+$(".upload_utama_"+jenis).hide();
+});    
+
+}else{
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+});
+}
+
+}
+
+});
+}
+
+function dokumen_sebelumnya(id){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/dokumen_sebelumnya') ?>",
+data:"token="+token+"&no_berkas="+id,
+success:function(data){
+$(".data_dokumen_sebelumnya").html(data);      
+$('#modal_dokumen_lain').modal('show'); 
+}    
+});
+
+
+}
+
+function perbaharui(id){
+Swal.fire({
+title: '<?php echo $this->session->userdata('nama_lengkap') ?> yakin!',
+text: "Jika di perbaharui maka dokumen sebelumnya akan di hapus dalam sistem.",
+type: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Ya hapus'
+}).then((result) => {
+
+
+if (result.value) {
+Swal.fire(
+'File Telah di hapus',
+'silahkan upload ulang dokumen tersebut.',
+'success'
+)
+
+
+var token     = "<?php echo $this->security->get_csrf_hash() ?>";
+var no_berkas = "<?php echo $this->uri->segment(3); ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/perbaharui') ?>",
+data:"token="+token+"&id_data_dokumen="+id+"&no_berkas="+no_berkas,
+success:function(data){
+$('#modal_dokumen_lain').modal('hide'); 
+refresh();
+}
+
+});
+
+}
+})
+
+}
+
+function update_utama(no_berkas,jenis_utama){
+
+Swal.fire({
+title: '<?php echo $this->session->userdata('nama_lengkap') ?> yakin!',
+text: "Jika ingin di update maka dokumen sebelumnya akan di hapus dalam sistem.",
+type: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Ya hapus'
+}).then((result) => {
+
+
+if (result.value) {
+Swal.fire(
+'File Telah di hapus',
+'silahkan upload ulang '+jenis_utama+' tersebut.',
+'success'
+)
+
+
+var token     = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/perbaharui_utama') ?>",
+data:"token="+token+"&no_berkas="+no_berkas+"&jenis_utama="+jenis_utama,
+success:function(data){
+$('#modal_dokumen_lain').modal('hide'); 
+refresh();
+}
+
+});
+
+}
+})
+
+}
+
+function download_utama(no_berkas,jenis){
+window.location="<?php echo base_url('Dashboard/download_utama') ?>/"+no_berkas+"/"+jenis;
+}
+
+function download_perizinan(no_client,no_nama_dokumen){
+window.location="<?php echo base_url('Dashboard/download_perizinan') ?>/"+no_client+"/"+no_nama_dokumen;
+}
+
 </script>
 <!---------------------script upload file perorangan------------------------>
+<script>
 
+(function($){
+var days	= 24*60*60,
+hours	= 60*60,
+minutes	= 60;
+$.fn.countup = function(prop){
+
+var options = $.extend({
+callback	: function(){},
+start		: new Date()
+},prop);
+
+var passed = 0, d, h, m, s, 
+positions;
+
+init(this, options);
+
+positions = this.find('.position');
+
+
+
+(function tick(){
+//  console.log(positions.eq(6));
+
+passed = Math.floor((new Date() - options.start) / 1000);
+
+// Number of days passed
+d = Math.floor(passed / days);
+updateDuo(0, 1, d);
+passed -= d*days;
+
+// Number of hours left
+h = Math.floor(passed / hours);
+updateDuo(2, 3, h);
+passed -= h*hours;
+
+// Number of minutes left
+m = Math.floor(passed / minutes);
+updateDuo(4, 5, m);
+passed -= m*minutes;
+
+// Number of seconds left
+s = passed;
+updateDuo(6, 7, s);
+
+// Calling an optional user supplied callback
+options.callback(d, h, m, s);
+
+// Scheduling another call of this function in 1s
+setTimeout(tick, 1000);
+})();
+
+// This function updates two digit positions at once
+function updateDuo(minor,major,value){
+switchDigit(positions.eq(minor),Math.floor(value/10)%10);
+switchDigit(positions.eq(major),value%10);
+}
+
+return this;
+};
+
+
+function init(elem, options){
+elem.addClass('countdownHolder');
+// Creating the markup inside the container
+$.each(['Days','Hours','Minutes','Seconds'],function(i){
+
+$('<span class="count'+this+'">').html(
+'<span class="position">\
+<span class="digit static">0</span>\
+</span>\
+<span class="position">\
+<span class="digit static">0</span>\
+</span>'
+).appendTo(elem);
+
+
+if(this!="Seconds"){
+elem.append('<span class="countDiv countDiv'+i+'"></span>');
+}
+});
+
+}
+
+// Creates an animated transition between the two numbers
+function switchDigit(position,number){
+
+var digit = position.find('.digit')
+
+if(digit.is(':animated')){
+return false;
+}
+
+if(position.data('digit') == number){
+// We are already showing this number
+return false;
+}
+
+position.data('digit', number);
+
+var replacement = $('<span>',{
+'class':'digit',
+css:{
+top:'-2.1em',
+opacity:0
+},
+html:number
+});
+
+// The .static class is added when the animation
+// completes. This makes it run smoother.
+
+digit
+.before(replacement)
+.removeClass('static')
+.animate({top:'2.5em',opacity:0},'fast',function(){
+digit.remove();
+})
+
+replacement
+.delay(100)
+.animate({top:0,opacity:1},'fast',function(){
+replacement.addClass('static');
+});
+}
+})(jQuery);
+
+
+$('#countdown').countup({
+start: new Date('<?php echo $data2['count_up'] ?>')
+});
+
+</script>
 </body>

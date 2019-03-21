@@ -1,50 +1,53 @@
-<body>
+<body onload="refresh();">
 <div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
 <div class="container-fluid">
-<div class="card p-2 mt-2">
-<div class="row">
-<div class="col-md-4 mx-auto p-2">
-<div class="text-center ">
-<i class=" text-center fa-3x  fa fa-user-tie"></i>
-<h4>Create New Client</h4>
-</div>
-<hr>
+<div class=" p-2 mt-2 ">
+
+<div class="container card p-3" id="form_client">
+    
+<form  id="fileForm" method="post" action="<?php echo base_url('Dashboard/create_client') ?>">
+<div class="row ">
+<div class="col-md-6">
 <label>Pilih Jenis client</label>
-<select name="jenis" id="pilih_jenis" class="form-control">
+<select name="jenis" id="pilih_jenis" class="form-control required" accept="text/plain">
 <option> </option>
 <option value="Perorangan">Perorangan</option>
 <option value="Badan Hukum">Badan Hukum</option>	
 </select>
-</div>
-</div>
-<div style="display:none;" class="container" id="form_client">
-<form  id="fileForm" method="post" action="<?php echo base_url('Dashboard/create_client') ?>">
-<div class="row">
-<div class="col-md-6">
+
+    
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
 <label>ID Jenis</label>
 <input type="text" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+
 <div id="form_badan_hukum">
-<label id="label_nama_perorangan">Nama Perorangan</label>
-<label id="label_nama_hukum">Nama Badan Hukum</label>
+<label  id="label_nama_perorangan">Nama Perorangan</label>
+<label  style="display: none;" id="label_nama_hukum">Nama Badan Hukum</label>
 <input type="text" name="badan_hukum" id="badan_hukum" class="form-control required"  accept="text/plain">
 </div>
-</div>
-<div class="col">   
 <div id="form_alamat_hukum">
-<label id="label_alamat_hukum">Alamat Badan Hukum</label>
-<label id="label_alamat_perorangan">Alamat Perorangan</label>
-<textarea rows="6" id="alamat_badan_hukum" class="form-control required"  accept="text/plain"></textarea>
-</div>
-</div>
+    <label style="display: none;" id="label_alamat_hukum">Alamat Badan Hukum</label>
+<label  id="label_alamat_perorangan">Alamat Perorangan</label>
+<textarea rows="4" id="alamat_badan_hukum" class="form-control required" required="" accept="text/plain"></textarea>
 </div>
 <hr>
-<button type="submit" class="btn btn-success col-md-6 mx-auto btn-block simpan_perizinan">Simpan & Buat Perizinan <i class="fa fa-save"></i></button>
+<button type="submit" class="btn btn-success  mx-auto btn-block simpan_perizinan">Simpan & Buat Perizinan <i class="fa fa-save"></i></button>
 </form>
+
+</div>
+<div class="col"> 
+<label>Cari perizinan</label>
+<input type="text" class="form-control" id="cari_user" placeholder="Cari yang akan mengurusi Perizinan" >
+<hr>
+<div class="data_perizinan">
+
+</div>    
+</div>
+</div>
 </div>    
 </div>
 </div>
@@ -74,7 +77,6 @@ Toast.fire({
 type: 'warning',
 title: 'Silahkan pilih jenis client terlebih dahulu.'
 })
-$("#form_client").hide(100);
 
 }
 
@@ -141,7 +143,7 @@ customClass: 'animated zoomInDown'
 
 Toast.fire({
 type: 'error',
-title: 'Terdapat Kesalahan hubungi administrator.'
+title: r.pesan
 })
 
 }
@@ -166,6 +168,63 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 }
 );
 });
+
+
+$(function () {
+var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
+$("#cari_user").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo site_url('Dashboard/cari_user') ?>',
+select:function(event, ui){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/set_client_perizinan') ?>",
+data:"token="+token+"&no_user="+ui.item.no_user+"&nama_lengkap="+ui.item.nama_lengkap+"&email="+ui.item.email,
+success:function(){
+refresh();    
+}
+});
+
+
+}
+});
+});
+function refresh(){
+data_perizinan_sementara();
+}
+
+function data_perizinan_sementara(){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/data_perizinan_sementara') ?>",
+data:"token="+token,
+success:function(data){
+$(".data_perizinan").html(data);    
+$("#cari_user").val("");
+}
+});
+
+}
+
+function hapus_perizinan(id){
+$(".perizinan"+id).hide('slow');
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/hapus_data_perizinan_sementara') ?>",
+data:"token="+token+"&id="+id,
+success:function(){
+refresh();  
+}
+
+});
+
+}
+
 </script>
 
 </div>

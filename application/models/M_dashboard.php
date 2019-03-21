@@ -74,6 +74,16 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_user($term){
+$this->db->from("user");
+$this->db->limit(15);
+$array = array('nama_lengkap' => $term ,'level' =>"User");
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
 
 public function simpan_syarat($data){
 $this->db->insert('data_syarat_jenis_dokumen',$data);    
@@ -248,6 +258,11 @@ public function ambil_data_perorangan($id_perorangan){
  $query = $this->db->get_where('data_perorangan',array('id_perorangan'=>$id_perorangan));
  return $query;
     
+    
+}
+public function data_dokumen_utama($no_berkas){
+ $query = $this->db->get_where('data_dokumen_utama',array('no_berkas'=> base64_decode($no_berkas)));
+ return $query;
     
 }
 

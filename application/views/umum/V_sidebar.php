@@ -38,8 +38,9 @@
 </ul>
 </li>
 
-
+<?php if($this->session->userdata('level') == "Super Admin"){ ?>
 <li><a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Dashboard/setting'); ?>"><i class="fas fa-cogs"></i> Setting</a></li>
+<?php } ?>
 
 </ul>
 </div>

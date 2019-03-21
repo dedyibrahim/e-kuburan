@@ -123,14 +123,15 @@
 <input type="text" class="form-control" id="phone_edit" placeholder="Nomor Handphone . . .">
 <label>Level</label>
 <select class="form-control" id="level_edit">
+<option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>
 
 <label>Status</label>
 <select class="form-control" id="status_edit">
-<option value="Admin">Aktif</option>
-<option Value="Super Admin">Tidak Aktif</option>
+<option value="Aktif">Aktif</option>
+<option Value="Tidak Aktif">Tidak Aktif</option>
 </select>
 </div>
 <div class="modal-footer">
@@ -218,6 +219,7 @@
 
 <label>Level</label>
 <select class="form-control" id="level">
+<option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>

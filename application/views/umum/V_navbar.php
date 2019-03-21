@@ -38,10 +38,15 @@ Pilihan
 Dokumen Total <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data dokumen</div>
-</div>	
-</div>	
+<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Selesai<div class="float-right">
+    <?php 
+$query3 = $this->db->get('data_berkas')->num_rows();
 
+echo $query3;
+?>
+</div></div>
+</div>	
+</div>	
 <div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
@@ -49,7 +54,8 @@ Dokumen Total <br>
 Client Total <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right"><?php 
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right">
+    <?php 
 $query1 = $this->db->get('data_client')->num_rows();
 
 echo $query1;
@@ -84,7 +90,12 @@ echo $query;
 Total user <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total user </div>
+<div class="footer p-2" style="background-color:	#1ecee7;">Total user <div class="float-right">
+<?php 
+$query2 = $this->db->get('user')->num_rows();
+echo $query2;
+?>
+</div></div>
 </div>	
 </div>	
 
