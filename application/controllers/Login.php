@@ -6,8 +6,11 @@ parent::__construct();
 $this->load->library('Session');      
 $this->load->model('M_proses_login');
 
-if($this->session->userdata('username') != NULL && $this->session->userdata('status') != NULL  && $this->session->userdata('level') != NULL && $this->session->userdata('nama_lengkap') != NULL && $this->session->userdata('username') != NULL){
+if($this->session->userdata('level' == "User")){
+redirect(base_url('User'));
+}elseif ($this->session->userdata('level') == "Admin" || $this->session->userdata('level') == "Super Admin") {
 redirect(base_url('Dashboard'));
+            
 }
 
 }
@@ -36,7 +39,8 @@ $set_sesi = array(
 $this->session->set_userdata($set_sesi);
 
 $status = array(
-"status"=>"Berhasil"
+"status"=>"Berhasil",
+"level" => $data_sesi['level'],    
 );
 echo json_encode($status);
 }else{

@@ -11,7 +11,7 @@ $this->load->library('upload');
 
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
-}else if($this->session->userdata('status') != 'Aktif'){
+}else if($this->session->userdata('status') != 'Aktif' && $this->session->userdata('level') != 'Admin' || $this->session->userdata('level') != 'Super Admin' ){
 redirect(base_url('Login'));
 }
 
@@ -212,6 +212,22 @@ $json[]= array(
 }
 echo json_encode($json);
 }
+public function cari_nama_klien(){
+$term = strtolower($this->input->get('term'));
+
+$query = $this->M_dashboard->cari_nama_klien($term);
+foreach ($query as $d) {
+$json[]= array(
+'label'                    => $d->nama_client,   
+'no_client'                => $d->no_client,
+);   
+}
+
+echo json_encode($json);
+}
+
+
+
 
 public function cari_data_perorangan(){
 $term = strtolower($this->input->get('term'));    
@@ -306,7 +322,7 @@ echo json_encode($status);
 }else{
     
 $status = array(
-"status"=> "Gagal",
+"status"=> "Ganda",
 "pesan" => "Anda tidak dapat mengupload jenis dokumen ini,silahkan klik menu dokumen sebelumnya untuk melihat dokumen tersebut"    
 );
 echo json_encode($status);
@@ -376,13 +392,6 @@ $status = array(
 "pesan"  => "Anda tidak memiliki akses untuk membuat pekerjaan" 
 );
 echo json_encode($status);
-}else if($this->session->userdata('perizinan') == NULL){
-$status = array(
-"status"     =>"error",
-"pesan"  => "Tunjuk salah satu orang untuk mengurus perizinan" 
-);
-echo json_encode($status);
-
 }else{   
 $data = $this->input->post();
 
@@ -444,22 +453,9 @@ $data_utama = array(
 
 $this->db->insert('data_dokumen_utama',$data_utama);
 
-$data3 = $this->session->userdata('perizinan');
-$ht = count($data3);
-foreach ($data3 as $s=>$ht){
-$dt = array(
-'no_berkas'     =>$no_berkas,
-'no_user'       =>$data3[$s]['no_user'],
-'nama_lengkap'  =>$data3[$s]['nama_lengkap'],
-'email'         =>$data3[$s]['email'],
-);
-$this->db->insert('data_perizinan',$dt);  
-}
+
 
 }
-unset($_SESSION['perizinan']);    
-
-
 
 mkdir("berkas/"."file_".$no_berkas,0755);
 
@@ -477,7 +473,7 @@ redirect(404);
 }
 
 public function proses_berkas(){
-$data = $this->M_dashboard->data_berkas($this->uri->segment(3));    
+$data           = $this->M_dashboard->data_berkas($this->uri->segment(3));    
 
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_proses_berkas',['data'=>$data]);
@@ -490,37 +486,69 @@ $this->load->view('dashboard/V_dokumen_proses');
 
 public function form_perizinan(){
 if($this->input->post()){
-$data = $this->M_dashboard->data_form_perizinan($this->input->post('no_berkas'));
+$data      = $this->M_dashboard->data_form_perizinan($this->input->post('no_berkas'));
+$data_user = $this->M_dashboard->data_user(); 
 
-
+echo "<div class='row'>";
 foreach ($data->result_array() as $form){
-if($form['lampiran'] == NULL){    
+ 
+if($form['perizinan'] == NULL){
     
-echo "<div class='row m-2' id='syarat".$form['id_syarat_dokumen']."'>"
-."<div class='col card p-3'>"
-."<label>Upload dokumen ".$form['nama_dokumen']."</label>"
+echo "<div class='col-md-5 mx-auto m-2  p-2 card'>";
+echo "<div id='syarat".$form['id_syarat_dokumen']."'> "
+."<h5 align='center'>".$form['nama_dokumen']."</h5>"
+."<hr>"
+."<label>Pengurus perizinan </label>"
+."<select class='form-control tentukan_user".$form['id_syarat_dokumen']."'>"
+."<option value =''></option>";
+foreach ($data_user->result_array() as $user){
+echo "<option value='".$user['no_user']."'>".$user['nama_lengkap']."</option>";
+}
+
+echo "<select>"
+. "<hr>"
+. "<button onclick=tentukan_user('".$form['id_syarat_dokumen']."'); class='btn btn-block btn-success'>Simpan pengurus pekerjaan <i class='fa fa-save'></i></button>"
+. "<hr>"
+. "<button class='btn btn-block btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>";
+echo "</div>";
+echo "</div>";
+}else{    
+    
+    
+if($form['lampiran'] == NULL){    
+echo "<div class='col-md-5 mx-auto m-2  p-2 card'>"
+. "<div class='m-2' id='syarat".$form['id_syarat_dokumen']."'>"
+."<h5 align='center'>".$form['nama_dokumen']."</h5>"
+."<hr>"        
+."<label>Upload dokumen </label>"
 ."<input type='file' id='dokumen_perizinan".$form['id_syarat_dokumen']."' class='form-control mb-2'>"
 
 ."<div style='display:none;' class='progress upload_perizinan".$form['id_syarat_dokumen']."'>"
 ."<div id='upload_perizinan_progress".$form['id_syarat_dokumen']."' class='bg-success progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width:0%'></div>"
 ."</div>"
-. "</div>"
 
-. "<div class='col-md-2'>"
-. "<button class='btn btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>"
-. "<button class='btn btn-success m-2 btn_upload_syarat".$form['id_syarat_dokumen']."' onclick='upload_syarat(".$form['id_syarat_dokumen'].")'>Upload syarat <i class='fa fa-upload'></i></button>"
-. "</div>"
-. "</div>";    
+. "<hr>"
+."<button class='btn btn-block btn-success m-2 btn_upload_syarat".$form['id_syarat_dokumen']."' onclick='upload_syarat(".$form['id_syarat_dokumen'].")'>Upload syarat <i class='fa fa-upload'></i></button>"
+. "<hr>"
+. "<button class='btn btn-block btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>"
+       
+."</div>"    
+."</div>";
+
+
 }else{
-echo "<div class='row m-2' id='syarat".$form['id_syarat_dokumen']."'>"
-."<div class='col card p-3'>"
-."<button class='btn btn-success' onclick=download_perizinan('".$form['no_client']."','".$form['no_nama_dokumen']."'); >Download ".$form['nama_dokumen']."  <i class='fa fa-download'></i></button>"
+
+echo "<div class='col-md-5 mx-auto m-2  p-2 card'>"
+."<div id='syarat".$form['id_syarat_dokumen']."'>"
+."<button class='btn btn-block btn-success' onclick=download_perizinan('".$form['no_client']."','".$form['no_nama_dokumen']."'); >Download ".$form['nama_dokumen']."  <i class='fa fa-download'></i></button>"
 . "</div>"
+."</div>";
 
-. "</div>";    
 
-}    
 }
+}
+}
+echo "</div>";    
 
 }else{
 redirect(404);    
@@ -734,6 +762,21 @@ $h_berkas = $this->M_dashboard->hitung_berkas()->num_rows()+1;
 $no_berkas= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
 
 $id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
+
+if($this->session->userdata('level') == "User"){    
+$status = array(
+"status"     =>"error",
+"pesan"  => "Anda tidak memiliki akses untuk membuat pekerjaan" 
+);
+echo json_encode($status);
+}else if($this->session->userdata('perizinan') == NULL){
+$status = array(
+"status"     =>"error",
+"pesan"  => "Tunjuk salah satu orang untuk mengurus perizinan" 
+);
+echo json_encode($status);
+
+}else{ 
 if(file_exists("berkas/".$no_berkas)){
 $status = array(
 "status"     =>"Gagal",
@@ -770,7 +813,20 @@ $data_utama = array(
 
 $this->db->insert('data_dokumen_utama',$data_utama);
 
+$data3 = $this->session->userdata('perizinan');
+$ht = count($data3);
+foreach ($data3 as $s=>$ht){
+$dt = array(
+'no_berkas'     =>$no_berkas,
+'no_user'       =>$data3[$s]['no_user'],
+'nama_lengkap'  =>$data3[$s]['nama_lengkap'],
+'email'         =>$data3[$s]['email'],
+);
+$this->db->insert('data_perizinan',$dt);  
+}
 
+
+unset($_SESSION['perizinan']);    
 
 mkdir("berkas/"."file_".$no_berkas,0755);
 
@@ -781,7 +837,7 @@ $status = array(
 
 echo json_encode($status);
 
-
+}
 }        
 }else{
 redirect(404);    
@@ -927,8 +983,8 @@ redirect(404);
 
 public function form_utama(){
 if($this->input->post()){
+    
 $data = $this->M_dashboard->data_dokumen_utama($this->input->post('no_berkas'))->row_array();
-
 if($data['draft'] == NULL){
 echo ""
 . "<div class='col'>"
@@ -943,7 +999,7 @@ echo ""
 }else{
 echo "<div class='col'>"
 . "<button class='btn btn-success btn-block' onclick=download_utama('".$data['no_berkas']."','draft');> Download Draft <span class='fa fa-download'></span></button>"
-. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','draft');> Update Draft <span class='fa fa-edit'></span></button>"
+. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','draft');> Ganti Draft <span class='fa fa-edit'></span></button>"
 . ""
 . "</div>";  
 }
@@ -961,7 +1017,7 @@ echo "<div class='col'>"
 }else{
 echo "<div class='col'>"
 . "<button class='btn btn-success btn-block ' onclick=download_utama('".$data['no_berkas']."','minuta');> Download Minuta <span class='fa fa-download'></span></button>"
-. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','minuta');> Update Minuta <span class='fa fa-edit'></span></button>"
+. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','minuta');> Ganti Minuta <span class='fa fa-edit'></span></button>"
 . ""
 . "</div>";   
 }
@@ -979,7 +1035,7 @@ echo "<div class='col'>"
 }else{
 echo "<div class='col'>"
 . "<button class='btn btn-success btn-block' onclick=download_utama('".$data['no_berkas']."','salinan');> Download Salinan <span class='fa fa-download'></span></button>"
-. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','salinan');> Update Salinan <span class='fa fa-edit'></span></button>"
+. "<button class='btn btn-warning btn-block' onclick=update_utama('".$data['no_berkas']."','salinan');> Ganti Salinan <span class='fa fa-edit'></span></button>"
 . ""
 . "</div>";   
 }
@@ -1156,6 +1212,7 @@ $query = $this->db->get_where('data_dokumen',array('no_client'=>$no_client,'no_n
 force_download('./berkas/'.$query['file_berkas'].'/'.$query['lampiran'], NULL);    
 }
 
+/*
 public function set_client_perizinan(){
 if($this->input->post()){
 $input = $this->input->post();
@@ -1183,7 +1240,7 @@ echo print_r($this->session->userdata());
 }else{
 redirect(404);    
 }
-}
+}*/
 
 public function data_perizinan_sementara(){
 $data = $this->session->userdata('perizinan');
@@ -1203,6 +1260,43 @@ echo "<div class='row  m-1 perizinan".$s."'>"
 public function  hapus_data_perizinan_sementara(){
 $id_hapus = $this->input->post('id');
 unset($_SESSION['perizinan'][$id_hapus]);    
+    
+}
+public function cari_dokumen(){
+if($this->input->post()){
+ 
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_hasil_cari');    
+    
+}else{
+redirect(404);     
+} 
+}
+
+public function simpan_pekerjaan_user(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data_syarat = $this->db->get_where('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$input['id_syarat_dokumen']))->row_array();    
+
+$data = array (
+'perizinan' =>$input['nama_user'],
+'no_user'   =>$input['no_user']        
+);
+$this->db->update('data_syarat_jenis_dokumen',$data,array('id_syarat_dokumen'=>$input['id_syarat_dokumen']));
+
+$data2 = array(
+'nama_lengkap'      => $input['nama_user'],
+'no_user'           => $input['no_user'],
+'no_nama_dokumen'   => $data_syarat['no_nama_dokumen'],
+'no_berkas'         => $data_syarat['no_berkas'],
+);
+$this->db->insert('data_pengurus_perizinan',$data2);
+
+
+}else{
+redirect(404);    
+}
     
 }
 

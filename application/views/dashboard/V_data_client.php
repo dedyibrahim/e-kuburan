@@ -1,4 +1,4 @@
-<body>
+<body onload="refresh();">
 <div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
 <div id="page-content-wrapper">
@@ -50,19 +50,19 @@
  <label >Nama</label>
  <input type="text" name="nama_client" id="nama_client" readonly="" class="form-control required"  accept="text/plain">
 </div>
-
-</div>
-<div class="col">   
 <div id="form_alamat_hukum">
 <label >Alamat</label>
 <textarea rows="6" id="alamat_client" readonly="" class="form-control required"  accept="text/plain"></textarea>
 </div>
+
 </div>
+<div class="col">   
+<label>Cari perizinan</label>
+<input type="text" class="form-control" id="cari_user" placeholder="Cari yang akan mengurusi Perizinan" >
+<div class="data_perizinan">
 
-
-
-
-
+</div>  
+</div>
 </div>
 </div>
 <div class="modal-footer">
@@ -225,7 +225,7 @@ customClass: 'animated zoomInDown'
 
 Toast.fire({
 type: 'error',
-title: 'Terdapat Kesalahan hubungi administrator.'
+title: r.pesan
 })
 
 }
@@ -249,6 +249,60 @@ title: 'Jenis Akta belum terpilih.'
 
 });
 });
+$(function () {
+var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
+$("#cari_user").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo site_url('Dashboard/cari_user') ?>',
+select:function(event, ui){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/set_client_perizinan') ?>",
+data:"token="+token+"&no_user="+ui.item.no_user+"&nama_lengkap="+ui.item.nama_lengkap+"&email="+ui.item.email,
+success:function(){
+refresh();    
+}
+});
+
+
+}
+});
+});
+function refresh(){
+data_perizinan_sementara();
+}
+
+function data_perizinan_sementara(){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/data_perizinan_sementara') ?>",
+data:"token="+token,
+success:function(data){
+$(".data_perizinan").html(data);    
+$("#cari_user").val("");
+}
+});
+
+}
+
+function hapus_perizinan(id){
+$(".perizinan"+id).hide('slow');
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/hapus_data_perizinan_sementara') ?>",
+data:"token="+token+"&id="+id,
+success:function(){
+refresh();  
+}
+
+});
+
+}
 
 </script>
 </body>

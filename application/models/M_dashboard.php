@@ -74,6 +74,17 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_nama_klien($term){
+$this->db->from("data_client");
+$this->db->limit(15);
+$array = array('nama_client' => $term);
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
+
 public function cari_user($term){
 $this->db->from("user");
 $this->db->limit(15);
@@ -263,6 +274,14 @@ public function ambil_data_perorangan($id_perorangan){
 public function data_dokumen_utama($no_berkas){
  $query = $this->db->get_where('data_dokumen_utama',array('no_berkas'=> base64_decode($no_berkas)));
  return $query;
+    
+}
+
+public function data_perizinan($no_berkas){
+$query = $this->db->get_where('data_perizinan',array('no_berkas'=> base64_decode($no_berkas)));
+
+return $query;
+
     
 }
 

@@ -4,7 +4,77 @@
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
+    
+ <div class="input-group col-md-7 mx-auto" id="adv-search">
+     <input type="text" class="form-control" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" style="padding: 0.875rem 0.75rem;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form class="form-horizontal" method="post"  action="<?php echo base_url('Dashboard/cari_dokumen') ?>" enctype="multipart/form-data" >
+                                    <input type="hidden" name="nama_dokumen" class="form-control" id="pencarian_id_nama_dokumen"  />
+                                    <input type="hidden" name="<?php echo  $this->security->get_csrf_token_name(); ?>" class="form-control" value="<?php echo  $this->security->get_csrf_hash() ?>"  />
+     
+                                  <div class="form-group">
+                                    <label for="filter">Nama Client</label>
+                                    <input type="text" class="form-control" id="pencarian_nama_klien">   
+                                    <input type="hidden" name="no_client" class="form-control" id="pencarian_no_nama_client">   
+                                 </div>
+                                    <hr>
+                                    <button type="submit" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span> Cari Dokumen</button>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+            </div>
+    
+    <style>
 
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 600px;
+    }
+}
+    </style>
+    
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 <li class="nav-item active">
@@ -102,7 +172,51 @@ echo $query2;
 </div>	
 </div>
 <script>
-0
+
+$(function () {
+$("#pencarian_nama_dokumen").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
+select:function(event, ui){
+$("#pencarian_id_nama_dokumen").val(ui.item.no_nama_dokumen);
+
+}
+
+}
+);
+});
+
+$(function () {
+$("#pencarian_user").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_user') ?>',
+select:function(event, ui){
+$("#pencarian_no_user").val(ui.item.no_user);
+
+}
+
+}
+);
+});
+
+$(function () {
+$("#pencarian_nama_klien").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_nama_klien') ?>',
+select:function(event, ui){
+
+$("#pencarian_no_nama_client").val(ui.item.no_client);
+
+
+}
+
+}
+);
+});
+
 
 $("#menu-toggle").click(function(e) {
 e.preventDefault();
