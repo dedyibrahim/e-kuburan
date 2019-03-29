@@ -8,13 +8,13 @@
 <i class="fa fa-briefcase"></i> Pekerjaan</a>
 <ul class="list-unstyled collapse show" id="homeSubmenu">
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="">Antrian Pekerjaan<i class="fa fa-suitcase	 float-right"></i></a>
+    <a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User/') ?>">Antrian Pekerjaan<i class="fa fa-suitcase	 float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="">Sedang dikerjakan <i class="fa fa-star-half-alt float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User/halaman_proses') ?>">Sedang dikerjakan <i class="fa fa-star-half-alt float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="">Selesai dikerjakan<i class="fa fa-star float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User/halaman_selesai') ?>">Selesai dikerjakan<i class="fa fa-star float-right"></i></a>
 </li>
 </ul>
 </li>

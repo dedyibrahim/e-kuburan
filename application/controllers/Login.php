@@ -8,9 +8,12 @@ $this->load->model('M_proses_login');
 
 if($this->session->userdata('level' == "User")){
 redirect(base_url('User'));
-}elseif ($this->session->userdata('level') == "Admin" || $this->session->userdata('level') == "Super Admin") {
+}elseif ($this->session->userdata('level') == "Super Admin") {
 redirect(base_url('Dashboard'));
             
+}elseif($this->session->userdata('level' == "Admin")){
+redirect(base_url('Admin'));
+    
 }
 
 }

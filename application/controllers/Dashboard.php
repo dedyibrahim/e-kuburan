@@ -372,12 +372,12 @@ $this->M_dashboard->hapus_data_syarat_perorangan($this->input->post('id_data_sya
 redirect(404);    
 }
 }
+
 public function jenis_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_jenis_dokumen');
-
-
 }
+
 public function nama_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_nama_dokumen');
@@ -494,9 +494,9 @@ foreach ($data->result_array() as $form){
  
 if($form['perizinan'] == NULL){
     
-echo "<div class='col-md-5 mx-auto m-2  p-2 card'>";
-echo "<div id='syarat".$form['id_syarat_dokumen']."'> "
-."<h5 align='center'>".$form['nama_dokumen']."</h5>"
+echo "<div class='col-md-4 mx-auto m-3  p-2 '>";
+echo "<div class='card p-2' id='syarat".$form['id_syarat_dokumen']."'> "
+."<h6 align='center'>".$form['nama_dokumen']."</h6>"
 ."<hr>"
 ."<label>Pengurus perizinan </label>"
 ."<select class='form-control tentukan_user".$form['id_syarat_dokumen']."'>"
@@ -508,17 +508,17 @@ echo "<option value='".$user['no_user']."'>".$user['nama_lengkap']."</option>";
 echo "<select>"
 . "<hr>"
 . "<button onclick=tentukan_user('".$form['id_syarat_dokumen']."'); class='btn btn-block btn-success'>Simpan pengurus pekerjaan <i class='fa fa-save'></i></button>"
-. "<hr>"
-. "<button class='btn btn-block btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>";
+. "<br>"
+. "<button class='btn  btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>";
 echo "</div>";
 echo "</div>";
 }else{    
     
     
 if($form['lampiran'] == NULL){    
-echo "<div class='col-md-5 mx-auto m-2  p-2 card'>"
-. "<div class='m-2' id='syarat".$form['id_syarat_dokumen']."'>"
-."<h5 align='center'>".$form['nama_dokumen']."</h5>"
+echo "<div class='col-md-4 mx-auto m-2  p-2 '>"
+. "<div class='card p-2' id='syarat".$form['id_syarat_dokumen']."'>"
+."<h6 align='center'>".$form['nama_dokumen']."</h6>"
 ."<hr>"        
 ."<label>Upload dokumen </label>"
 ."<input type='file' id='dokumen_perizinan".$form['id_syarat_dokumen']."' class='form-control mb-2'>"
@@ -528,19 +528,19 @@ echo "<div class='col-md-5 mx-auto m-2  p-2 card'>"
 ."</div>"
 
 . "<hr>"
-."<button class='btn btn-block btn-success m-2 btn_upload_syarat".$form['id_syarat_dokumen']."' onclick='upload_syarat(".$form['id_syarat_dokumen'].")'>Upload syarat <i class='fa fa-upload'></i></button>"
+."<button class='btn  btn-success m-2 btn_upload_syarat".$form['id_syarat_dokumen']."' onclick='upload_syarat(".$form['id_syarat_dokumen'].")'>Upload syarat <i class='fa fa-upload'></i></button>"
+. "<button class='btn  btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>"
 . "<hr>"
-. "<button class='btn btn-block btn-danger m-2 btn_hapus_syarat".$form['id_syarat_dokumen']."' onclick='hapus_syarat(".$form['id_syarat_dokumen'].")'>Hapus syarat <i class='fa fa-trash'></i></button>"
-       
+   
 ."</div>"    
 ."</div>";
 
 
 }else{
 
-echo "<div class='col-md-5 mx-auto m-2  p-2 card'>"
-."<div id='syarat".$form['id_syarat_dokumen']."'>"
-."<button class='btn btn-block btn-success' onclick=download_perizinan('".$form['no_client']."','".$form['no_nama_dokumen']."'); >Download ".$form['nama_dokumen']."  <i class='fa fa-download'></i></button>"
+echo "<div class='col-md-4 mx-auto m-2  p-2 '>"
+."<div class='card p-2' id='syarat".$form['id_syarat_dokumen']."'>"
+."<button class='btn btn-sm  btn-success' onclick=download_perizinan('".$form['no_client']."','".$form['no_nama_dokumen']."'); >Download ".$form['nama_dokumen']."  <i class='fa fa-download'></i></button>"
 . "</div>"
 ."</div>";
 
@@ -613,7 +613,7 @@ redirect(404);
 public function create_perorangan(){
 if($this->input->post()){
 $data = $this->input->post();
-$h_identitas = $this->M_dashboard->data_perorangan()->num_rows()+1;
+$h_identitas = $this->M_admin->data_perorangan()->num_rows()+1;
 $no_identitas="I_".str_pad($h_identitas,6 ,"0",STR_PAD_LEFT);
 
 $cek_perorangan = $this->db->get_where('data_perorangan',array('no_identitas'=>$data['no_identitas']));
@@ -1299,6 +1299,7 @@ redirect(404);
 }
     
 }
+
 
 
 }

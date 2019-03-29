@@ -36,13 +36,15 @@ CREATE TABLE `data_berkas` (
   `pembuat_berkas` varchar(255) NOT NULL,
   `jenis_perizinan` varchar(255) NOT NULL,
   `id_jenis` varchar(255) NOT NULL,
+  `tanggal_antrian` varchar(255) DEFAULT NULL,
+  `tanggal_proses` varchar(255) NOT NULL,
   PRIMARY KEY (`id_data_berkas`),
   KEY `no_berkas` (`no_berkas`),
   KEY `id_jenis` (`id_jenis`),
   KEY `no_client` (`no_client`),
   CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `data_jenis_dokumen` (`no_jenis_dokumen`),
   CONSTRAINT `data_berkas_ibfk_2` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +53,7 @@ CREATE TABLE `data_berkas` (
 
 LOCK TABLES `data_berkas` WRITE;
 /*!40000 ALTER TABLE `data_berkas` DISABLE KEYS */;
-INSERT INTO `data_berkas` VALUES (1,'20190326/0001/000001','C_000001','000001','Proses','2019/03/26','Mar,26,2019,13:50:06',NULL,'file_000001','0001','Dedy Ibrahim','Akta pendirian Perseroan Terbatas ( PT )','J_0001');
+INSERT INTO `data_berkas` VALUES (10,'20190329/0013/000001','C_000001','000001','Proses','2019/03/29','Mar,29,2019,10:41:15',NULL,'file_000001','0013','MK Fadzri Patriajaya','Akta perubahan perseroan terbatas ( PT )','J_0002','2019/03/29 10:41:15','2019/03/29 10:42:51');
 /*!40000 ALTER TABLE `data_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,9 +75,8 @@ CREATE TABLE `data_client` (
   `no_user` varchar(255) NOT NULL,
   PRIMARY KEY (`id_data_client`),
   KEY `no_client` (`no_client`),
-  KEY `no_user` (`no_user`),
-  CONSTRAINT `data_client_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  KEY `no_user` (`no_user`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +85,7 @@ CREATE TABLE `data_client` (
 
 LOCK TABLES `data_client` WRITE;
 /*!40000 ALTER TABLE `data_client` DISABLE KEYS */;
-INSERT INTO `data_client` VALUES (1,'C_000001','PT Mitratama Multi packaging','Badan Hukum','Jl.Muara Karang Blok L9 T No.8 Penjaringan Jakarta Utara','2019/03/26','Dedy Ibrahim','0001');
+INSERT INTO `data_client` VALUES (10,'C_000001','PT Langit Sejahtera Bersama','Badan Hukum','Jl.Grogol Petamburan Kota Administrasi Jakarta Selatan','2019/03/29','MK Fadzri Patriajaya','0013');
 /*!40000 ALTER TABLE `data_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,6 +107,7 @@ CREATE TABLE `data_dokumen` (
   `pengupload` varchar(255) NOT NULL,
   `no_user` varchar(255) NOT NULL,
   `tanggal_pembaruan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status_dokumen` varchar(255) NOT NULL,
   PRIMARY KEY (`id_data_dokumen`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`,`no_client`,`no_berkas`),
   KEY `no_client` (`no_client`),
@@ -114,9 +116,8 @@ CREATE TABLE `data_dokumen` (
   KEY `no_user` (`no_user`),
   CONSTRAINT `data_dokumen_ibfk_1` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_dokumen_ibfk_2` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_dokumen_ibfk_3` FOREIGN KEY (`no_berkas`) REFERENCES `data_berkas` (`no_berkas`),
   CONSTRAINT `data_dokumen_ibfk_4` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,6 +126,7 @@ CREATE TABLE `data_dokumen` (
 
 LOCK TABLES `data_dokumen` WRITE;
 /*!40000 ALTER TABLE `data_dokumen` DISABLE KEYS */;
+INSERT INTO `data_dokumen` VALUES (14,'N_0004','file_000001','MTQ1NjY1MjM2MDVjOWQ5OTMzMWUyMTM=.jpg','C_000001','Tanda daftar perusahaan ( TDP )','000001','Wisnu Subroto N.A','0002','2019-03-29 04:04:03','Selesai'),(15,'N_0002','file_000001','MjA1NDg1NDMyODVjOWRlNWE5MDMwYzU=.xlsx','C_000001','Nomor pokok wajib pajak (NPWP)','000001','Wisnu Subroto N.A','0002','2019-03-29 09:30:17','Selesai'),(16,'N_0001','file_000001','MTkzMDM4MDMxNWM5ZGU2MTk2N2ZkMw==.docx','C_000001','Surat Izin Usaha Perdagangan ( SIUP )','000001','Wisnu Subroto N.A','0002','2019-03-29 09:32:09','Selesai'),(17,'N_0003','file_000001','MTAwODA4MjU1NjVjOWRlNjIwODk1YTA=.docx','C_000001','SK Kehakiman','000001','Wisnu Subroto N.A','0002','2019-03-29 09:32:16','Selesai'),(18,'N_0005','file_000001','MTIzNjcyNzczMzVjOWRlNzI0Yjk4Y2U=.docx','C_000001','Domisili','000001','agus rohmad','0014','2019-03-29 09:36:36','Selesai');
 /*!40000 ALTER TABLE `data_dokumen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,9 +148,8 @@ CREATE TABLE `data_dokumen_utama` (
   PRIMARY KEY (`id_data_dokumen_utama`),
   KEY `no_berkas` (`no_berkas`),
   KEY `no_client` (`no_client`),
-  CONSTRAINT `data_dokumen_utama_ibfk_1` FOREIGN KEY (`no_berkas`) REFERENCES `data_berkas` (`no_berkas`),
   CONSTRAINT `data_dokumen_utama_ibfk_2` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +158,7 @@ CREATE TABLE `data_dokumen_utama` (
 
 LOCK TABLES `data_dokumen_utama` WRITE;
 /*!40000 ALTER TABLE `data_dokumen_utama` DISABLE KEYS */;
-INSERT INTO `data_dokumen_utama` VALUES (1,'000001','C_000001','file_000001',NULL,NULL,NULL);
+INSERT INTO `data_dokumen_utama` VALUES (9,'000001','C_000001','file_000001',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `data_dokumen_utama` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,39 +189,6 @@ LOCK TABLES `data_jenis_dokumen` WRITE;
 /*!40000 ALTER TABLE `data_jenis_dokumen` DISABLE KEYS */;
 INSERT INTO `data_jenis_dokumen` VALUES (1,'J_0001','NOTARIS','Akta pendirian Perseroan Terbatas ( PT )','2019-03-05 06:28:28.165949','Dedy Ibrahim'),(2,'J_0002','NOTARIS','Akta perubahan perseroan terbatas ( PT )','2019-03-05 06:29:24.100515','Dedy Ibrahim'),(3,'J_0003','NOTARIS','Akta pendirian CV','2019-03-05 06:30:13.576017','Dedy Ibrahim'),(4,'J_0004','NOTARIS','Akta perubahan CV','2019-03-05 06:30:31.712436','Dedy Ibrahim'),(5,'J_0005','NOTARIS','Akta pendirian Firma','2019-03-05 06:31:49.696745','Dedy Ibrahim'),(6,'J_0006','NOTARIS','Akta perubahan Firma','2019-03-05 06:32:10.476590','Dedy Ibrahim'),(7,'J_0007','NOTARIS','Akta pendirian Koperasi','2019-03-05 06:33:01.350481','Dedy Ibrahim'),(8,'J_0008','NOTARIS','Akta perubahan Koperasi','2019-03-05 06:33:23.456080','Dedy Ibrahim'),(9,'J_0009','NOTARIS','Akta pendirian Yayasan','2019-03-05 06:37:31.682419','Dedy Ibrahim'),(10,'J_0010','NOTARIS','Akta perubahan Yayasan','2019-03-05 06:37:55.661141','Dedy Ibrahim'),(11,'J_0011','NOTARIS','Akta pendirian Perkumpulan','2019-03-05 06:38:39.618898','Dedy Ibrahim'),(12,'J_0012','NOTARIS','Akta perubahan Perkumpulan','2019-03-05 06:39:10.083953','Dedy Ibrahim'),(13,'J_0013','NOTARIS','Akta perjanjian Hutang','2019-03-05 06:40:41.199175','Dedy Ibrahim'),(14,'J_0014','NOTARIS','Akta perjanjian Kawin','2019-03-05 06:40:58.992524','Dedy Ibrahim'),(15,'J_0015','NOTARIS','Akta perjanjian Jual Beli','2019-03-05 06:41:35.892605','Dedy Ibrahim'),(16,'J_0016','NOTARIS','Akta perjanjian Sewa Menyewa','2019-03-05 06:42:18.334631','Dedy Ibrahim'),(17,'J_0017','NOTARIS','Akta perjanjian Kerjasama','2019-03-05 06:42:50.359475','Dedy Ibrahim'),(18,'J_0018','NOTARIS','Akta perjanjian Kredit','2019-03-05 06:43:23.037420','Dedy Ibrahim'),(20,'J_0019','NOTARIS','Akta perjanjian Koperasi','2019-03-05 06:45:58.615867','Dedy Ibrahim'),(21,'J_0020','NOTARIS','Akta Wasiat','2019-03-05 06:46:23.085321','Dedy Ibrahim'),(22,'J_0021','NOTARIS','Akta jaminan Tanah','2019-03-05 06:50:01.945909','Dedy Ibrahim'),(23,'J_0022','NOTARIS','Akta Jaminan personal Guarantee','2019-03-05 06:50:30.948411','Dedy Ibrahim'),(24,'J_0023','NOTARIS','Akta Fidusia','2019-03-05 06:50:46.733389','Dedy Ibrahim'),(25,'J_0024','NOTARIS','Akta legalisir surat Kuasa','2019-03-05 06:57:20.671361','Dedy Ibrahim'),(27,'J_0025','NOTARIS','Akta Legalisir Surat Kuasa','2019-03-05 06:58:53.346596','Dedy Ibrahim'),(28,'J_0026','NOTARIS','Akta legalisir surat Pernyataan','2019-03-05 07:00:34.582190','Dedy Ibrahim'),(29,'J_0027','NOTARIS','Akta legalisir Surat Persetujuan','2019-03-05 07:01:02.329769','Dedy Ibrahim'),(30,'J_0028','PPAT','Akta peralihan hak Jual Beli','2019-03-05 07:02:58.130489','Dedy Ibrahim'),(31,'J_0029','PPAT','Akta peralihan hak Hibah','2019-03-05 07:04:15.530001','Dedy Ibrahim'),(32,'J_0030','PPAT','Akta peralihan hak Tukar Menukar','2019-03-05 07:03:55.906857','Dedy Ibrahim'),(33,'J_0031','PPAT','Akta peralihan hak Pembagian Hak','2019-03-05 07:06:21.486152','Dedy Ibrahim'),(34,'J_0032','PPAT','Akta pembebanan hak SKMHT','2019-03-05 07:06:07.412667','Dedy Ibrahim'),(35,'J_0033','PPAT','Akta pembebanan hak APHT','2019-03-05 07:07:18.824630','Dedy Ibrahim');
 /*!40000 ALTER TABLE `data_jenis_dokumen` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `data_pengurus_perizinan`
---
-
-DROP TABLE IF EXISTS `data_pengurus_perizinan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_pengurus_perizinan` (
-  `id_data_pengurus_perizinan` int(11) NOT NULL AUTO_INCREMENT,
-  `nama_lengkap` varchar(255) NOT NULL,
-  `no_user` varchar(255) NOT NULL,
-  `no_nama_dokumen` varchar(255) NOT NULL,
-  `no_berkas` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_pengurus_perizinan`),
-  KEY `no_user` (`no_user`),
-  KEY `no_nama_dokumen` (`no_nama_dokumen`),
-  KEY `no_berkas` (`no_berkas`),
-  CONSTRAINT `data_pengurus_perizinan_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_pengurus_perizinan_ibfk_2` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_pengurus_perizinan_ibfk_3` FOREIGN KEY (`no_berkas`) REFERENCES `data_berkas` (`no_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `data_pengurus_perizinan`
---
-
-LOCK TABLES `data_pengurus_perizinan` WRITE;
-/*!40000 ALTER TABLE `data_pengurus_perizinan` DISABLE KEYS */;
-INSERT INTO `data_pengurus_perizinan` VALUES (1,'Fitri Sejayani','0012','N_0003','000001'),(2,'Dedy Ibrahim','0001','N_0002','000001'),(3,'Wisnu Subroto N.A','0002','N_0004','000001'),(4,'Rifka Ramadani','0006','N_0003','000001'),(5,'Dedy Ibrahim','0001','N_0002','000001'),(6,'Wisnu Subroto N.A','0002','N_0001','000001'),(7,'Dedy Ibrahim','0001','N_0004','000001'),(8,'Dedy Ibrahim','0001','N_0003','000001'),(9,'Dedy Ibrahim','0001','N_0002','000001'),(10,'Dedy Ibrahim','0001','N_0001','000001'),(11,'haryati Ardi','0009','N_0001','000001'),(12,'Esthi Herlina','0008','N_0001','000001'),(13,'Dedy Ibrahim','0001','N_0005','000001'),(14,'Wisnu Subroto N.A','0002','N_0004','000001'),(15,'haryati Ardi','0009','N_0003','000001'),(16,'Yus Suwandari','0007','N_0002','000001'),(17,'Dedy Ibrahim','0001','N_0001','000001');
-/*!40000 ALTER TABLE `data_pengurus_perizinan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -271,7 +239,7 @@ CREATE TABLE `data_perorangan` (
   `status_jabatan` varchar(255) NOT NULL,
   PRIMARY KEY (`id_perorangan`),
   KEY `no_nama_perorangan` (`no_nama_perorangan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,13 +268,18 @@ CREATE TABLE `data_syarat_jenis_dokumen` (
   `no_client` varchar(255) NOT NULL,
   `perizinan` varchar(255) NOT NULL,
   `no_user` varchar(255) NOT NULL,
+  `status_berkas` varchar(255) NOT NULL,
+  `tanggal_tugas` varchar(255) DEFAULT NULL,
+  `tanggal_proses_tugas` varchar(255) NOT NULL,
+  `tanggal_selesai` varchar(255) NOT NULL,
+  `target_kelar_perizinan` varchar(255) NOT NULL,
   PRIMARY KEY (`id_syarat_dokumen`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`),
   KEY `no_berkas` (`no_berkas`),
   KEY `no_client` (`no_client`),
   CONSTRAINT `data_syarat_jenis_dokumen_ibfk_1` FOREIGN KEY (`no_berkas`) REFERENCES `data_berkas` (`no_berkas`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_syarat_jenis_dokumen_ibfk_2` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +288,7 @@ CREATE TABLE `data_syarat_jenis_dokumen` (
 
 LOCK TABLES `data_syarat_jenis_dokumen` WRITE;
 /*!40000 ALTER TABLE `data_syarat_jenis_dokumen` DISABLE KEYS */;
-INSERT INTO `data_syarat_jenis_dokumen` VALUES (33,'N_0002','Nomor pokok wajib pajak (NPWP)','000001','file_000001',NULL,'C_000001','',''),(34,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','000001','file_000001',NULL,'C_000001','',''),(35,'N_0004','Tanda daftar perusahaan ( TDP )','000001','file_000001',NULL,'C_000001','',''),(36,'N_0005','Domisili','000001','file_000001',NULL,'C_000001','','');
+INSERT INTO `data_syarat_jenis_dokumen` VALUES (103,'N_0002','Nomor pokok wajib pajak (NPWP)','000001','file_000001','MjA1NDg1NDMyODVjOWRlNWE5MDMwYzU=.xlsx','C_000001','Wisnu Subroto N.A','0002','Selesai','2019/03/29 14:15:27','2019/03/29 16:14:41','2019/03/29 16:30:17',''),(104,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','000001','file_000001','MTkzMDM4MDMxNWM5ZGU2MTk2N2ZkMw==.docx','C_000001','Wisnu Subroto N.A','0002','Selesai','2019/03/29 14:15:38','2019/03/29 16:21:05','2019/03/29 16:32:09','04/26/2019'),(105,'N_0003','SK Kehakiman','000001','file_000001','MTAwODA4MjU1NjVjOWRlNjIwODk1YTA=.docx','C_000001','Wisnu Subroto N.A','0002','Selesai','2019/03/29 14:15:46','2019/03/29 16:21:42','2019/03/29 16:32:16','03/30/2019'),(106,'N_0005','Domisili','000001','file_000001','MTIzNjcyNzczMzVjOWRlNzI0Yjk4Y2U=.docx','C_000001','agus rohmad','0014','Selesai','2019/03/29 16:35:26','2019/03/29 16:35:59','2019/03/29 16:36:36','04/30/2019');
 /*!40000 ALTER TABLE `data_syarat_jenis_dokumen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +314,7 @@ CREATE TABLE `data_syarat_perorangan` (
   KEY `no_berkas` (`no_berkas`),
   CONSTRAINT `data_syarat_perorangan_ibfk_1` FOREIGN KEY (`no_nama_perorangan`) REFERENCES `data_perorangan` (`no_nama_perorangan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_syarat_perorangan_ibfk_2` FOREIGN KEY (`no_berkas`) REFERENCES `data_berkas` (`no_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -402,7 +375,7 @@ CREATE TABLE `user` (
   `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`),
   KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +384,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (14,'0001','Dedi','Dedy Ibrahim','dedyibrahym23@gmail.com','0887487772','Super Admin','2019-03-21 03:18:27.386619','21232f297a57a5a743894a0e4a801fc3',NULL,'Aktif'),(20,'0002','wisnu','Wisnu Subroto N.A','yuniaryanto679@gmail.com','087877912311','User','2019-03-21 03:26:47.639364','ea6b2efbdd4255a9f1b3bbc6399b58f4',NULL,'Aktif'),(21,'0003','dian','Siti Rizki Dianti','dian@notaris-jakarta.com','085289885222','User','2019-03-21 06:14:54.836242','e1b1d45dcc900e3539ba69762603f963',NULL,'Aktif'),(22,'0004','prima','Prima Yuddy F Y','prima@notaris-jakarta.com','085263908704','Admin','2019-03-21 07:16:41.299954','d8f49869c8583b77ddb82847f3f1955f',NULL,'Aktif'),(23,'0005','dini','Pratiwi S Dini','dini@notaris-jakarta.com','081273602067','Admin','2019-03-21 07:21:20.616163','41a8e3d62e005f880e82ef061c571cc8',NULL,'Aktif'),(24,'0006','rifka','Rifka Ramadani','rifka@notaris-jakarta.com','087739397228','Admin','2019-03-21 07:25:08.619299','92d4f526576c8ad74cbab94ebb239790',NULL,'Aktif'),(25,'0007','yus','Yus Suwandari','yus@notaris-jakarta.com','081280716583','Admin','2019-03-21 07:29:22.393334','c3c1463da96ce59180e7dc974de0972c',NULL,'Aktif'),(26,'0008','esthi','Esthi Herlina','esthi@notaris-jakarta.com','081517697047','Admin','2019-03-21 07:31:24.560289','84a48174a4d170ac7a1df6d3ed41432b',NULL,'Aktif'),(27,'0009','ria','haryati Ardi','ria@notaris-jakarta.com','087871555505','Admin','2019-03-21 07:34:03.392680','85edfaa624cbcf1cfd892d0d9336976e',NULL,'Aktif'),(28,'0010','indy','Indarti','indy@notaris-jakarta.com','087876227696','Admin','2019-03-21 07:41:38.327527','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(29,'0011','indy','indarty','indy@notaris-jakarta.com','087876227696','Admin','2019-03-21 07:43:55.538308','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(30,'0012','fitri','Fitri Sejayani','fitri@notaris-jakarta.com','08121923365','Admin','2019-03-21 07:46:30.202345','1df83ea9876252776d4b1e53baebc926',NULL,'Aktif');
+INSERT INTO `user` VALUES (14,'0001','Dedi','Dedy Ibrahim','dedyibrahym23@gmail.com','0887487772','Super Admin','2019-03-27 02:15:38.224129','21232f297a57a5a743894a0e4a801fc3',NULL,'Aktif'),(20,'0002','wisnu','Wisnu Subroto N.A','yuniaryanto679@gmail.com','087877912311','User','2019-03-21 03:26:47.639364','ea6b2efbdd4255a9f1b3bbc6399b58f4',NULL,'Aktif'),(21,'0003','dian','Siti Rizki Dianti','dian@notaris-jakarta.com','085289885222','User','2019-03-21 06:14:54.836242','e1b1d45dcc900e3539ba69762603f963',NULL,'Aktif'),(22,'0004','prima','Prima Yuddy F Y','prima@notaris-jakarta.com','085263908704','Admin','2019-03-21 07:16:41.299954','d8f49869c8583b77ddb82847f3f1955f',NULL,'Aktif'),(23,'0005','dini','Pratiwi S Dini','dini@notaris-jakarta.com','081273602067','Admin','2019-03-21 07:21:20.616163','41a8e3d62e005f880e82ef061c571cc8',NULL,'Aktif'),(24,'0006','rifka','Rifka Ramadani','rifka@notaris-jakarta.com','087739397228','Admin','2019-03-21 07:25:08.619299','92d4f526576c8ad74cbab94ebb239790',NULL,'Aktif'),(25,'0007','yus','Yus Suwandari','yus@notaris-jakarta.com','081280716583','Admin','2019-03-21 07:29:22.393334','c3c1463da96ce59180e7dc974de0972c',NULL,'Aktif'),(26,'0008','esthi','Esthi Herlina','esthi@notaris-jakarta.com','081517697047','Admin','2019-03-21 07:31:24.560289','84a48174a4d170ac7a1df6d3ed41432b',NULL,'Aktif'),(27,'0009','ria','haryati Ardi','ria@notaris-jakarta.com','087871555505','Admin','2019-03-21 07:34:03.392680','85edfaa624cbcf1cfd892d0d9336976e',NULL,'Aktif'),(28,'0010','indy','Indarti','indy@notaris-jakarta.com','087876227696','Admin','2019-03-21 07:41:38.327527','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(29,'0011','indy','indarty','indy@notaris-jakarta.com','087876227696','Admin','2019-03-21 07:43:55.538308','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(30,'0012','fitri','Fitri Sejayani','fitri@notaris-jakarta.com','08121923365','Admin','2019-03-21 07:46:30.202345','1df83ea9876252776d4b1e53baebc926',NULL,'Aktif'),(31,'0013','fadzri','MK Fadzri Patriajaya','fadzri@notaris-jakarta.com','087788105424','Admin','2019-03-27 02:17:57.432292','f46ef81f2464441ba58aeecbf654ee41',NULL,'Aktif'),(32,'0014','rohmad300','agus rohmad','agusrohmad300@gmail.com','081806446192','User','2019-03-29 02:52:29.562982','18fe193144e4fb51d8679a9ce1818fd1',NULL,'Aktif');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -424,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-26 16:26:08
+-- Dump completed on 2019-03-29 16:49:41

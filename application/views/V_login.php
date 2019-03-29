@@ -47,7 +47,7 @@ var r =JSON.parse(data);
 
 if(r.status == "Berhasil"){
 
-if(r.level  == "Admin" || r.level  == "Super Admin" ){            
+if(r.level  == "Super Admin" ){            
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
@@ -78,6 +78,23 @@ type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
 window.location.href = "<?php echo base_url('User'); ?>";
+})
+
+}else if(r.level  == "Admin" ){
+const Toast = Swal.mixin({
+toast: true,
+position: 'top',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated fadeInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('Admin'); ?>";
 })
 
 }
