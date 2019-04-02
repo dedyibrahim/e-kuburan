@@ -1,8 +1,8 @@
 <body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_admin'); ?>
+<?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_admin'); ?>
+<?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
 <?php foreach ($query->result_array() as $data){ ?> 
     
@@ -18,8 +18,10 @@ Jenis perizinan : <?php echo $data['jenis_perizinan'] ?><br>
 <div class="col card p-2">
 <button onclick="tambahkan_kedalam_proses('<?php echo $data['no_berkas'] ?>');" class="btn btn-success btn-block">Proses pekerjaan <span class="fa fa-exchange-alt"> </span></button>   
 <hr>
-<p>Tanggal dibuat pekerjaan : <?php echo $data['tanggal_dibuat'] ?><br>
-Tanggal Antrian : <?php echo $data['tanggal_antrian'] ?></p>
+<p>
+    Dibuat pekerjaan : <?php echo $data['tanggal_antrian'] ?><br>
+    Target kelar: <?php echo $data['target_kelar'] ?>
+</p>
 
 </div>
 </div>
@@ -37,7 +39,7 @@ function tambahkan_kedalam_proses(no_berkas){
 var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/tambahkan_kedalam_proses') ?>",
+url:"<?php echo base_url('User2/tambahkan_kedalam_proses') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 var r = JSON.parse(data);
@@ -55,7 +57,7 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function() {
-window.location.href = "<?php echo base_url('Admin/pekerjaan_proses'); ?>";
+window.location.href = "<?php echo base_url('User2/pekerjaan_proses'); ?>";
 });
 
 

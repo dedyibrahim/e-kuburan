@@ -1,8 +1,8 @@
 <body onload="refresh();">
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_admin'); ?>
+<?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_admin'); ?>
+<?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
 <div class="card p-2 mt-2">
 
@@ -105,7 +105,7 @@ foreach ($d->result_array() as $n){
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Admin/create_perorangan') ?>">
+<form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('User2/create_perorangan') ?>">
 <div class="modal-body" >
 <label>Nama Identitas</label>
 <input type="text" name="nama_identitas" id="nama_identitas" class="form-control required" accept="text/plain">
@@ -182,7 +182,7 @@ var no_nama_dokumen = $(".simpan_syarat option:selected").val();
 var nama_dokumen    = $(".simpan_syarat option:selected").text();
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/simpan_syarat') ?>",
+url:"<?php echo base_url('User2/simpan_syarat') ?>",
 data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_berkas="+no_berkas,
 success:function(data){
 
@@ -259,7 +259,7 @@ $(function () {
 $("#cari_data_perorangan").autocomplete({
 minLength:0,
 delay:0,
-source:'<?php echo base_url('Admin/cari_data_perorangan') ?>',
+source:'<?php echo base_url('User2/cari_data_perorangan') ?>',
 select:function(event, ui){
 var no_berkas = "<?php echo $this->uri->segment(3) ?>";
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -267,7 +267,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/simpan_syarat_perorangan') ?>",
+url:"<?php echo base_url('User2/simpan_syarat_perorangan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas+"&no_nama_perorangan="+ui.item.no_nama_perorangan+"&nama_identitas="+ui.item.nama_identitas+"&jenis_identitas="+ui.item.jenis_identitas+"&file_berkas="+ui.item.file_berkas+"&file_lampiran="+ui.item.file_lampiran+"&no_identitas="+ui.item.no_identitas+"&status_jabatan="+ui.item.status_jabatan,
 success:function(data){
 
@@ -315,7 +315,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/form_perizinan') ?>",
+url:"<?php echo base_url('User2/form_perizinan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $("#form_perizinan").html(data);  
@@ -329,7 +329,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/form_perorangan') ?>",
+url:"<?php echo base_url('User2/form_perorangan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $("#data_perorangan").html(data);  
@@ -342,7 +342,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/hapus_syarat') ?>",
+url:"<?php echo base_url('User2/hapus_syarat') ?>",
 data:"token="+token+"&id_syarat_dokumen="+id,
 success:function(data){
 refresh();
@@ -353,7 +353,7 @@ function hapus_perorangan(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/hapus_data_syarat_perorangan') ?>",
+url:"<?php echo base_url('User2/hapus_data_syarat_perorangan') ?>",
 data:"token="+token+"&id_data_syarat_perorangan="+id,
 success:function(data){
 $("#syarat_perorangan"+id).hide('slow');
@@ -525,7 +525,7 @@ formData.append('file_perorangan',file_perorangan.get(0).files[0]);
 formData.append('id_data_perorangan',no_nama_perorangan);
 
 $.ajax({
-url        : '<?php echo base_url('Admin/simpan_file_perorangan') ?>',
+url        : '<?php echo base_url('User2/simpan_file_perorangan') ?>',
 type       : 'POST',
 contentType: false,
 cache      : false,
@@ -572,7 +572,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/hapus_lampiran') ?>",
+url:"<?php echo base_url('User2/hapus_lampiran') ?>",
 data:"token="+token+"&id_data_perorangan="+id_data_perorangan,
 success:function(data){
 refresh();
@@ -684,7 +684,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/form_utama') ?>",
+url:"<?php echo base_url('User2/form_utama') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $(".form_utama").html(data);  
@@ -708,7 +708,7 @@ formData.append('file_jenis',jenis);
 formData.append('no_berkas',no_berkas);
 
 $.ajax({
-url        : '<?php echo base_url('Admin/simpan_utama') ?>',
+url        : '<?php echo base_url('User2/simpan_utama') ?>',
 type       : 'POST',
 contentType: false,
 cache      : false,
@@ -786,7 +786,7 @@ function dokumen_sebelumnya(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/dokumen_sebelumnya') ?>",
+url:"<?php echo base_url('User2/dokumen_sebelumnya') ?>",
 data:"token="+token+"&no_berkas="+id,
 success:function(data){
 $(".data_dokumen_sebelumnya").html(data);      
@@ -821,7 +821,7 @@ var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 var no_berkas = "<?php echo $this->uri->segment(3); ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/perbaharui') ?>",
+url:"<?php echo base_url('User2/perbaharui') ?>",
 data:"token="+token+"&id_data_dokumen="+id+"&no_berkas="+no_berkas,
 success:function(data){
 $('#modal_dokumen_lain').modal('hide'); 
@@ -859,7 +859,7 @@ Swal.fire(
 var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/perbaharui_utama') ?>",
+url:"<?php echo base_url('User2/perbaharui_utama') ?>",
 data:"token="+token+"&no_berkas="+no_berkas+"&jenis_utama="+jenis_utama,
 success:function(data){
 $('#modal_dokumen_lain').modal('hide'); 
@@ -874,7 +874,7 @@ refresh();
 }
 
 function download_utama(no_berkas,jenis){
-window.location="<?php echo base_url('Admin/download_utama') ?>/"+no_berkas+"/"+jenis;
+window.location="<?php echo base_url('User2/download_utama') ?>/"+no_berkas+"/"+jenis;
 }
 
 function download_perizinan(no_client,no_nama_dokumen){
@@ -893,7 +893,7 @@ var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 if(no_user !=''){
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Admin/simpan_pekerjaan_user') ?>",
+url:"<?php echo base_url('User2/simpan_pekerjaan_user') ?>",
 data:"token="+token+"&no_user="+no_user+"&nama_user="+nama+"&id_syarat_dokumen="+id,
 success:function(data){
 refresh();

@@ -91,7 +91,7 @@ Pilihan
 <a class="dropdown-item" href="#">Pengaturan akun</a>
 <a class="dropdown-item" href="#">Profil</a>
 <div class="dropdown-divider"></div>
-<a class="dropdown-item" href="<?php echo base_url('User/keluar') ?>">Keluar</a>
+<a class="dropdown-item" href="<?php echo base_url('User3/keluar') ?>">Keluar</a>
 </div>
 </li>
 </ul>
@@ -101,101 +101,55 @@ Pilihan
 
 <div class="container-fluid">
 <div class="row">
-    
-    
-<div class="col-md-4 "><a href="<?php echo base_url('Admin/pekerjaan_antrian') ?>">
+	
+<div class="col-md-4 "><a href="<?php echo base_url('User3/') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="	fa fa-hourglass-start float-right fa-3x sticky-top"></span>
+<span class="fa fa-suitcase float-right fa-3x sticky-top"></span>
 In <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Dokumen dalam antrian  <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>"Masuk" ))->num_rows(); ?>   
-   
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Masuk'))->num_rows(); ?>   
 </div></div>
 </div></a>	
 </div>	
 
 
-<div class="col-md-4  "><a href="<?php echo base_url('Admin/pekerjaan_proses') ?>">
+<div class="col-md-4  "><a href="<?php echo base_url('User3/halaman_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-hourglass-half float-right fa-3x sticky-top"></span>
+<span class="fa fa-star-half-alt float-right fa-3x sticky-top"></span>
 Proses <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Dokumen sedang dikerjakan
 <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>"Proses" ))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Proses'))->num_rows(); ?>   
     
 </div>
 </div>
 </div>	</a>
 </div>
 
-<div class="col-md-4 "><a href="<?php echo base_url('Admin/pekerjaan_selesai') ?>">
+<div class="col-md-4 "><a href="<?php echo base_url('User3/halaman_selesai') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-hourglass-end float-right fa-3x sticky-top"></span>
+<span class="fa fa-star float-right fa-3x sticky-top"></span>
 Out <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>"Selesai" ))->num_rows(); ?>   
+<div class="footer p-2" style="background-color: #1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Selesai'))->num_rows(); ?>   
 
 </div></div>
-</div></a>	
 </div>	
+</div></a>	
 
 </div>	
 </div>
 
 <script type="text/javascript">
-    
-$(function () {
-$("#pencarian_nama_dokumen").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
-select:function(event, ui){
-$("#pencarian_id_nama_dokumen").val(ui.item.no_nama_dokumen);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_user").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_user') ?>',
-select:function(event, ui){
-$("#pencarian_no_user").val(ui.item.no_user);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_nama_klien").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_klien') ?>',
-select:function(event, ui){
-
-$("#pencarian_no_nama_client").val(ui.item.no_client);
-
-
-}
-
-}
-);
-});
 
 $("#menu-toggle").click(function(e) {
 e.preventDefault();

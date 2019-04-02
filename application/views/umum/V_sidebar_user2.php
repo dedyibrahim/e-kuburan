@@ -9,13 +9,13 @@
 <i class="fas fa-users"></i> Client</a>
 <ul class="list-unstyled collapse show" id="homeSubmenu">
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin'); ?>">Client Baru <i class="fa fa-plus float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2'); ?>">Client Baru <i class="fa fa-plus float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/data_client'); ?>">Data Client <i class="fa fa-list-alt float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/data_client'); ?>">Data Client <i class="fa fa-list-alt float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/data_perorangan'); ?>">Data Perorangan <i class="fa fa-users float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/data_perorangan'); ?>">Data Perorangan <i class="fa fa-users float-right"></i></a>
 </li>
 </ul>
 </li>
@@ -26,14 +26,11 @@
 <i class="fa fa-briefcase"></i> Pekerjaan</a>
 <ul class="list-unstyled collapse show" id="homeSubmenu">
 <li>
-    <a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/pekerjaan_baru') ?>">Pekerjaan Baru<i class="fa fa-suitcase	 float-right"></i></a>
-</li>
-<li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/pekerjaan_antrian') ?>">Dokumen antrian <i class="fa fa-hourglass-start float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_antrian') ?>">Dokumen antrian <i class="fa fa-hourglass-start float-right"></i></a>
 </li>
 
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/pekerjaan_proses') ?>">Dokumen dikerjakan<i class="fa fa-hourglass-half float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_proses') ?>">Dokumen dikerjakan<i class="fa fa-hourglass-half float-right"></i></a>
 </li>
 
 <li>

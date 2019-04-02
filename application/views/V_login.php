@@ -64,6 +64,7 @@ title: 'Signed in successfully'
 window.location.href = "<?php echo base_url('Dashboard'); ?>";
 })
 }else if(r.level == "User"){
+
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
@@ -73,12 +74,31 @@ animation: false,
 customClass: 'animated fadeInDown'
 });
 
+if(r.sublevel == 'Level 1'){
 Toast.fire({
 type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
-window.location.href = "<?php echo base_url('User'); ?>";
-})
+window.location.href = "<?php echo base_url('User1'); ?>";
+});
+    
+}else if (r.sublevel == 'Level 2'){
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('User2'); ?>";
+});
+    
+}else if(r.sublevel == 'Level 3'){
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('User3'); ?>";
+});
+
+}
 
 }else if(r.level  == "Admin" ){
 const Toast = Swal.mixin({

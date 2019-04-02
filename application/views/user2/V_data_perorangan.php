@@ -1,8 +1,8 @@
 <body>
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_admin'); ?>
+<?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_admin'); ?>
+<?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
 <div class="card p-2 mt-2">
 <div class="row">
@@ -59,7 +59,7 @@ sProcessing: "loading..."
 },
 processing: true,
 serverSide: true,
-ajax: {"url": "<?php echo base_url('admin/json_data_perorangan') ?> ", 
+ajax: {"url": "<?php echo base_url('user2/json_data_perorangan') ?> ", 
 "type": "POST",
 data: function ( d ) {
 d.token = '<?php echo $this->security->get_csrf_hash(); ?>';

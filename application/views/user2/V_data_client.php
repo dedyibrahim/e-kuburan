@@ -1,14 +1,14 @@
 <body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_admin'); ?>
+<?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_admin'); ?>
+<?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
 <div class="card p-2 mt-2">
 
-    <div class="row">
-        <div class="col">
-            <h5 align="center"><i class="fa fa-3x fa-user-tie"></i><br>Data client yang telah anda kerjakan</h5>
+<div class="row">
+<div class="col">
+<h5 align="center"><i class="fa fa-3x fa-user-tie"></i><br>Data client yang telah anda kerjakan</h5>
 
 <table style="width:100%;" id="data_client" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
 <tr role="row">
@@ -21,10 +21,10 @@
 </thead>
 <tbody align="center">
 </table> 
-        </div>
-    </div>
 </div>
-    
+</div>
+</div>
+
 <!------------- Modal Tambah pekerjaan---------------->
 <div class="modal fade bd-example-modal-lg" id="modal_tambah_pekerjaan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document">
@@ -46,8 +46,8 @@
 <input type="hidden" name="no_client" readonly="" id="no_client" class="form-control required"  accept="text/plain">
 
 <div id="form_badan_hukum">
- <label >Nama</label>
- <input type="text" name="nama_client" id="nama_client" readonly="" class="form-control required"  accept="text/plain">
+<label >Nama</label>
+<input type="text" name="nama_client" id="nama_client" readonly="" class="form-control required"  accept="text/plain">
 </div>
 <div id="form_alamat_hukum">
 <label >Alamat</label>
@@ -73,8 +73,8 @@
 </div>
 <!------------- Modal tambah pekerjaan---------------->
 
-    
-    
+
+
 <script type="text/javascript">
 $(document).ready(function() {
 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
@@ -106,7 +106,7 @@ sProcessing: "loading..."
 },
 processing: true,
 serverSide: true,
-ajax: {"url": "<?php echo base_url('Admin/json_data_client') ?> ", 
+ajax: {"url": "<?php echo base_url('User2/json_data_client') ?> ", 
 "type": "POST",
 data: function ( d ) {
 d.token = '<?php echo $this->security->get_csrf_hash(); ?>';

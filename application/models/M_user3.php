@@ -1,5 +1,5 @@
 <?php
-class M_user extends CI_Model{
+class M_user3 extends CI_Model{
 public function data_tugas($status){
 
 $this->db->select('*');

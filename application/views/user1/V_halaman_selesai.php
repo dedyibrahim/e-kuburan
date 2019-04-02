@@ -1,12 +1,12 @@
 <body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_user'); ?>
+<?php  $this->load->view('umum/V_sidebar_user1'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_user'); ?>
-<div class="container-fluid p-2 m-2">
-<div class="row p-2 m-2 ">
-<div class="col rounded-top " style="background-color: #dcdcdc">
-<h4 align="center">Daftar tugas perizinan yang telah selesai dikerjakan</h4>
+<?php  $this->load->view('umum/V_navbar_user1'); ?>
+<div class="container-fluid p-1 m-1">
+<div class="row  p-1 m-1">
+<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
+<h4 align="center">Daftar pekerjaan yang telah diselesaikan</h4>
 </div>
 </div>
 <div class="row p-2 m-2">
@@ -56,7 +56,7 @@ sProcessing: "loading..."
 processing: true,
 serverSide: true,
 
-ajax: {"url": "<?php echo base_url('User/json_data_perizinan_selesai') ?> ", 
+ajax: {"url": "<?php echo base_url('User1/json_data_perizinan_selesai') ?> ", 
 "type": "POST",
 data: function ( d ) {
 d.token = '<?php echo $this->security->get_csrf_hash(); ?>';

@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/notaris.com/application/views/user/V_user.php</file>
+            <file>file:/var/www/notaris.com/application/views/user1/V_lihat_pekerjaan_level2.php</file>
+            <file>file:/var/www/notaris.com/application/views/user1/V_halaman_proses.php</file>
+            <file>file:/var/www/notaris.com/application/views/user1/V_user1.php</file>
         </group>
     </open-files>
 </project-private>

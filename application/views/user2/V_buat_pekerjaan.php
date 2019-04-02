@@ -1,17 +1,15 @@
 <body>
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_admin'); ?>
+<?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_admin'); ?>
-<div class="container-fluid">
-<div class=" p-2 mt-2 ">
-<div class="container " id="form_client">
-<div class="row ">
-<div class="col p-2 m-2 rounded-top" style="background-color:#dcdcdc; ">
-<h5 align="center"> Tambahkan pekerjaan dan client baru</h4>
+<?php  $this->load->view('umum/V_navbar_user2'); ?>
+<div class="container-fluid ">
+<div class="row  p-1 m-1">
+<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
+<h4 align="center">Tambahkan pekerjaan & client baru</h4>
 </div>
 </div>   
-<form  id="fileForm" method="post" action="<?php echo base_url('Admin/create_client') ?>">
+<form  id="fileForm" method="post" action="<?php echo base_url('User2/create_client') ?>">
 
  <div class="row  p-3" >
 
@@ -25,8 +23,9 @@
     
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
-<label>ID Jenis</label>
-<input type="text" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+<input type="hidden" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+<label>Target Kelar</label>
+<input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
 
 </div>
 <div class="col "> 
@@ -75,71 +74,54 @@ Toast.fire({
 type: 'warning',
 title: 'Silahkan pilih jenis client terlebih dahulu.'
 })
-
 }
-
 });
-
-
-
-</script>        
-<script>
-$(document).ready(function() {
+    
+$("#fileForm").submit(function(e) {
+e.preventDefault();
 $.validator.messages.required = '';
-$("#fileForm").validate({
+}).validate({
 highlight: function (element, errorClass) {
 $(element).closest('.form-control').addClass('is-invalid');
 },
 unhighlight: function (element, errorClass) {
 $(element).closest(".form-control").removeClass("is-invalid");
-},submitHandler: function(form) {
-
-var data = [
-{jenis_client       :$("#pilih_jenis option:selected").text()},
-{jenis_akta         :$("#jenis_akta").val()},
-{id_jenis           :$("#id_jenis_akta").val()},
-{badan_hukum        :$("#badan_hukum").val()},
-{alamat_badan_hukum :$("textarea#alamat_badan_hukum").val()}
-
-];
+},    
+submitHandler: function(form) {
+    
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+formData = new FormData();
+formData.append('token',token);
+formData.append('jenis_client',$("#pilih_jenis option:selected").text());
+formData.append('jenis_akta',$("#jenis_akta").val()),
+formData.append('id_jenis',$("#id_jenis_akta").val()),
+formData.append('badan_hukum',$("#badan_hukum").val()),
+formData.append('target_kelar',$("#target_kelar").val()),
+formData.append('alamat_badan_hukum',$("textarea#alamat_badan_hukum").val()),
+console.log(formData);
 
 
 $.ajax({
 url: form.action,
+processData: false,
+contentType: false,
 type: form.method,
-data: { 'token' : token,data},
-success: function(response) {
-var r = JSON.parse(response);
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
+data: formData,
+success:function(){   
+}
 });
-
-Toast.fire({
-type: r.status,
-title: r.pesan
-}).then(function() {
-window.location.href = "<?php echo base_url('Admin/pekerjaan_baru'); ?>";
-});
-
+return false; 
 }
 });
 
-}
-});
-});
+    
 
 $(function () {
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
 $("#jenis_akta,#jenis_akta_perorangan").autocomplete({
 minLength:0,
 delay:0,
-source:'<?php echo site_url('Admin/cari_jenis_dokumen') ?>',
+source:'<?php echo site_url('User2/cari_jenis_dokumen') ?>',
 select:function(event, ui){
 $("#id_jenis_akta").val("");
 $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
@@ -148,50 +130,10 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 );
 });
 
-
-$(function () {
-var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
-$("#cari_user").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo site_url('Dashboard/cari_user') ?>',
-select:function(event, ui){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/set_client_perizinan') ?>",
-data:"token="+token+"&no_user="+ui.item.no_user+"&nama_lengkap="+ui.item.nama_lengkap+"&email="+ui.item.email,
-success:function(){
-refresh();    
-}
+$(function() {
+$("input[name='target_kelar']").datepicker({ minDate:0});
 });
-
-
-}
-});
-});
-
-
-
-
-function hapus_perizinan(id){
-$(".perizinan"+id).hide('slow');
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/hapus_data_perizinan_sementara') ?>",
-data:"token="+token+"&id="+id,
-success:function(){
-refresh();  
-}
-
-});
-
-}
-
 </script>
-
 </div>
 </body>
 </html>

@@ -1,28 +1,23 @@
 <?php
-class user extends CI_Controller{
+class user3 extends CI_Controller{
     
 public function __construct() {
     parent::__construct();
 $this->load->helper('download');
 $this->load->library('session');
-$this->load->model('M_user');
+$this->load->model('M_user3');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
 
-if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
-redirect(base_url('Login'));
-}else if($this->session->userdata('status') != 'Aktif' &&  $this->session->userdata('level') != 'User'){
-redirect(base_url('Login'));
-}    
-    
+
 }
 
 public function index(){
-$data_tugas = $this->M_user->data_tugas('Masuk');    
+$data_tugas = $this->M_user3->data_tugas('Masuk');    
     
 $this->load->view('umum/V_header');
-$this->load->view('user/V_user',['data_tugas'=>$data_tugas]);
+$this->load->view('user3/V_user3',['data_tugas'=>$data_tugas]);
     
 }
  
@@ -53,9 +48,9 @@ redirect(404);
 
 }
 public function halaman_proses(){
-$data_tugas = $this->M_user->data_tugas('Proses');    
+$data_tugas = $this->M_user3->data_tugas('Proses');    
 $this->load->view('umum/V_header');
-$this->load->view('user/V_halaman_proses',['data_tugas'=>$data_tugas]);
+$this->load->view('user3/V_halaman_proses',['data_tugas'=>$data_tugas]);
 }
 
 public function simpan_file_perizinan(){
@@ -114,14 +109,14 @@ redirect(404);
 }
 
 public function halaman_selesai(){
-$data_tugas = $this->M_user->data_tugas('Selesai');    
+$data_tugas = $this->M_user3->data_tugas('Selesai');    
     
 $this->load->view('umum/V_header');
-$this->load->view('user/V_halaman_selesai',['data_tugas'=>$data_tugas]);
+$this->load->view('user3/V_halaman_selesai',['data_tugas'=>$data_tugas]);
     
 }
 public function json_data_perizinan_selesai(){
-echo $this->M_user->json_data_perizinan_selesai();       
+echo $this->M_user3->json_data_perizinan_selesai();       
 }
 
 public function tampilkan_modal(){

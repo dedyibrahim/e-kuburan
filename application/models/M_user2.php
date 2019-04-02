@@ -1,5 +1,5 @@
 <?php 
-class M_admin extends CI_model{
+class M_user2 extends CI_model{
 function json_data_client(){
     
 $this->datatables->select('id_data_client,'

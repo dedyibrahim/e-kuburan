@@ -1,14 +1,14 @@
 <body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_user'); ?>
+<?php  $this->load->view('umum/V_sidebar_user3'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_user'); ?>
-<div class="container-fluid p-2 m-2">
-    <div class="row p-2 m-1 ">
-        <div class="col rounded-top" style="background-color: #dcdcdc">
-            <h4 align="center">Daftar tugas perizinan yang harus anda upload</h4>
-        </div>
-    </div>
+<?php  $this->load->view('umum/V_navbar_user3'); ?>
+<div class="container-fluid p-1 m-1">
+<div class="row  p-1 m-1">
+<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
+<h4 align="center">Data perizinan yang diproses</h4>
+</div>
+</div>
     
 <div class="row p-2 m-2">
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
@@ -43,7 +43,7 @@ var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('User/proses_tugas') ?>",
+url:"<?php echo base_url('User3/proses_tugas') ?>",
 data:"token="+token+"&id_data_pengurus_perizinan="+id,
 success:function(data){
 var r  = JSON.parse(data);
@@ -61,7 +61,7 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function() {
-window.location.href = "<?php echo base_url('User/halaman_proses'); ?>";
+window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
 })
 
 }
@@ -82,7 +82,7 @@ formData.append('token',token);
 formData.append('dokumen_perizinan',dokumen_perizinan);
 formData.append('id_syarat_dokumen',id);
 $.ajax({
-url        : '<?php echo base_url('User/simpan_file_perizinan') ?>',
+url        : '<?php echo base_url('User3/simpan_file_perizinan') ?>',
 type       : 'POST',
 contentType: false,
 cache      : false,
@@ -126,7 +126,7 @@ title: r.pesan
 }).then(function(){
 $(".upload_perizinan"+id).hide();
 $(".btn").removeAttr("disabled");
-window.location.href ="<?php echo base_url('User/halaman_proses') ?>";
+window.location.href ="<?php echo base_url('User3/halaman_proses') ?>";
 });    
 }else{
 const Toast = Swal.mixin({
