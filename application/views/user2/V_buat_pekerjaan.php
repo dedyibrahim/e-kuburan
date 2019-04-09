@@ -107,8 +107,27 @@ processData: false,
 contentType: false,
 type: form.method,
 data: formData,
-success:function(){   
+success:function(data){   
+var r = JSON.parse(data);
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function(){
+window.location.href='<?php echo base_url('User2/pekerjaan_antrian') ?>';    
+});
+
 }
+
 });
 return false; 
 }

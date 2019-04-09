@@ -4,24 +4,24 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
 <div class="container-fluid">
-<div class="card p-2 mt-2">
+<div class="p-2 mt-2">
 
 <ul class="nav nav-tabs">
 <li class="nav-item">
-<a class="nav-link active" data-toggle="tab" href="#jenis">Pengaturan Jenis Dokumen <i class="fas fa-cogs"></i></a>
+<a class="nav-link active" data-toggle="tab" href="#jenis">Pengaturan Jenis Pekerjaan <i class="fas fa-cogs"></i></a>
 </li>
-<li class="nav-item">
-<a class="nav-link" data-toggle="tab" href="#dokumen">Pengaturan Data Dokumen <i class="fas fa-cogs"></i></a>
+<li class="nav-item ml-1">
+<a class="nav-link " data-toggle="tab" href="#dokumen">Pengaturan Nama Dokumen <i class="fas fa-cogs"></i></a>
 </li>
-<li class="nav-item">
-<a class="nav-link" data-toggle="tab" href="#aplikasi">Pengaturan Aplikasi <i class="fas fa-cogs"></i></a>
+<li class="nav-item ml-1">
+<a class="nav-link" data-toggle="tab" href="#aplikasi">Pengaturan User <i class="fas fa-cogs"></i></a>
 </li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
 <!----------------------------Jenis Dokumen------------------------------>
-<div class="tab-pane container active" id="jenis">
+<div class="tab-pane card container active" id="jenis">
 <div class="row p-2">
 <div class="col">
 
@@ -47,7 +47,7 @@
 
 </div>
 <!----------------------------Dokumen------------------------------>
-<div class="tab-pane container fade" id="dokumen">
+<div class="tab-pane card container fade" id="dokumen">
 <div class="row p-2">
 <div class="col">
 <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#tambah_data_dokumen">Tambahkan Data Dokumen <i class="fa fa-plus"></i></button>
@@ -70,7 +70,7 @@
 
 </div>
 <!----------------------------Aplikasi------------------------------>
-<div class="tab-pane container fade" id="aplikasi">
+<div class="tab-pane card container fade" id="aplikasi">
 <div class="row p-2">
 <div class="col">
 <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_data_user">Tambahkan Data User <i class="fa fa-plus"></i></button>
@@ -264,8 +264,101 @@
 </div>
 <!------------- Modal Lihat Syarat---------------->
 
+<!------------- Modal Meta---------------->
+<div class="modal fade bd-example-modal-lg" id="modal_meta" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h6 class="modal-title" >Tambahkan Data Meta</h6>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+    <input type="hidden" class="no_nama_dokumen">
+    <label>Masukan Nama Meta</label>
+    <input type="text" class="form-control nama_meta">    
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+<button type="button" class="btn btn-success btn-sm"  id="simpan_meta">Simpan data Meta</button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!------------- Modal Meta---------------->
+<div class="modal fade bd-example-modal-lg" id="lihat_meta" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h6 class="modal-title" >Data Meta</h6>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body lihat_data_meta">
+
+</div>
+
+</div>
+</div>
+</div>
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+$("#simpan_meta").click(function(){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
+var no_nama_dokumen = $(".no_nama_dokumen").val();
+var nama_meta       = $(".nama_meta").val();
+if(nama_meta != ''){
+$.ajax({
+type:"post",
+url :"<?php echo base_url('Dashboard/simpan_meta') ?>",
+data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_meta="+nama_meta,
+success:function(data){
+var r =JSON.parse(data);    
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+})
+$('#modal_meta').modal('hide');
+$(".nama_meta").val("");
+}
+
+});
+
+
+} else {
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: "warning",
+title: "Data Meta Masih Kosong"
+});
+}
+
+});
+
+});
 
 function sublevel(){
 var ket_level = $("#level option:selected").text();
@@ -891,6 +984,52 @@ $('td:eq(0)', row).html(index);
 }
 });
 });
-</script> 
+
+function tambah_meta(no_nama_dokumen){
+$('#modal_meta').modal('show');
+$(".no_nama_dokumen").val(no_nama_dokumen);
+
+}
+function lihat_meta(no_nama_dokumen){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
+$.ajax({
+type:"post",
+data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen,
+url:"<?php echo base_url('Dashboard/lihat_data_meta') ?>",
+success:function(data){
+$(".lihat_data_meta").html(data);
+$('#lihat_meta').modal('show');
+}
+});
+}
+
+function hapus_meta(id_data_meta){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
+$.ajax({
+type:"post",
+data:"token="+token+"&id_data_meta="+id_data_meta,
+url:"<?php echo base_url('Dashboard/hapus_data_meta') ?>",
+success:function(){
+$('#lihat_meta').modal('hide');
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: 'Data Meta berhasil dihapus'
+})
+}
+});
+}
+
+</script>
+
+
 </body>
 

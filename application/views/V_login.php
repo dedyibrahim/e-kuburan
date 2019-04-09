@@ -52,7 +52,7 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
@@ -62,14 +62,14 @@ type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
 window.location.href = "<?php echo base_url('Dashboard'); ?>";
-})
+});
 }else if(r.level == "User"){
 
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
@@ -105,7 +105,7 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
@@ -124,7 +124,7 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated tada'
 });

@@ -14,10 +14,22 @@
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
 <div class='col-md-4 mx-auto m-1  p-2 '>
 <div class='card ' >
-<div class='card-header text-center'>    
-<?php echo $data['nama_dokumen'] ?>
+<div class='card-header '>
+<div class="row">
+    <div class="col-md-10" style="font-size:13px;"><?php echo $data['nama_dokumen'] ?></div>
+<div class="col text-right">
+<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+    <a class="dropdown-item" onclick="buat_laporan('<?php echo $data['no_berkas'] ?>','<?php echo $data['no_nama_dokumen'] ?>');"  href="#">Buat Laporan</a>
+</li>
+</ul>  
 </div>
-<div class="card-body">    
+</div>   
+</div>
+<div class="card-body" style="font-size:13px;">    
 <label>Upload dokumen </label>
 <input type="file" id="dokumen_perizinan<?php echo  $data['id_syarat_dokumen'] ?>" class='form-control mb-2'>
 <div style="display:none;" class="progress upload_perizinan<?php echo $data['id_syarat_dokumen'] ?>" >
@@ -26,18 +38,101 @@
 <br>
 Mulai proses : <?php echo $data['tanggal_proses'] ?><br>
 Target kelar : <?php echo $data['target_kelar_perizinan'] ?>
-
 </div>
 <div class="card-footer">
-<button class="btn  btn-sm btn-block btn-success m-2 btn_upload_syarat<?php echo  $data['id_syarat_dokumen'] ?>" onclick=upload_syarat("<?php echo $data['id_syarat_dokumen'] ?>");>Upload Perizinan <i class='fa fa-upload'></i></button>
+<button class="btn btn-block  btn-sm  btn-success m-2 btn_upload_syarat<?php echo  $data['id_syarat_dokumen'] ?>" onclick=upload_syarat("<?php echo $data['id_syarat_dokumen'] ?>");>Upload Perizinan <i class='fa fa-upload'></i></button>
 </div>
 </div>
 </div>
 <?php } ?>
 </div>
 </div>
+
+<!-------------------modal laporan--------------------->
+
+<div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Buat Laporan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          
+          <input type="hidden" value="" id="no_nama_dokumen">
+          <input type="hidden" value="" id="no_berkas">
+          <textarea id="laporan"class="form-control"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="simpan_laporan">Simpan laporan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 </body>
+
+
+
 <script type="text/javascript">
+
+$(document).ready(function(){
+$("#simpan_laporan").click(function(){
+var no_nama_dokumen = $("#no_nama_dokumen").val();
+var no_berkas       = $("#no_berkas").val();
+var laporan         = $("#laporan").val();
+var token           = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User3/simpan_laporan') ?>",
+data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&no_berkas="+no_berkas+"&laporan="+laporan,
+success:function(data){
+var r  = JSON.parse(data);
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
+});
+$('#modal_laporan').modal('hide');
+
+}
+
+});   
+});    
+
+    
+    
+});    
+
+
+function buat_laporan(no_berkas,no_nama_dokumen){
+$('#modal_laporan').modal('show');
+
+$("#no_nama_dokumen").val(no_nama_dokumen);
+$("#no_berkas").val(no_berkas);
+
+
+}    
+    
+    
 function proses_perizinan(id){
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 

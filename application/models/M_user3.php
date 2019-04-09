@@ -8,7 +8,7 @@ $this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_syarat_jeni
 $this->db->join('data_berkas', 'data_berkas.no_berkas = data_syarat_jenis_dokumen.no_berkas');
 $this->db->join('data_client', 'data_client.no_client = data_syarat_jenis_dokumen.no_client');
 $this->db->where('data_syarat_jenis_dokumen.status_berkas',$status);
-$this->db->where('data_syarat_jenis_dokumen.no_user',$this->session->userdata('no_user'));
+$this->db->where('data_syarat_jenis_dokumen.no_user_pengurus',$this->session->userdata('no_user'));
 $query = $this->db->get();
 
 return $query;

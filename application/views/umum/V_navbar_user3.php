@@ -110,7 +110,7 @@ In <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Dokumen dalam antrian  <div class="float-right">
-<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Masuk'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$this->session->userdata('no_user'),'status_berkas'=>'Masuk'))->num_rows(); ?>   
 </div></div>
 </div></a>	
 </div>	
@@ -125,7 +125,7 @@ Proses <br>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Dokumen sedang dikerjakan
 <div class="float-right">
-<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Proses'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$this->session->userdata('no_user'),'status_berkas'=>'Proses'))->num_rows(); ?>   
     
 </div>
 </div>
@@ -140,7 +140,7 @@ Out <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color: #1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
-<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user'=>$this->session->userdata('no_user'),'status_berkas'=>'Selesai'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$this->session->userdata('no_user'),'status_berkas'=>'Selesai'))->num_rows(); ?>   
 
 </div></div>
 </div>	

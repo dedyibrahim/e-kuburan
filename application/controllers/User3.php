@@ -1,24 +1,19 @@
 <?php
-class user3 extends CI_Controller{
-    
+class user3 extends CI_Controller{    
 public function __construct() {
-    parent::__construct();
+parent::__construct();
 $this->load->helper('download');
 $this->load->library('session');
 $this->load->model('M_user3');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
-
-
 }
 
 public function index(){
 $data_tugas = $this->M_user3->data_tugas('Masuk');    
-    
 $this->load->view('umum/V_header');
 $this->load->view('user3/V_user3',['data_tugas'=>$data_tugas]);
-    
 }
  
 public function keluar(){
@@ -133,6 +128,30 @@ echo "alihkan";
 }else{
 redirect(404);    
 }
+}
+
+public function simpan_laporan(){
+if($this->input->post()){
+
+$input = $this->input->post();    
+$data = array(
+'no_nama_dokumen' => $input['no_nama_dokumen'],
+'no_berkas'       => $input['no_berkas'],
+'waktu_laporan'           => date('d/m/Y H:is'),
+'status_sekarang' => $input['laporan']    
+);
+$this->db->insert('data_laporan_perizinan',$data);
+
+$status = array(
+'status' =>"success",
+'pesan'  =>"Laporan Tersimpan"    
+);
+echo json_encode($status);
+    
+}else{
+redirect(404);    
+}
+    
 }
 
 }

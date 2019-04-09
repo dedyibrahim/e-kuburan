@@ -2,25 +2,22 @@
 class User1 extends CI_Controller{
     
 public function __construct() {
-    parent::__construct();
+parent::__construct();
 $this->load->helper('download');
 $this->load->library('session');
 $this->load->model('M_user1');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
-
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
 }else if($this->session->userdata('status') != 'Aktif' &&  $this->session->userdata('level') != 'User'){
 redirect(base_url('Login'));
-}    
-    
+}        
 }
 
 public function index(){
 $data_tugas = $this->M_user1->data_tugas('Masuk');    
-    
 $this->load->view('umum/V_header');
 $this->load->view('user1/V_user1',['data_tugas'=>$data_tugas]);
     
@@ -86,6 +83,9 @@ redirect(404);
 }
 
 public function lihat_karyawan(){
+            $this->db->select('sublevel');
+            $this->db->select('no_user');
+            $this->db->select('nama_lengkap');
 $karyawan = $this->db->get_where('user',array('Level'=>'User','sublevel !=' =>'Level 1'));    
 $this->load->view('umum/V_header');
 $this->load->view('user1/V_lihat_karyawan',['karyawan'=>$karyawan]);    
@@ -93,21 +93,79 @@ $this->load->view('user1/V_lihat_karyawan',['karyawan'=>$karyawan]);
 
 public function lihat_pekerjaan(){
 $no_user = base64_decode($this->uri->segment(3));
-$sublevel = base64_decode($this->uri->segment(4));
-if($no_user && $sublevel){
+$proses  = base64_decode($this->uri->segment(4));
+if($no_user && $proses){
 $karyawan = $this->db->get_where('user',array('no_user'=>$no_user));    
-$this->load->view('umum/V_header');
+$sublevel = $karyawan->row_array();
 
-if($sublevel == 'Level 2'){
-$this->load->view('user1/V_lihat_pekerjaan_level2',['karyawan'=>$karyawan]);
-}else{
-$this->load->view('user1/V_lihat_pekerjaan_level3',['karyawan'=>$karyawan]);    
+$this->load->view('umum/V_header');
+if($sublevel['sublevel'] == 'Level 2'){
+$this->db->select('*');
+$this->db->from('data_berkas');
+$this->db->join('user','user.no_user = data_berkas.no_user');
+$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->where(array('data_berkas.status_berkas'=>$proses,'data_berkas.no_user'=>$no_user));
+$data = $this->db->get();
+$this->load->view('user1/V_lihat_pekerjaan_level2',['data'=>$data]);
+}else{    
+$this->db->select('*');
+$this->db->from('data_syarat_jenis_dokumen');
+$this->db->join('data_client', 'data_client.no_client = data_syarat_jenis_dokumen.no_client');
+$this->db->join('user', 'user.no_user = data_syarat_jenis_dokumen.no_user');
+$this->db->where(array('data_syarat_jenis_dokumen.status_berkas'=>$proses,'data_syarat_jenis_dokumen.no_user_pengurus'=>$no_user));
+$data = $this->db->get();
+$this->load->view('user1/V_lihat_pekerjaan_level3',['data'=>$data]);    
 }
 
 }else{
 redirect(404);    
 }
 }
+public function lihat_status_pekerjaan(){
+$this->db->select('*');
+$this->db->from('data_berkas');
+$this->db->join('data_dokumen_utama', 'data_dokumen_utama.no_berkas = data_berkas.no_berkas');
+$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->join('data_syarat_jenis_dokumen', 'data_syarat_jenis_dokumen.no_berkas = data_berkas.no_berkas');
+$this->db->join('user', 'user.no_user = data_berkas.no_user');
+$this->db->where(array('data_berkas.no_berkas'=> base64_decode($this->uri->segment(3))));
+$data = $this->db->get();
+    
+$this->load->view('umum/V_header');
+$this->load->view('user1/V_lihat_status_pekerjaan',['data'=>$data]);        
+}
+public function lihat_laporan(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data = $this->db->get_where('data_laporan_perizinan',array('no_berkas'=>$input['no_berkas'],'no_nama_dokumen'=>$input['no_nama_dokumen']));
+
+if($data->num_rows() > 0){
+  echo "<table class='table table-condensed table-striped '>"
+    . "<tr>"
+    . "<th>Status sekarang</th>"
+    . "<th>Waktu laporan</th>"
+    . "</tr>";
+  
+  foreach ($data->result_array() as $d){
+   echo "<tr>"
+      . "<td>".$d['status_sekarang']."</td>"
+      . "<td>".$d['waktu_laporan']."</td>"
+      . "</tr>";     
+    }
+    
+          
+  echo  "</table>";
+    
+     
+}else{
+echo "<h5 class='text-center'>Tidak ada laporan yang bisa ditampilkan </h5>";    
+}
+}else{
+redirect(404);    
+}
+}
+
 
 }
 

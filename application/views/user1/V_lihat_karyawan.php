@@ -10,23 +10,44 @@
 </div>
 </div>
 <div class="row p-1 m-1">
-    <table class="table table-sm table-hover table-striped text-center">
+    <table class="table table-sm  table-condensed table-striped ">
         <tr>
-            <th>No</th>   
-            <th>Nama karyawan</th>   
-            <th>Kontak</th>   
-            <th>Email</th>   
-            <th>Aksi</th>   
+            <th >Nama karyawan</th>   
+            <th class="text-center">In</th>   
+            <th class="text-center">Progress</th>   
+            <th class="text-center">Out</th>   
         </tr>
     <?php $h=1; foreach ($karyawan->result_array() as $kar){ ?>    
+        
+       <?php if($kar['sublevel'] == 'Level 2'){ ?> 
         <tr>
-            <td><?php echo $h++?></td>
-            <td><?php echo $kar['nama_lengkap']?></td>
-            <td><?php echo $kar['phone']?></td>
-            <td><?php echo $kar['email']?></td>
-            <td><a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user']))."/". base64_encode($kar['sublevel']) ?>"><button class="btn btn-success btn-sm">Lihat pekerjaan <span class="fa fa-eye"></span></button></a></td>
+            <td><?php echo $kar['nama_lengkap'] ?></td>
+            <td class="text-center">
+                <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Masuk')) ?>"><span class="badge p-2 badge-primary"><?php echo  $this->db->get_where('data_berkas',array('no_user'=>$kar['no_user'],'status_berkas'=>'Masuk'))->num_rows(); ?></span></a>    
+            </td>
+            <td class="text-center">
+                <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Proses')) ?>"><span class="badge p-2 badge-warning"><?php echo  $this->db->get_where('data_berkas',array('no_user'=>$kar['no_user'],'status_berkas'=>'Proses'))->num_rows(); ?></span></a>     
+            </td>
+            <td class="text-center">
+                <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Selesai')) ?>"><span class="badge p-2 badge-success"><?php echo $this->db->get_where('data_berkas',array('no_user'=>$kar['no_user'],'status_berkas'=>'Selesai'))->num_rows(); ?></span></a>     
+            </td>
         </tr>
-    <?php } ?>
+       <?php }elseif($kar['sublevel'] == 'Level 3'){ ?> 
+        
+        <tr>
+            <td><?php echo $kar['nama_lengkap'] ?></td>
+            <td class="text-center">
+            <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Masuk')) ?>"><span class="badge p-2 badge-primary"><?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$kar['no_user'],'status_berkas'=>'Masuk'))->num_rows(); ?></span></a>      
+            </td>
+            <td class="text-center">
+            <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Proses')) ?>"><span class="badge p-2 badge-warning"><?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$kar['no_user'],'status_berkas'=>'Proses'))->num_rows(); ?></span></a>      
+            </td>
+            <td class="text-center">
+            <a href="<?php echo base_url('User1/lihat_pekerjaan/'.base64_encode($kar['no_user'])."/".base64_encode('Selesai')) ?>"><span class="badge p-2 badge-success"><?php echo $this->db->get_where('data_syarat_jenis_dokumen',array('no_user_pengurus'=>$kar['no_user'],'status_berkas'=>'Out'))->num_rows(); ?></span></a>      
+            </td>
+        </tr>
+        
+       <?php } } ?>
     </table>   
 </div>   
 </script>    

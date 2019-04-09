@@ -27,15 +27,13 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
-public function hitung_berkas(){
-$query = $this->db->get('data_berkas');
+public function hitung_pekerjaan(){
+       $query = $this->db->get('data_pekerjaan');
 return $query;
 }
 public function data_client(){
 $query = $this->db->get('data_client');  
- 
 return $query;
-    
 }
 
 function json_data_perorangan(){
@@ -54,12 +52,12 @@ $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  o
 return $this->datatables->generate();
 }
 
-public function data_berkas($param){
+public function data_pekerjaan($param){
 $this->db->select('*');
-$this->db->from('data_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
-$this->db->where('data_berkas.status_berkas',$param);
-$this->db->where('data_berkas.no_user',$this->session->userdata('no_user'),FALSE);
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->where('data_pekerjaan.status_pekerjaan',$param);
+$this->db->where('data_pekerjaan.no_user',$this->session->userdata('no_user'),FALSE);
 $query = $this->db->get();
 
 return $query;
@@ -79,21 +77,20 @@ return $query;
 }
 
 public function data_user(){
-$query = $this->db->get('user');   
+$query = $this->db->get_where('user',array('sublevel'=>'Level 3'));   
 return $query;    
 }
 public function  data_form_perizinan($no_berkas){
 
 $this->db->order_by('id_syarat_dokumen',"DESC");
-$query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_berkas'=> base64_decode($no_berkas)));    
-    
+$query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_berkas'=> base64_decode($no_berkas)));       
 return $query;    
 }
-public function data_berkas_proses($id){
+public function data_pekerjaan_proses($id){
 $this->db->select('*');
-$this->db->where('data_berkas.no_berkas', base64_decode($id));
-$this->db->from('data_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($id));
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $query = $this->db->get();  
  
 return $query;
@@ -106,25 +103,7 @@ return $query;
     
 }
 
-public function simpan_data_perorangan($data){
-$this->db->insert('data_perorangan',$data);    
-}
 
-public function simpan_syarat_perorangan($data){
-$this->db->insert('data_syarat_perorangan',$data);    
-}
-public function ambil_data_syarat_perorangan($id_syarat){
- $query = $this->db->get_where('data_syarat_perorangan',array('id_data_syarat_perorangan'=>$id_syarat));
- return $query;
-    
-    
-}
-public function ambil_data_perorangan($id_perorangan){
- $query = $this->db->get_where('data_perorangan',array('id_perorangan'=>$id_perorangan));
- return $query;
-    
-    
-}
 public function hapus_data_syarat_perorangan($id_data_syarat_perorangan){
 $this->db->delete('data_syarat_perorangan',array('id_data_syarat_perorangan'=>$id_data_syarat_perorangan));    
 }
@@ -141,6 +120,16 @@ $query = $this->db->get();
 if($query->num_rows() >0 ){
 return $query->result();
 }
+}
+
+public function data_persyaratan_upload($no_pekerjaan){
+$this->db->select('*');
+$this->db->group_by('data_meta_berkas.nama_berkas');
+$this->db->from('data_meta_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$this->db->where('data_meta_berkas.no_pekerjaan',base64_decode($no_pekerjaan));
+$query = $this->db->get();  
+return $query;    
 }
 
 }

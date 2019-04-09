@@ -39,6 +39,10 @@
 
 </ul>
 </li>
+<li>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/asisten'); ?>">Asisten<i class="fa fa-users float-right"></i></a>
+</li>
+
 
 </ul>
 </div>

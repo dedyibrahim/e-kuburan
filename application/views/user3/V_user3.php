@@ -10,23 +10,34 @@
 </div>
 </div>
 
-<div class="row p-1 m-1">
+<div class="row p-2 m-2">
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
-<div class='col-md-4 mx-auto m-3  p-2 '>
+<div class='col-md-4 mx-auto m-1  p-1 '>
 <div class='card ' >
-<div class="card-header text-center">
-<?php echo $data['nama_dokumen'] ?>
+<div class='card-header '>
+<div class="row">
+    <div class="col-md-10" style="font-size:13px;"><?php echo $data['nama_dokumen'] ?></div>
+<div class="col text-right">
+<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="#">Tolak tugas</a>
+<a class="dropdown-item" href="#">Alihkan Tugas</a>
+</li>
+</ul>  
 </div>
-<div class="card-body p-2">
+</div>    
+</div>
+<div class="card-body" style="font-size:13px;">    
 Nama client : <?php echo $data['nama_client'] ?><br>   
 Jenis client : <?php echo $data['jenis_client'] ?><br>   
 Tugas Dari : <?php echo $data['pembuat_berkas'] ?><br>   
-Tanggal Penugasan : <?php echo $data['tanggal_tugas'] ?><br>   
+Tanggal Penugasan : <?php echo $data['tanggal_tugas'] ?><br>
 </div>
-<div class="card-footer text-center">
+<div class="card-footer">
 <button type="button"  onclick='proses_perizinan("<?php echo $data['id_syarat_dokumen'] ?>","proses");' class="btn btn-sm btn-block btn-success">Proses Perizinan <span class="fa fa-exchange-alt"></span></button>
-<button type="button" onclick='tampilkan_modal("<?php echo $data['id_syarat_dokumen'] ?>","tolak");' class="btn btn-sm col-md-6 btn-danger mt-2">Tolak <span class="fa fa-exclamation-triangle"></span></button>
-<button type="button"  onclick='tampilkan_modal("<?php echo $data['id_syarat_dokumen'] ?>","alihkan");' class="btn btn-sm col-md-5  btn-warning mt-2"> Alihkan Tugas <span class="fa fa-backward"></span></button>
 </div>
 </div>
 </div>
@@ -67,7 +78,7 @@ overflow-y: visible;
 function proses_perizinan(id){
 swal.fire({
 title: 'Target Kelar Perizinan <br><hr>',
-html: '<input class="form-control" id="target_kelar">',
+html: '<input class="form-control" readonly="" id="target_kelar">',
 showCancelButton: true,
 confirmButtonColor: '#3085d6',
 cancelButtonColor: '#d33',
@@ -77,6 +88,21 @@ onOpen: function() {
 $('#target_kelar').datepicker({ minDate:0});
 }
 }).then((result) => {
+    
+if($("#target_kelar").val() == ''){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+Toast.fire({
+type: "warning",
+title: "Anda belum memasukan target"
+});
+}else{
 var target_kelar = $("#target_kelar").val();
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
@@ -93,18 +119,15 @@ timer: 3000,
 animation: false,
 customClass: 'animated zoomInDown'
 });
-
 Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function() {
 window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
 });
-
 }
-
 });
-
+}
 });
 }
 

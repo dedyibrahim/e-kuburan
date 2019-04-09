@@ -146,7 +146,7 @@ $this->datatables->select('id_nama_dokumen,'
 .'nama_dokumen.nama_dokumen as nama_dokumen,'
 );
 $this->datatables->from('nama_dokumen');
-$this->datatables->add_column('view','<button class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Lihat data</button>', 'id_nama_dokumen');
+$this->datatables->add_column('view','<button class="btn btn-success btn-sm"  onclick=lihat_meta("$1");>Data Meta <i class="fa fa-eye"></i></button> ||  <button onclick=tambah_meta("$1"); class="btn btn-success btn-sm">Tambah <i class="fa fa-plus"></i></button> ', 'no_nama_dokumen');
 return $this->datatables->generate();
 }
 
