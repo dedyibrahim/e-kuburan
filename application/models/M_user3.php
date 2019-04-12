@@ -3,12 +3,12 @@ class M_user3 extends CI_Model{
 public function data_tugas($status){
 
 $this->db->select('*');
-$this->db->from('data_syarat_jenis_dokumen');
-$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_syarat_jenis_dokumen.no_nama_dokumen');
-$this->db->join('data_berkas', 'data_berkas.no_berkas = data_syarat_jenis_dokumen.no_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_syarat_jenis_dokumen.no_client');
-$this->db->where('data_syarat_jenis_dokumen.status_berkas',$status);
-$this->db->where('data_syarat_jenis_dokumen.no_user_pengurus',$this->session->userdata('no_user'));
+$this->db->from('data_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_berkas.no_nama_dokumen');
+$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->join('user', 'user.no_user = data_berkas.pemberi_pekerjaan');
+$this->db->where('data_berkas.status',$status);
+$this->db->where('data_berkas.no_pengurus',$this->session->userdata('no_user'));
 $query = $this->db->get();
 
 return $query;

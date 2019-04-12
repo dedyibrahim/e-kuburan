@@ -18,6 +18,9 @@ Jenis Client : <?php echo $data2['jenis_client'] ?><br>
 Nama : <?php echo $data2['nama_client'] ?><br>
 Alamat : <?php echo $data2['alamat_client'] ?><br>
 </div>
+<div class="col text-center p-5">
+<button class="btn btn-success  float-right"  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
+</div>    
 </div>
     <hr>
 <div class="container">
@@ -28,15 +31,8 @@ Alamat : <?php echo $data2['alamat_client'] ?><br>
 <div class="row ">
 
 <div class="col  mx-auto ">
-<p class="text-center"> Pilih file persyaratan yang diupload</p>     
-<select onchange="jenis_file_siap();" class="form-control file_siap">
-<option></option>
-<?php $d = $this->db->get('nama_dokumen');
-foreach ($d->result_array() as $n){
-?>
-<option value="<?php echo $n['no_nama_dokumen'] ?>"><?php echo $n['nama_dokumen'] ?></option>
-<?php } ?>
-</select>
+<p class="text-center"> Definisikan persyaratan</p>     
+<input type="text" class="form-control" name="definisikan_persyaratan" id="definisikan_persyaratan">
 <hr>
 </div>
 
@@ -62,7 +58,7 @@ foreach ($d->result_array() as $n){
 <div class="row ">
 
 <div class="col   mx-auto ">
-<p class="text-center">Daftar persyaratan yang telah diupload</p>
+<p class="text-center">Persyaratan terdefinisikan</p>
 <hr>
 <?php foreach ($data_upload->result_array() as $u){  ?>
 <div class="card p-2 m-2">
@@ -88,9 +84,39 @@ echo  $hasil_meta;
 
 </div>
 </div>
-</div>
 
 <script type="text/javascript">
+function lanjutkan_proses_perizinan(no_pekerjaan){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan,
+url:"<?php echo base_url('User2/lanjutkan_proses_perizinan') ?>",
+success:function(data){
+
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User2/pekerjaan_proses/'); ?>";
+});
+
+}
+});
+    
+    
+}
+
 
 $("#fileForm").validate({
 highlight: function (element, errorClass) {
@@ -102,20 +128,7 @@ $(element).closest(".form-control").removeClass("is-invalid");
 
 });
 
-function jenis_file_siap(){
-var no_jenis   = $(".file_siap option:selected").val();
-var token             = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-data:"token="+token+"&no_nama_dokumen="+no_jenis,
-url:"<?php echo base_url('User2/form_persyaratan') ?>",
-success:function(data){
-$("#data_dokumen_persyaratan").html(data);
 
-}
-});
-
-}
 
 function upload_siap(){
 var file_siap_upload  = $("#file_siap_upload").get(0).files[0];
@@ -166,6 +179,26 @@ success    : function ( data ){
 });
 
 }
+$(function () {
+var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
+$("#definisikan_persyaratan").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo site_url('User2/cari_persyaratan') ?>',
+select:function(event, ui){
+$.ajax({
+type:"post",
+data:"token="+token+"&no_nama_dokumen="+ui.item.no_nama_dokumen+"&no_daftar_persyaratan="+ui.item.no_daftar_persyaratan+"&nama_persyaratan="+ui.item.nama_persyaratan,
+url:"<?php echo base_url('User2/form_persyaratan') ?>",
+success:function(data){
+$("#data_dokumen_persyaratan").html(data);
+}
+});
+
+}
+}
+);
+});
 </script>
 </body>
 

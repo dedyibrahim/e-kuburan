@@ -110,7 +110,7 @@ In <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan Masuk  <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('status_berkas'=>'Masuk'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>'Masuk'))->num_rows(); ?>   
 </div></div>
 </div></a>	
 </div>	
@@ -125,7 +125,7 @@ In <br>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan di Proses 
 <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('status_berkas'=>'Proses'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>'Proses'))->num_rows(); ?>   
     
 </div>
 </div>
@@ -140,7 +140,7 @@ Out <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color: #1ecee7;">Pekerjaan diselesaikan <div class="float-right">
-<?php echo $this->db->get_where('data_berkas',array('status_berkas'=>'Selesai'))->num_rows(); ?>   
+<?php echo $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>'Selesai'))->num_rows(); ?>   
 
 </div></div>
 </div>	

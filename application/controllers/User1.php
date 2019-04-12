@@ -101,19 +101,20 @@ $sublevel = $karyawan->row_array();
 $this->load->view('umum/V_header');
 if($sublevel['sublevel'] == 'Level 2'){
 $this->db->select('*');
-$this->db->from('data_berkas');
-$this->db->join('user','user.no_user = data_berkas.no_user');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
-$this->db->where(array('data_berkas.status_berkas'=>$proses,'data_berkas.no_user'=>$no_user));
+$this->db->from('data_pekerjaan');
+$this->db->join('user','user.no_user = data_pekerjaan.no_user');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->where(array('data_pekerjaan.status_pekerjaan'=>$proses,'data_pekerjaan.no_user'=>$no_user));
 $data = $this->db->get();
 $this->load->view('user1/V_lihat_pekerjaan_level2',['data'=>$data]);
 }else{    
 $this->db->select('*');
-$this->db->from('data_syarat_jenis_dokumen');
-$this->db->join('data_client', 'data_client.no_client = data_syarat_jenis_dokumen.no_client');
-$this->db->join('user', 'user.no_user = data_syarat_jenis_dokumen.no_user');
-$this->db->where(array('data_syarat_jenis_dokumen.status_berkas'=>$proses,'data_syarat_jenis_dokumen.no_user_pengurus'=>$no_user));
+$this->db->from('data_berkas');
+$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->join('user', 'user.no_user = data_berkas.no_pengurus');
+$this->db->where(array('data_berkas.status'=>$proses,'data_berkas.no_pengurus'=>$no_user));
 $data = $this->db->get();
+
 $this->load->view('user1/V_lihat_pekerjaan_level3',['data'=>$data]);    
 }
 
@@ -123,12 +124,11 @@ redirect(404);
 }
 public function lihat_status_pekerjaan(){
 $this->db->select('*');
-$this->db->from('data_berkas');
-$this->db->join('data_dokumen_utama', 'data_dokumen_utama.no_berkas = data_berkas.no_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
-$this->db->join('data_syarat_jenis_dokumen', 'data_syarat_jenis_dokumen.no_berkas = data_berkas.no_berkas');
-$this->db->join('user', 'user.no_user = data_berkas.no_user');
-$this->db->where(array('data_berkas.no_berkas'=> base64_decode($this->uri->segment(3))));
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->join('data_berkas', 'data_berkas.no_pekerjaan = data_pekerjaan.no_pekerjaan');
+$this->db->join('user', 'user.no_user = data_pekerjaan.no_user');
+$this->db->where(array('data_berkas.no_pekerjaan'=> base64_decode($this->uri->segment(3)),'data_berkas.status_berkas'=> 'Perizinan'));
 $data = $this->db->get();
     
 $this->load->view('umum/V_header');

@@ -24,9 +24,9 @@
         </tr>
       <?php foreach ($data->result_array() as $d) { ?>
         <tr>
-            <td><a href="<?php echo base_url('User1/lihat_status_pekerjaan/'. base64_encode($d['no_berkas'])) ?>"><span class="badge p-2 badge-primary"><?php echo $d['jenis_perizinan']  ?></span></a></td>
+            <td><a href="<?php echo base_url('User1/lihat_status_pekerjaan/'. base64_encode($d['no_pekerjaan'])) ?>"><span class="badge p-2 badge-primary"><?php echo $d['jenis_perizinan']  ?></span></a></td>
             <td><?php echo $d['nama_client']  ?></td>
-            <td><?php echo $d['status_berkas']  ?></td>
+            <td><?php echo $d['status_pekerjaan']  ?></td>
             <td><?php echo $d['target_kelar']  ?></td>
         </tr>
       <?php } ?>    

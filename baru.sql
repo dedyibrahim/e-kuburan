@@ -24,11 +24,21 @@ DROP TABLE IF EXISTS `data_berkas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `data_berkas` (
   `id_data_berkas` int(11) NOT NULL AUTO_INCREMENT,
-  `no_client` varchar(255) NOT NULL,
-  `no_pekerjaan` varchar(255) NOT NULL,
-  `no_nama_dokumen` varchar(255) NOT NULL,
-  `nama_folder` varchar(255) NOT NULL,
-  `nama_berkas` varchar(255) NOT NULL,
+  `no_client` varchar(255) DEFAULT NULL,
+  `no_pekerjaan` varchar(255) DEFAULT NULL,
+  `no_nama_dokumen` varchar(255) DEFAULT NULL,
+  `pemberi_pekerjaan` varchar(255) NOT NULL,
+  `nama_folder` varchar(255) DEFAULT NULL,
+  `nama_berkas` varchar(255) DEFAULT NULL,
+  `nama_file` varchar(255) NOT NULL,
+  `status_berkas` varchar(255) DEFAULT NULL,
+  `status` varchar(255) NOT NULL,
+  `pengupload` varchar(255) DEFAULT NULL,
+  `pengurus_perizinan` varchar(255) DEFAULT NULL,
+  `no_pengurus` varchar(255) DEFAULT NULL,
+  `tanggal_tugas` varchar(255) DEFAULT NULL,
+  `tanggal_proses_tugas` varchar(255) DEFAULT NULL,
+  `target_kelar_perizinan` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_data_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   KEY `no_client` (`no_client`),
@@ -37,7 +47,7 @@ CREATE TABLE `data_berkas` (
   CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_2` FOREIGN KEY (`no_pekerjaan`) REFERENCES `data_pekerjaan` (`no_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_3` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +56,7 @@ CREATE TABLE `data_berkas` (
 
 LOCK TABLES `data_berkas` WRITE;
 /*!40000 ALTER TABLE `data_berkas` DISABLE KEYS */;
-INSERT INTO `data_berkas` VALUES (40,'C_000002','000002','N_0001','Dok000002','a822dfdae7f5ace9f7799a3c3e6f338d.docx'),(41,'C_000002','000002','N_0006','Dok000002','452dd26759545906ce54fdebebc41fde.docx'),(42,'C_000002','000002','N_0001','Dok000002','29418f6d8d0e93c3c4480589963344f4.docx');
+INSERT INTO `data_berkas` VALUES (150,'C_000001','000001','N_0001','0007',NULL,NULL,'Surat Izin Usaha Perdagangan ( SIUP )','Perizinan','Proses',NULL,'Wisnu Subroto N.A','0002','12/04/2019','12/04/2019','13/04/2019');
 /*!40000 ALTER TABLE `data_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,10 +77,12 @@ CREATE TABLE `data_client` (
   `pembuat_client` varchar(255) NOT NULL,
   `no_user` varchar(255) NOT NULL,
   `nama_folder` varchar(255) NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
   PRIMARY KEY (`id_data_client`),
   KEY `no_client` (`no_client`),
-  KEY `no_user` (`no_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+  KEY `no_user` (`no_user`),
+  CONSTRAINT `data_client_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,48 +91,36 @@ CREATE TABLE `data_client` (
 
 LOCK TABLES `data_client` WRITE;
 /*!40000 ALTER TABLE `data_client` DISABLE KEYS */;
-INSERT INTO `data_client` VALUES (11,'C_000001','PT Semesta abadi','Badan Hukum','Jl.Muara Karang Blok L9 T No.8 Penjaringan Jakarta Utara','09/04/2019 15:26:27','Yus Suwandari','0007','Dok000001'),(12,'C_000002','PT Jaran Goyang','Badan Hukum','Jl.Muara Baru No.23 Penjaringan Jakarta Utara','09/04/2019 15:27:02','Yus Suwandari','0007','Dok000002');
+INSERT INTO `data_client` VALUES (27,'C_000001','PT MELAMUN TIGA BELAS','Badan Hukum','Jl.Raya Bogor','11/04/2019 14:11:29','Yus Suwandari','0007','Dok000001',''),(28,'C_000002','PT Melamun Tiga Belas','Badan Hukum','JL.muara karang Blok L9 T No.8 Penjaringan Jakarta','12/04/2019 08:37:23','Yus Suwandari','0007','Dok000002','093498884');
 /*!40000 ALTER TABLE `data_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `data_dokumen`
+-- Table structure for table `data_daftar_persyaratan`
 --
 
-DROP TABLE IF EXISTS `data_dokumen`;
+DROP TABLE IF EXISTS `data_daftar_persyaratan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_dokumen` (
-  `id_data_dokumen` int(11) NOT NULL AUTO_INCREMENT,
-  `no_nama_dokumen` varchar(255) NOT NULL,
-  `file_berkas` varchar(255) DEFAULT NULL,
-  `lampiran` varchar(255) DEFAULT NULL,
-  `no_client` varchar(255) NOT NULL,
-  `nama_dokumen` varchar(255) NOT NULL,
-  `no_berkas` varchar(255) NOT NULL,
-  `pengupload` varchar(255) NOT NULL,
-  `no_user` varchar(255) NOT NULL,
-  `tanggal_pembaruan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status_dokumen` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_dokumen`),
-  KEY `no_nama_dokumen` (`no_nama_dokumen`,`no_client`,`no_berkas`),
-  KEY `no_client` (`no_client`),
-  KEY `no_berkas` (`no_berkas`),
-  KEY `pengupload` (`pengupload`),
-  KEY `no_user` (`no_user`),
-  CONSTRAINT `data_dokumen_ibfk_1` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_dokumen_ibfk_2` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `data_dokumen_ibfk_4` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `data_daftar_persyaratan` (
+  `id_data_daftar_persyaratan` int(11) NOT NULL AUTO_INCREMENT,
+  `no_daftar_persyaratan` varchar(255) NOT NULL,
+  `nama_persyaratan` varchar(255) NOT NULL,
+  `no_nama_dokumen` varchar(255) DEFAULT NULL,
+  `nama_lampiran` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_data_daftar_persyaratan`),
+  KEY `no_nama_dokumen` (`no_nama_dokumen`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `data_dokumen`
+-- Dumping data for table `data_daftar_persyaratan`
 --
 
-LOCK TABLES `data_dokumen` WRITE;
-/*!40000 ALTER TABLE `data_dokumen` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_dokumen` ENABLE KEYS */;
+LOCK TABLES `data_daftar_persyaratan` WRITE;
+/*!40000 ALTER TABLE `data_daftar_persyaratan` DISABLE KEYS */;
+INSERT INTO `data_daftar_persyaratan` VALUES (7,'S_001','Komisaris utama','N_0006','KTP (Kartu Tanda Penduduk)'),(8,'S_002','Direktur utama','N_0006','KTP (Kartu Tanda Penduduk)'),(9,'S_003','Jumlah Saham','',''),(10,'S_004','Jumlah karyawan','','');
+/*!40000 ALTER TABLE `data_daftar_persyaratan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -153,33 +153,6 @@ INSERT INTO `data_jenis_dokumen` VALUES (1,'J_0001','NOTARIS','Akta pendirian Pe
 UNLOCK TABLES;
 
 --
--- Table structure for table `data_laporan_perizinan`
---
-
-DROP TABLE IF EXISTS `data_laporan_perizinan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_laporan_perizinan` (
-  `id_data_laporan_perizinan` int(11) NOT NULL AUTO_INCREMENT,
-  `no_nama_dokumen` varchar(255) NOT NULL,
-  `no_berkas` varchar(255) NOT NULL,
-  `status_sekarang` varchar(255) NOT NULL,
-  `waktu_laporan` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_laporan_perizinan`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `data_laporan_perizinan`
---
-
-LOCK TABLES `data_laporan_perizinan` WRITE;
-/*!40000 ALTER TABLE `data_laporan_perizinan` DISABLE KEYS */;
-INSERT INTO `data_laporan_perizinan` VALUES (4,'N_0001','000001','sudah masuk kedalam ptsp','05/04/2019 14:2903'),(5,'N_0003','000001','Sudah masuk ke kecamatan','05/04/2019 14:3010'),(6,'N_0003','000001','masuk kedalam kementrian','05/04/2019 14:3031'),(7,'N_0003','000001','Masuk kedalam kecamatan','05/04/2019 15:1556');
-/*!40000 ALTER TABLE `data_laporan_perizinan` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `data_meta`
 --
 
@@ -191,8 +164,9 @@ CREATE TABLE `data_meta` (
   `no_nama_dokumen` varchar(255) NOT NULL,
   `nama_meta` varchar(25) NOT NULL,
   PRIMARY KEY (`id_data_meta`),
-  KEY `no_nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+  KEY `no_nama_dokumen` (`no_nama_dokumen`),
+  CONSTRAINT `data_meta_ibfk_1` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +175,7 @@ CREATE TABLE `data_meta` (
 
 LOCK TABLES `data_meta` WRITE;
 /*!40000 ALTER TABLE `data_meta` DISABLE KEYS */;
-INSERT INTO `data_meta` VALUES (14,'N_0006','NIK'),(15,'N_0006','Nama KTP'),(16,'N_0006','Tanggal lahir'),(17,'N_0005','No Domisili'),(18,'N_0005','Pembuatan Domisili'),(19,'N_0004','No TDP'),(20,'N_0003','No SK'),(21,'N_0002','No NPWP'),(22,'N_0002','Nama NPWP'),(23,'N_0001','No SIUP'),(24,'N_0001','Keterangan SIUP');
+INSERT INTO `data_meta` VALUES (25,'N_0006','NIK'),(26,'N_0006','Nama'),(28,'N_0006','Tanggal lahir'),(30,'N_0005','No Domisili'),(31,'N_0005','Keterangan'),(32,'N_0004','No TDP'),(33,'N_0004','Keterangan'),(34,'N_0003','No SK'),(35,'N_0002','No NPWP'),(36,'N_0002','Nama'),(37,'N_0002','Tanggal lahir'),(38,'N_0001','No SIUP'),(39,'N_0001','Keterangan'),(40,'N_0006','Alamat');
 /*!40000 ALTER TABLE `data_meta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +198,7 @@ CREATE TABLE `data_meta_berkas` (
   PRIMARY KEY (`id_data_meta_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   CONSTRAINT `data_meta_berkas_ibfk_1` FOREIGN KEY (`nama_berkas`) REFERENCES `data_berkas` (`nama_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +207,6 @@ CREATE TABLE `data_meta_berkas` (
 
 LOCK TABLES `data_meta_berkas` WRITE;
 /*!40000 ALTER TABLE `data_meta_berkas` DISABLE KEYS */;
-INSERT INTO `data_meta_berkas` VALUES (176,'a822dfdae7f5ace9f7799a3c3e6f338d.docx','C_000002','000002','N_0001','Nama_berkas','Surat Izin Usaha Perdagangan ( SIUP )','Dok000002'),(177,'a822dfdae7f5ace9f7799a3c3e6f338d.docx','C_000002','000002','N_0001','No_SIUP','8374898848','Dok000002'),(178,'a822dfdae7f5ace9f7799a3c3e6f338d.docx','C_000002','000002','N_0001','Keterangan_SIUP','SIUP PT  Jaran Goyang','Dok000002'),(179,'452dd26759545906ce54fdebebc41fde.docx','C_000002','000002','N_0006','Nama_berkas','KTP (Kartu Tanda Penduduk)','Dok000002'),(180,'452dd26759545906ce54fdebebc41fde.docx','C_000002','000002','N_0006','NIK','327106230198','Dok000002'),(181,'452dd26759545906ce54fdebebc41fde.docx','C_000002','000002','N_0006','Nama_KTP','Dedi ibrahim','Dok000002'),(182,'452dd26759545906ce54fdebebc41fde.docx','C_000002','000002','N_0006','Tanggal_lahir','23 Januari 1998','Dok000002'),(183,'29418f6d8d0e93c3c4480589963344f4.docx','C_000002','000002','N_0001','Nama_berkas','Surat Izin Usaha Perdagangan ( SIUP )','Dok000002'),(184,'29418f6d8d0e93c3c4480589963344f4.docx','C_000002','000002','N_0001','No_SIUP','ASD','Dok000002'),(185,'29418f6d8d0e93c3c4480589963344f4.docx','C_000002','000002','N_0001','Keterangan_SIUP','SIUP PT  Jaran Goyang','Dok000002');
 /*!40000 ALTER TABLE `data_meta_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,7 +235,7 @@ CREATE TABLE `data_pekerjaan` (
   KEY `no_client` (`no_client`),
   KEY `no_pekerjaan` (`no_pekerjaan`),
   CONSTRAINT `data_pekerjaan_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,100 +244,33 @@ CREATE TABLE `data_pekerjaan` (
 
 LOCK TABLES `data_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_pekerjaan` VALUES (10,'C_000001','000001','Masuk','09/04/2019 15:26:27','Apr,09,2019, 15:26:27',NULL,'0007','Yus Suwandari','Akta pendirian Perseroan Terbatas ( PT )','09/04/2019 15:26:27','','04/10/2019'),(11,'C_000002','000002','Proses','09/04/2019 15:27:02','Apr,09,2019, 15:27:02',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','09/04/2019 15:27:02','','04/12/2019');
+INSERT INTO `data_pekerjaan` VALUES (26,'C_000001','000001','Proses','11/04/2019 14:11:29','Apr,11,2019, 14:11:29',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','11/04/2019 14:11:29','2019/04/11','12/04/2019'),(27,'C_000002','000002','Masuk','12/04/2019 08:37:23','Apr,12,2019, 08:37:23',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','12/04/2019 08:37:23','','30/04/2019');
 /*!40000 ALTER TABLE `data_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `data_perizinan`
+-- Table structure for table `data_persyaratan`
 --
 
-DROP TABLE IF EXISTS `data_perizinan`;
+DROP TABLE IF EXISTS `data_persyaratan`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_perizinan` (
-  `id_data_perizinan` int(11) NOT NULL AUTO_INCREMENT,
-  `no_berkas` varchar(255) NOT NULL,
-  `no_user` varchar(255) NOT NULL,
-  `nama_lengkap` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_perizinan`),
-  KEY `no_berkas` (`no_berkas`),
-  KEY `no_user` (`no_user`),
-  CONSTRAINT `data_perizinan_ibfk_2` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE `data_persyaratan` (
+  `id_data_persyaratan` int(11) NOT NULL AUTO_INCREMENT,
+  `no_pekerjaan` varchar(255) NOT NULL,
+  `key_syarat` varchar(255) NOT NULL,
+  `value_syarat` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_data_persyaratan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `data_perizinan`
+-- Dumping data for table `data_persyaratan`
 --
 
-LOCK TABLES `data_perizinan` WRITE;
-/*!40000 ALTER TABLE `data_perizinan` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_perizinan` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `data_perorangan`
---
-
-DROP TABLE IF EXISTS `data_perorangan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_perorangan` (
-  `id_perorangan` int(11) NOT NULL AUTO_INCREMENT,
-  `no_nama_perorangan` varchar(255) NOT NULL,
-  `nama_identitas` varchar(255) NOT NULL,
-  `no_identitas` varchar(255) NOT NULL,
-  `jenis_identitas` varchar(255) NOT NULL,
-  `lampiran` varchar(255) NOT NULL,
-  `file_berkas` varchar(255) NOT NULL,
-  `status_jabatan` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_perorangan`),
-  KEY `no_nama_perorangan` (`no_nama_perorangan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `data_perorangan`
---
-
-LOCK TABLES `data_perorangan` WRITE;
-/*!40000 ALTER TABLE `data_perorangan` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_perorangan` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `data_syarat_perorangan`
---
-
-DROP TABLE IF EXISTS `data_syarat_perorangan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `data_syarat_perorangan` (
-  `id_data_syarat_perorangan` int(11) NOT NULL AUTO_INCREMENT,
-  `no_nama_perorangan` varchar(255) NOT NULL,
-  `nama_identitas` varchar(255) NOT NULL,
-  `no_identitas` varchar(255) NOT NULL,
-  `jenis_identitas` varchar(255) NOT NULL,
-  `no_berkas` varchar(255) NOT NULL,
-  `file_berkas` varchar(255) NOT NULL,
-  `lampiran` varchar(255) NOT NULL,
-  `status_jabatan` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_syarat_perorangan`),
-  KEY `no_nama_perorangan` (`no_nama_perorangan`),
-  KEY `no_berkas` (`no_berkas`),
-  CONSTRAINT `data_syarat_perorangan_ibfk_1` FOREIGN KEY (`no_nama_perorangan`) REFERENCES `data_perorangan` (`no_nama_perorangan`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `data_syarat_perorangan`
---
-
-LOCK TABLES `data_syarat_perorangan` WRITE;
-/*!40000 ALTER TABLE `data_syarat_perorangan` DISABLE KEYS */;
-/*!40000 ALTER TABLE `data_syarat_perorangan` ENABLE KEYS */;
+LOCK TABLES `data_persyaratan` WRITE;
+/*!40000 ALTER TABLE `data_persyaratan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `data_persyaratan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -439,4 +345,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-09 17:06:43
+-- Dump completed on 2019-04-12 14:57:14

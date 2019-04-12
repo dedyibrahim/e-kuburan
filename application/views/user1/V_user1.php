@@ -20,7 +20,7 @@
 <div class="card-body p-2">
  <p style='font-size:12px;'>Nama client : <?php echo $data['nama_client'] ?><br>   
 Jenis client : <?php echo $data['jenis_client'] ?><br>   
-Tugas : <?php echo $data['pembuat_berkas'] ?><br>   
+Tugas : <?php echo $data['pembuat_client'] ?><br>   
 Tanggal Penugasan : <?php echo $data['tanggal_dibuat'] ?></p>
 </div>
 <div class="card-footer text-center">

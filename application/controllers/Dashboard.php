@@ -19,8 +19,8 @@ redirect(base_url('Login'));
 
 
 public function index(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_new_client');
+
+$this->setting();    
 } 
 
 public function keluar(){
@@ -281,6 +281,9 @@ echo json_encode($json);
 public function json_data_jenis_dokumen(){
 echo $this->M_dashboard->json_data_jenis_dokumen();       
 }
+public function json_data_daftar_persyaratan(){
+echo $this->M_dashboard->json_data_daftar_persyaratan();       
+}
 
 public function json_data_user(){
 echo $this->M_dashboard->json_data_user();       
@@ -533,6 +536,31 @@ $this->db->delete('data_meta',array('id_data_meta'=>$this->input->post('id_data_
 redirect(404);    
 }    
 }
+public function simpan_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();
+$no_daftar_persyaratan= str_pad($this->db->get_where('data_daftar_persyaratan')->num_rows()+1,3 ,"0",STR_PAD_LEFT);
+
+$data = array(
+'no_daftar_persyaratan' =>"S_".$no_daftar_persyaratan,
+'nama_persyaratan'      =>$input['nama_persyaratan'],
+'no_nama_dokumen'       =>$input['no_nama_dokumen'],    
+'nama_lampiran'         =>$input['nama_lampiran']    
+);
+$this->db->insert('data_daftar_persyaratan',$data);
+
+$status = array(
+"status"      =>"success",
+"pesan"       =>"Daftar persyaratan berhasil ditambahkan" 
+);
+echo json_encode($status); 
+
+}else{
+redirect(404);    
+} 
+    
+}
+
 
 }
 

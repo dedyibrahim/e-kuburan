@@ -27,6 +27,16 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_persyaratan($term){
+$this->db->from("data_daftar_persyaratan");
+$this->db->limit(15);
+$array = array('nama_persyaratan' => $term);
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
 public function hitung_pekerjaan(){
        $query = $this->db->get('data_pekerjaan');
 return $query;

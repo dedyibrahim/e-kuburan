@@ -3,48 +3,42 @@
 <?php  $this->load->view('umum/V_sidebar_user3'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user3'); ?>
-<div class="container-fluid p-1 m-1">
+<div class="container-fluid ">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang diproses</h4>
+<h4 align="center">Data perizinan yang perlu diproses </h4>
 </div>
 </div>
     
-<div class="row p-2 m-2">
+<div class="row p-1 m-1">
+    <table class="table table-hover table-striped ">
+        <tr>
+            <th>Nama client</th>
+            <th>Nama Tugas</th>
+            <th>Dari</th>
+            <th class="text-center">Target kelar perizinan</th>
+            <th>Aksi</th>
+        </tr>
+        
+    
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
-<div class='col-md-4 mx-auto m-1  p-2 '>
-<div class='card ' >
-<div class='card-header '>
-<div class="row">
-    <div class="col-md-10" style="font-size:13px;"><?php echo $data['nama_dokumen'] ?></div>
-<div class="col text-right">
-<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-<li class="nav-item dropdown">
-<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-</a>
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-    <a class="dropdown-item" onclick="buat_laporan('<?php echo $data['no_berkas'] ?>','<?php echo $data['no_nama_dokumen'] ?>');"  href="#">Buat Laporan</a>
-</li>
-</ul>  
-</div>
-</div>   
-</div>
-<div class="card-body" style="font-size:13px;">    
-<label>Upload dokumen </label>
-<input type="file" id="dokumen_perizinan<?php echo  $data['id_syarat_dokumen'] ?>" class='form-control mb-2'>
-<div style="display:none;" class="progress upload_perizinan<?php echo $data['id_syarat_dokumen'] ?>" >
-<div id="upload_perizinan_progress<?php echo  $data['id_syarat_dokumen'] ?>" class="bg-success progress-bar progress-bar-striped progress-bar-animated" role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style="width:0%"></div>
-</div>
-<br>
-Mulai proses : <?php echo $data['tanggal_proses'] ?><br>
-Target kelar : <?php echo $data['target_kelar_perizinan'] ?>
-</div>
-<div class="card-footer">
-<button class="btn btn-block  btn-sm  btn-success m-2 btn_upload_syarat<?php echo  $data['id_syarat_dokumen'] ?>" onclick=upload_syarat("<?php echo $data['id_syarat_dokumen'] ?>");>Upload Perizinan <i class='fa fa-upload'></i></button>
-</div>
-</div>
-</div>
+        <tr>
+            <td><?php echo $data['nama_client'] ?></td>
+            <td><?php echo $data['nama_file'] ?></td>
+            <td><?php echo $data['nama_lengkap'] ?></td>
+            <td class="text-center"><?php echo $data['target_kelar_perizinan'] ?></td>
+            <td>
+                <select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option">
+                    <option value="1">Tolak Tugas</option>
+                    <option value="2">Alihkan Tugas</option>
+                    <option value="3">Lihat Persyaratan</option>
+                    <option value="4">Upload Berkas</option>
+                </select>    
+            </td>
+        </tr>
+        
 <?php } ?>
+    </table>
 </div>
 </div>
 
@@ -73,6 +67,16 @@ Target kelar : <?php echo $data['target_kelar_perizinan'] ?>
   </div>
 </div>
 
+<!-------------modal--------------------->
+<div class="modal fade" id="modal_data" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content ">
+<div class="modal-body tampilkan_data">
+
+</div>
+</div>
+</div>
+</div>
 
 
 
@@ -80,93 +84,24 @@ Target kelar : <?php echo $data['target_kelar_perizinan'] ?>
 
 
 
+
+
 <script type="text/javascript">
-
-$(document).ready(function(){
-$("#simpan_laporan").click(function(){
-var no_nama_dokumen = $("#no_nama_dokumen").val();
-var no_berkas       = $("#no_berkas").val();
-var laporan         = $("#laporan").val();
-var token           = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('User3/simpan_laporan') ?>",
-data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&no_berkas="+no_berkas+"&laporan="+laporan,
-success:function(data){
-var r  = JSON.parse(data);
-
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: r.status,
-title: r.pesan
-}).then(function() {
-window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
-});
-$('#modal_laporan').modal('hide');
-
+function aksi_option(no_pekerjaan,id_data_berkas){
+var aksi_option = $(".data_option option:selected").val();
+if(aksi_option == 1){
+form_tolak_tugas();
+}else if(aksi_option == 2){
+form_alihkan_tugas();
+}else if(aksi_option == 3){
+form_lihat_persyaratan(no_pekerjaan);    
+}else if(aksi_option == 4){
+form_upload_berkas(no_pekerjaan,id_data_berkas);
 }
 
-});   
-});    
-
-    
-    
-});    
-
-
-function buat_laporan(no_berkas,no_nama_dokumen){
-$('#modal_laporan').modal('show');
-
-$("#no_nama_dokumen").val(no_nama_dokumen);
-$("#no_berkas").val(no_berkas);
-
-
-}    
-    
-    
-function proses_perizinan(id){
-var token           = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('User3/proses_tugas') ?>",
-data:"token="+token+"&id_data_pengurus_perizinan="+id,
-success:function(data){
-var r  = JSON.parse(data);
-
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: r.status,
-title: r.pesan
-}).then(function() {
-window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
-})
-
 }
-
-});
-
-}    
  
- 
-function upload_syarat(id){
+/*function upload_syarat(id){
 $(".upload_perizinan"+id).show();
 var dokumen_perizinan = $("#dokumen_perizinan"+id).get(0).files[0];
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -242,8 +177,46 @@ $(".btn_upload_syarat"+id).removeAttr("disabled");
 }
 }
 });
-}
+}*/
  
-    
+  
+function form_lihat_persyaratan(no_pekerjaan){
+var token           = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User3/lihat_persyaratan') ?>",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan,
+success:function(data){
+$(".tampilkan_data").html(data);
+$('#modal_data').modal('show');
+}
+});
+}
+
+function form_upload_berkas(no_pekerjaan,id_data_berkas){
+var token           = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User3/form_upload_berkas') ?>",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_berkas="+id_data_berkas,
+success:function(data){
+$(".tampilkan_data").html(data);
+$('#modal_data').modal('show');
+}
+});
+}
+
+function form_alihkan_tugas(no_pekerjaan,id_data_berkas){
+
+}
+
+function form_tolak_tugas(no_pekerjaan,id_data_berkas){
+
+}
+
+function download(id_data_berkas){
+window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
+}
+
 </script>    
 </html>

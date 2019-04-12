@@ -216,6 +216,18 @@ $query = $this->db->get();
 return $query;
 }
 
+public function json_data_daftar_persyaratan(){
+$this->datatables->select('id_data_daftar_persyaratan,'
+.'data_daftar_persyaratan.no_daftar_persyaratan as no_daftar_persyaratan,'
+.'data_daftar_persyaratan.nama_persyaratan as nama_persyaratan,'
+.'data_daftar_persyaratan.nama_lampiran as nama_lampiran,'
+);
+$this->datatables->from('data_daftar_persyaratan');
+return $this->datatables->generate();
+
+    
+}
+
 
 public function cari_client($no_client){
 $query = $this->db->get_where('data_client',array('no_client'=>$no_client));  

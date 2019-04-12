@@ -16,6 +16,9 @@
 <li class="nav-item ml-1">
 <a class="nav-link" data-toggle="tab" href="#aplikasi">Pengaturan User <i class="fas fa-cogs"></i></a>
 </li>
+<li class="nav-item ml-1">
+<a class="nav-link" data-toggle="tab" href="#persyaratan">Pengaturan Persyaratan <i class="fas fa-cogs"></i></a>
+</li>
 </ul>
 
 <!-- Tab panes -->
@@ -96,11 +99,55 @@
 
 </div>
 
+<!----------------------------Persyaratan------------------------------>
+<div class="tab-pane card container fade" id="persyaratan">
+    <div class="row mt-2"><div class="col text-center"><h3>Tambahkan data persyaratan</h3></div></div>    
+<div class="row p-2">
+<div class="col">
+<label>Nama persyaratan</label>
+<input type="text" class="form-control nama_persyaratan">    
+</div>
+<div class="col">
+<label>Lampiran</label>
+<select class="form-control lampiran_persyaratan">
+<option></option>
+<?php $lampiran = $this->db->get('nama_dokumen');
+foreach ($lampiran->result_array() as $l ){
+?>
+<option value='<?php echo $l['no_nama_dokumen'] ?>'><?php echo $l['nama_dokumen'] ?></option>    
+<?php } ?>    
+</select>
+</div>    
+<div class="col">
+<label>&nbsp;</label>
+<button class="btn btn-success btn-clock btn-sm form-control simpan_persyaratan">Simpan <span class="fa fa-save"></span></button>        
+</div>    
+</div>
+<div class="row">
+<div class="col">
+<table style="width:100%;" id="data_daftar_persyaratan" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
+<tr role="row">
+<th  align="center" aria-controls="datatable-fixed-header"  >No</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >No Persyaratan</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >Nama Persyaratan</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >Lampiran</th>
+</thead>
+<tbody align="center">
+</table>            
+
+</div>        
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
 
 
 </div>
 </div>
-</div>
+
 <!------------- Modal Edit---------------->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
@@ -307,8 +354,59 @@
 </div>
 
 <script type="text/javascript">
-
 $(document).ready(function(){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
+
+$(".simpan_persyaratan").click(function(){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
+var nama_persyaratan     = $(".nama_persyaratan").val();
+var lampiran_persyaratan = $(".lampiran_persyaratan option:selected").val();
+var nama_lampiran        = $(".lampiran_persyaratan option:selected").text();
+if(nama_persyaratan != ''){
+
+$.ajax({
+type:"post",
+url :"<?php echo base_url('Dashboard/simpan_persyaratan') ?>",
+data:"token="+token+"&nama_persyaratan="+nama_persyaratan+"&no_nama_dokumen="+lampiran_persyaratan+"&nama_lampiran="+nama_lampiran,
+success:function(data){
+var r =JSON.parse(data);    
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('Dashboard/setting'); ?>";
+});
+
+}
+});    
+
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: "warning",
+title:"Nama persyaratan belum dimasukan"
+});    
+}
+
+});        
+        
 $("#simpan_meta").click(function(){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";    
 var no_nama_dokumen = $(".no_nama_dokumen").val();
@@ -876,6 +974,65 @@ return {
 };
 };
 
+var t = $("#data_daftar_persyaratan").dataTable({
+initComplete: function() {
+var api = this.api();
+$('#data_daftar_persyaratan')
+.off('.DT')
+.on('keyup.DT', function(e) {
+if (e.keyCode == 13) {
+api.search(this.value).draw();
+}
+});
+},
+oLanguage: {
+sProcessing: "loading..."
+},
+processing: true,
+serverSide: true,
+ajax: {"url": "<?php echo base_url('Dashboard/json_data_daftar_persyaratan') ?> ", 
+"type": "POST",
+data: function ( d ) {
+d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
+}
+},
+columns: [
+{
+"data": "id_data_daftar_persyaratan",
+"orderable": false
+},
+{"data": "no_daftar_persyaratan"},
+{"data": "nama_persyaratan"},
+{"data": "nama_lampiran"}
+
+],
+order: [[0, 'desc']],
+rowCallback: function(row, data, iDisplayIndex) {
+var info = this.fnPagingInfo();
+var page = info.iPage;
+var length = info.iLength;
+var index = page * length + (iDisplayIndex + 1);
+$('td:eq(0)', row).html(index);
+}
+});
+});
+</script> 
+
+<script type="text/javascript">
+$(document).ready(function() {
+$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
+{
+return {
+"iStart": oSettings._iDisplayStart,
+"iEnd": oSettings.fnDisplayEnd(),
+"iLength": oSettings._iDisplayLength,
+"iTotal": oSettings.fnRecordsTotal(),
+"iFilteredTotal": oSettings.fnRecordsDisplay(),
+"iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+"iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+};
+};
+
 var t = $("#data_jenis_dokumen").dataTable({
 initComplete: function() {
 var api = this.api();
@@ -1027,6 +1184,8 @@ title: 'Data Meta berhasil dihapus'
 }
 });
 }
+
+
 
 </script>
 

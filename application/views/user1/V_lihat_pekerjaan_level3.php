@@ -21,7 +21,7 @@
         </tr>
       <?php foreach ($data->result_array() as $d) { ?>
         <tr>
-            <td><?php echo $d['nama_dokumen']  ?></td>
+            <td><?php echo $d['nama_file']  ?></td>
             <td><?php echo $d['nama_client']  ?></td>
             <td><?php echo $d['status_berkas']  ?></td>
             <td><?php echo $d['target_kelar_perizinan']  ?></td>

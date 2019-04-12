@@ -23,38 +23,15 @@
             <td class="text-center" colspan="2"><?php echo $static['jenis_perizinan'] ?></td>   
             <td class="text-center" colspan="2"><?php echo $static['target_kelar'] ?></td>   
         </tr>
-        <tr>
-            <th>Pekerjaan</th>     
-            <th>Status Sekarang</th>     
-            <th>Target Selesai</th>     
-            <th>Pelaksana</th>     
-        </tr>
-        <tr>
-            <td colspan="1">Draft</td> 
-            <td colspan="1"><?php echo $static['status_draft'] ?></td> 
-            <td colspan="1"><?php echo $static['target_kelar'] ?></td> 
-            <td colspan="1"><?php echo $static['nama_lengkap'] ?></td> 
-        </tr>
-        <tr>
-            <td colspan="1">Minuta</td> 
-            <td colspan="1"><?php echo $static['status_minuta'] ?></td> 
-            <td colspan="1"><?php echo $static['target_kelar'] ?></td> 
-            <td colspan="1"><?php echo $static['nama_lengkap'] ?></td> 
-        </tr>
-        <tr>
-            <td colspan="1">Salinan</td> 
-            <td colspan="1"><?php echo $static['status_salinan'] ?></td> 
-            <td colspan="1"><?php echo $static['target_kelar'] ?></td> 
-            <td colspan="1"><?php echo $static['nama_lengkap'] ?></td> 
-        </tr>
+        
         
         <?php 
         foreach ( $data->result_array() as $d){ ?>
         <tr>
-            <td><?php echo $d['nama_dokumen'] ?></td>     
-            <td><?php echo $d['status_berkas'] ?> <button onclick="lihat_status_sekarang('<?php echo $d['no_berkas'] ?>','<?php echo $d['no_nama_dokumen'] ?>');"  class="btn btn-success float-right btn-sm"><span class="fa fa-eye"></span></button></td>     
+            <td><?php echo $d['nama_file'] ?></td>     
+            <td><?php echo $d['status_berkas'] ?> <button onclick="lihat_status_sekarang('<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>');"  class="btn btn-success float-right btn-sm"><span class="fa fa-eye"></span></button></td>     
             <td><?php echo $d['target_kelar_perizinan'] ?></td>     
-            <td><?php echo $d['perizinan'] ?></td>     
+            <td><?php echo $d['pengurus_perizinan'] ?></td>     
         </tr>
         <?php } ?>
     </table>

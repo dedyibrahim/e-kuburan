@@ -3,9 +3,9 @@ class M_user1 extends CI_Model{
 public function data_tugas($status){
 
 $this->db->select('*');
-$this->db->from('data_berkas');
-$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
-$this->db->where('data_berkas.status_berkas',$status);
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->where('data_pekerjaan.status_pekerjaan',$status);
 $query = $this->db->get();
 
 return $query;

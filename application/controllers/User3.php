@@ -25,11 +25,12 @@ redirect (base_url('Login'));
 public function proses_tugas(){
 if($this->input->post()){
 $data = array(
-'tanggal_proses_tugas'  =>date('Y/m/d H:i:s'),
+'tanggal_proses_tugas'   =>date('d/m/Y'),
 'target_kelar_perizinan' =>$this->input->post('target_kelar'),
-'status_berkas'        =>'Proses'    
+'status'                 =>'Proses'    
 );
-$this->db->update('data_syarat_jenis_dokumen',$data,array('id_syarat_dokumen'=>$this->input->post('id_syarat_dokumen')));
+$this->db->update('data_berkas',$data,array('id_data_berkas'=>$this->input->post('id_data_berkas')));
+
 
 $status = array(
 'status' =>"success",
@@ -114,45 +115,111 @@ public function json_data_perizinan_selesai(){
 echo $this->M_user3->json_data_perizinan_selesai();       
 }
 
-public function tampilkan_modal(){
+
+
+public function lihat_persyaratan(){
 if($this->input->post()){
+$input = $this->input->post();
+$data = $this->db->get_where('data_berkas',array('no_pekerjaan'=>$input['no_pekerjaan'],'status_berkas'=>'Persyaratan'));
+
+foreach ($data->result_array() as $d){
+ echo "<button onclick=download('".$d['id_data_berkas']."'); class='btn btn-light btn-block p-2 m-2' >".$d['nama_file']." <span class='fa float-right fa-download'></button>";  
+}
+}else{
+redirect(404);    
+}
+}
+public function download_berkas(){
+$data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->uri->segment(3)))->row_array();    
+$file_path = "./berkas/".$data['nama_folder']."/".$data['nama_berkas']; 
+$info = new SplFileInfo($data['nama_berkas']);
+force_download($data['nama_file'].".".$info->getExtension(), file_get_contents($file_path));
+}
+
+public function form_upload_berkas(){
+if($this->input->post()){
+$input = $this->input->post();    
+$data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$input['id_data_berkas']))->row_array();
+
+$data_meta = $this->db->get_where('data_meta',array('no_nama_dokumen'=>$data['no_nama_dokumen']));
+echo "<form action='".base_url('User3/simpan_berkas')."' method='post' enctype='multipart/form-data'>"
+. "<input type='hidden' name='".$this->security->get_csrf_token_name()."' value='".$this->security->get_csrf_hash()."'>"
+. "<input type='hidden' name='id_data_berkas' value='".$input['id_data_berkas']."'>";
+
+echo "<label>Nama Berkas</label>"
+. "<input type='text' class='form-control' name='Nama_berkas' value='".$data['nama_file']."'>";
+foreach ($data_meta->result_array() as $m){
+echo "<label>".$m['nama_meta']."</label>"
+."<input type='text' class='form-control' required name='".$m['nama_meta']."'>";    
+}
+
+echo "<label>Upload ".$data['nama_file']."</label>"
+. "<input type='file' class='form-control' name='file_berkas' required >"
+. "<hr>"
+. "<button class='btn btn-success btn-block'>Upload <span class='fa fa-upload'></span></butto>"
+. "</form>";
+
+}else{
+redirect(404);    
+}    
+}
+public function simpan_berkas(){
     
+if($this->input->post()){
 $input = $this->input->post();
 
-if($input['jenis_modal'] == 'tolak'){
-echo "tolak";        
-}else if($input['jenis_modal'] == 'alihkan'){
-echo "alihkan";    
-}
+$this->db->select('*');
+$this->db->from('data_berkas');
+$this->db->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->db->where('data_berkas.id_data_berkas',$input['id_data_berkas']);
+$data_static = $this->db->get()->row_array();
+
+
+$config['upload_path']          = './berkas/'.$data_static['nama_folder'];
+$config['allowed_types']        = 'gif|jpg|png|pdf|docx|doc|xlxs|';
+$config['encrypt_name']         = TRUE;
+
+$this->upload->initialize($config);
+if (!$this->upload->do_upload('file_berkas')){
+$error = array('error' => $this->upload->display_errors());
+echo print_r($error);
+}else{
+$data_berkas = array(
+'no_client'         => $data_static['no_client'],
+'no_pekerjaan'      => $data_static['no_pekerjaan'],
+'no_nama_dokumen'   => $data_static['no_nama_dokumen'],
+'nama_folder'       => $data_static['nama_folder'],
+'nama_berkas'       => $this->upload->data('file_name'),
+'nama_file'         => $this->input->post('Nama_berkas'),    
+'Pengupload'        => $this->session->userdata('nama_lengkap'),
+'status'            =>'Selesai'    
     
+);    
+$this->db->update('data_berkas',$data_berkas,array('id_data_berkas'=>$input['id_data_berkas']));
+
+
+foreach ($_POST as $key => $value){
+if($value == $input['id_data_berkas'] ){
+}else{
+$data_meta = array(
+'nama_berkas'    =>$this->upload->data('file_name'),
+'no_client'      => $data_static['no_client'],
+'no_pekerjaan'   => $data_static['no_pekerjaan'],
+'no_nama_dokumen'=> $data_static['no_nama_dokumen'],
+'nama_folder'    => $data_static['nama_folder'],
+'nama_meta'      => $key,
+'value_meta'     =>$value,    
+);
+$this->db->insert('data_meta_berkas',$data_meta);
+}    
+    
+}
+
+redirect(base_url('User3/halaman_proses'));
+}
 }else{
 redirect(404);    
 }
-}
-
-public function simpan_laporan(){
-if($this->input->post()){
-
-$input = $this->input->post();    
-$data = array(
-'no_nama_dokumen' => $input['no_nama_dokumen'],
-'no_berkas'       => $input['no_berkas'],
-'waktu_laporan'           => date('d/m/Y H:is'),
-'status_sekarang' => $input['laporan']    
-);
-$this->db->insert('data_laporan_perizinan',$data);
-
-$status = array(
-'status' =>"success",
-'pesan'  =>"Laporan Tersimpan"    
-);
-echo json_encode($status);
-    
-}else{
-redirect(404);    
-}
-    
-}
 
 }
-
+}

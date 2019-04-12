@@ -28,12 +28,15 @@
 <input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
 
 </div>
-<div class="col "> 
+<div class="col ">
 <div id="form_badan_hukum">
 <label  id="label_nama_perorangan">Nama Perorangan</label>
 <label  style="display: none;" id="label_nama_hukum">Nama Badan Hukum</label>
 <input type="text" name="badan_hukum" id="badan_hukum" class="form-control required"  accept="text/plain">
 </div>
+<label>Contact Person</label>
+<input type="number" class="form-control" id="contact_person" name="contact_person required" accept="text/plain">
+
 <div id="form_alamat_hukum">
     <label style="display: none;" id="label_alamat_hukum">Alamat Badan Hukum</label>
 <label  id="label_alamat_perorangan">Alamat Perorangan</label>
@@ -98,7 +101,7 @@ formData.append('id_jenis',$("#id_jenis_akta").val()),
 formData.append('badan_hukum',$("#badan_hukum").val()),
 formData.append('target_kelar',$("#target_kelar").val()),
 formData.append('alamat_badan_hukum',$("textarea#alamat_badan_hukum").val()),
-console.log(formData);
+formData.append('contact_person',$("#contact_person").val()),
 
 
 $.ajax({
@@ -150,7 +153,8 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 });
 
 $(function() {
-$("input[name='target_kelar']").datepicker({ minDate:0});
+$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'dd/mm/yy'
+});
 });
 </script>
 </div>

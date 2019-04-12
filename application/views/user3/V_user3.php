@@ -3,46 +3,44 @@
 <?php  $this->load->view('umum/V_sidebar_user3'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user3'); ?>
-<div class="container-fluid p-1 m-1">
+<div class="container-fluid ">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang harus dikerjakan</h4>
+<h4 align="center">Data perizinan yang masuk</h4>
 </div>
 </div>
 
-<div class="row p-2 m-2">
+<div class="row p-1  m-1">
+<table class="table table-hover table-striped ">
+<tr>
+<th>Nama client</th>
+<th>Nama Tugas</th>
+<th>Dari</th>
+<th>Tanggal penugasan</th>
+<th>Aksi</th>
+</tr>
+
+
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
-<div class='col-md-4 mx-auto m-1  p-1 '>
-<div class='card ' >
-<div class='card-header '>
-<div class="row">
-    <div class="col-md-10" style="font-size:13px;"><?php echo $data['nama_dokumen'] ?></div>
-<div class="col text-right">
-<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-<li class="nav-item dropdown">
-<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-</a>
-<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-<a class="dropdown-item" href="#">Tolak tugas</a>
-<a class="dropdown-item" href="#">Alihkan Tugas</a>
-</li>
-</ul>  
-</div>
-</div>    
-</div>
-<div class="card-body" style="font-size:13px;">    
-Nama client : <?php echo $data['nama_client'] ?><br>   
-Jenis client : <?php echo $data['jenis_client'] ?><br>   
-Tugas Dari : <?php echo $data['pembuat_berkas'] ?><br>   
-Tanggal Penugasan : <?php echo $data['tanggal_tugas'] ?><br>
-</div>
-<div class="card-footer">
-<button type="button"  onclick='proses_perizinan("<?php echo $data['id_syarat_dokumen'] ?>","proses");' class="btn btn-sm btn-block btn-success">Proses Perizinan <span class="fa fa-exchange-alt"></span></button>
-</div>
-</div>
-</div>
+<tr>
+<td><?php echo $data['nama_client'] ?></td>
+<td><?php echo $data['nama_file'] ?></td>
+<td><?php echo $data['nama_lengkap'] ?></td>
+<td><?php echo $data['tanggal_tugas'] ?></td>
+<td>
+<select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option">
+<option></option>
+<option value="1">Terima Tugas</option>
+<option value="2">Tolak Tugas</option>
+<option value="3">Alihkan Tugas</option>
+<option value="4">Lihat Persyaratan</option>
+
+</select>    
+</td>
+</tr>
+
 <?php } ?>
-</div>
+</table>
 </div>
 
 
@@ -65,16 +63,43 @@ Tanggal Penugasan : <?php echo $data['tanggal_tugas'] ?><br>
 </div>
 </div>
 </div>
+
+<!-------------modal--------------------->
+<div class="modal fade" id="modal_lihatpersyaratan" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content ">
+<div class="modal-body lihat_syarat">
+
+</div>
+</div>
+</div>
+</div>
+
+
 <style>
 .swal2-overflow {
 overflow-x: visible;
 overflow-y: visible;
 }    
-
 </style>    
 
 </body>
 <script type="text/javascript">
+
+function aksi_option(no_pekerjaan,id_data_berkas){
+var aksi_option = $(".data_option option:selected").val();
+if(aksi_option == 1){
+proses_perizinan(id_data_berkas);   
+}else if(aksi_option == 2){
+alert(2);    
+}else if(aksi_option == 3){
+lihat_persyaratan(no_pekerjaan);    
+}else if(aksi_option == 4){
+lihat_persyaratan(no_pekerjaan);    
+}
+
+}
+
 function proses_perizinan(id){
 swal.fire({
 title: 'Target Kelar Perizinan <br><hr>',
@@ -85,10 +110,14 @@ cancelButtonColor: '#d33',
 confirmButtonText: 'Simpan target',
 customClass: 'swal2-overflow',
 onOpen: function() {
-$('#target_kelar').datepicker({ minDate:0});
+$('#target_kelar').datepicker(
+{ minDate:0,
+dateFormat: 'dd/mm/yy'
+}
+);
 }
 }).then((result) => {
-    
+
 if($("#target_kelar").val() == ''){
 const Toast = Swal.mixin({
 toast: true,
@@ -108,7 +137,7 @@ var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
 url:"<?php echo base_url('User3/proses_tugas') ?>",
-data:"token="+token+"&id_syarat_dokumen="+id+"&target_kelar="+target_kelar,
+data:"token="+token+"&id_data_berkas="+id+"&target_kelar="+target_kelar,
 success:function(data){
 var r  = JSON.parse(data);
 const Toast = Swal.mixin({
@@ -131,20 +160,24 @@ window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
 });
 }
 
-function tampilkan_modal(id_syarat_dokumen,jenis_modal){
+function lihat_persyaratan(no_pekerjaan){
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
-
 $.ajax({
 type:"post",
-url:"<?php echo base_url('User/tampilkan_modal') ?>",
-data:"token="+token+"&jenis_modal="+jenis_modal,
+url:"<?php echo base_url('User3/lihat_persyaratan') ?>",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan,
 success:function(data){
-$(".data_modal").html(data);
-$('#modal_dinamis').modal('show');
+$(".lihat_syarat").html(data);
+$('#modal_lihatpersyaratan').modal('show');
 }
 });
 
-} 
+
+}
+
+function download(id_data_berkas){
+window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
+}
 
 
 </script>    
