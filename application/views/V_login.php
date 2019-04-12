@@ -52,7 +52,7 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
@@ -62,30 +62,50 @@ type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
 window.location.href = "<?php echo base_url('Dashboard'); ?>";
-})
+});
 }else if(r.level == "User"){
+
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
 
+if(r.sublevel == 'Level 1'){
 Toast.fire({
 type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
-window.location.href = "<?php echo base_url('User'); ?>";
-})
+window.location.href = "<?php echo base_url('User1'); ?>";
+});
+    
+}else if (r.sublevel == 'Level 2'){
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('User2'); ?>";
+});
+    
+}else if(r.sublevel == 'Level 3'){
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('User3'); ?>";
+});
+
+}
 
 }else if(r.level  == "Admin" ){
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated fadeInDown'
 });
@@ -104,7 +124,7 @@ const Toast = Swal.mixin({
 toast: true,
 position: 'top',
 showConfirmButton: false,
-timer: 3000,
+timer: 1000,
 animation: false,
 customClass: 'animated tada'
 });

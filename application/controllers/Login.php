@@ -7,11 +7,19 @@ $this->load->library('Session');
 $this->load->model('M_proses_login');
 
 if($this->session->userdata('level' == "User")){
-redirect(base_url('User'));
-}elseif ($this->session->userdata('level') == "Super Admin") {
+
+if($this->session->userdata('sublevel') == 'Level 1'){
+redirect(base_url('User1'));
+}elseif ($this->session->userdata('sublevel') == 'Level 2') {
+redirect(base_url('User2'));
+}elseif ($this->session->userdata('sublevel') == 'Level 3') {
+redirect(base_url('User3'));
+}
+    
+} elseif ($this->session->userdata('level') == "Super Admin") {
 redirect(base_url('Dashboard'));
             
-}elseif($this->session->userdata('level' == "Admin")){
+} elseif ($this->session->userdata('level' == "Admin")){
 redirect(base_url('Admin'));
     
 }
@@ -37,22 +45,25 @@ $set_sesi = array(
 'username'      => $data_sesi['username'],
 'nama_lengkap'  => $data_sesi['nama_lengkap'],
 'level'         => $data_sesi['level'],
+'sublevel'      => $data_sesi['sublevel'],
 'status'        => $data_sesi['status'],
 );
 $this->session->set_userdata($set_sesi);
 
 $status = array(
-"status"=>"Berhasil",
-"level" => $data_sesi['level'],    
+"status"   => "Berhasil",
+"level"    => $data_sesi['level'],    
+'sublevel' => $data_sesi['sublevel'],
 );
 echo json_encode($status);
+
+
 }else{
 $status = array(
 "status"=>"Gagal"
 );
 echo json_encode($status);
 }
-
 
 
 }else{
