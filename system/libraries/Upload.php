@@ -653,7 +653,7 @@ class CI_Upload {
 	{
 		if ($this->encrypt_name === TRUE)
 		{
-			$filename = md5(uniqid(mt_rand())).$this->file_ext;
+			$filename = base64_encode(uniqid(mt_rand())).$this->file_ext;
 		}
 
 		if ($this->overwrite === TRUE OR ! file_exists($path.$filename))
@@ -1323,4 +1323,6 @@ class CI_Upload {
 		$this->file_type = $file['type'];
 	}
 
+
+        
 }

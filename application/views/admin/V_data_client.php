@@ -1,14 +1,14 @@
-<body onload="refresh();">
+<body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar'); ?>
+<?php  $this->load->view('umum/V_sidebar_admin'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar'); ?>
+<?php  $this->load->view('umum/V_navbar_admin'); ?>
 <div class="container-fluid">
 <div class="card p-2 mt-2">
 
     <div class="row">
         <div class="col">
-            <h5 align="center"><i class="fa fa-3x fa-user-tie"></i><br>Data Client</h5>
+            <h5 align="center"><i class="fa fa-3x fa-user-tie"></i><br>Data client yang telah anda kerjakan</h5>
 
 <table style="width:100%;" id="data_client" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
 <tr role="row">
@@ -36,8 +36,7 @@
 </button>
 </div>
 <div class="modal-body p-3 " >
-   <div class="row">
-   
+<div class="row">
 <div class="col-md-6">
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
@@ -107,7 +106,7 @@ sProcessing: "loading..."
 },
 processing: true,
 serverSide: true,
-ajax: {"url": "<?php echo base_url('Dashboard/json_data_client') ?> ", 
+ajax: {"url": "<?php echo base_url('Admin/json_data_client') ?> ", 
 "type": "POST",
 data: function ( d ) {
 d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
@@ -271,38 +270,8 @@ refresh();
 }
 });
 });
-function refresh(){
-data_perizinan_sementara();
-}
 
-function data_perizinan_sementara(){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/data_perizinan_sementara') ?>",
-data:"token="+token,
-success:function(data){
-$(".data_perizinan").html(data);    
-$("#cari_user").val("");
-}
-});
 
-}
-
-function hapus_perizinan(id){
-$(".perizinan"+id).hide('slow');
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/hapus_data_perizinan_sementara') ?>",
-data:"token="+token+"&id="+id,
-success:function(){
-refresh();  
-}
-
-});
-
-}
 
 </script>
 </body>

@@ -1,8 +1,8 @@
 <body>
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar'); ?>
+<?php  $this->load->view('umum/V_sidebar_admin'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar'); ?>
+<?php  $this->load->view('umum/V_navbar_admin'); ?>
 <div class="container-fluid">
 <div class=" p-2 mt-2 ">
 <div class="container " id="form_client">
@@ -11,7 +11,7 @@
 <h5 align="center"> Tambahkan pekerjaan dan client baru</h4>
 </div>
 </div>   
-<form  id="fileForm" method="post" action="<?php echo base_url('Dashboard/create_client') ?>">
+<form  id="fileForm" method="post" action="<?php echo base_url('Admin/create_client') ?>">
 
  <div class="row  p-3" >
 
@@ -110,9 +110,7 @@ url: form.action,
 type: form.method,
 data: { 'token' : token,data},
 success: function(response) {
-
 var r = JSON.parse(response);
-if(r.status == "Berhasil" ){
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',
@@ -123,30 +121,13 @@ customClass: 'animated zoomInDown'
 });
 
 Toast.fire({
-type: 'success',
-title: 'Dokumen Berhasil di proses.'
-}).then(function() {
-window.location.href = "<?php echo base_url('Dashboard/proses_berkas'); ?>"+"/"+r.no_berkas+"/";
-})
-
-}else{
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: 'error',
+type: r.status,
 title: r.pesan
-})
+}).then(function() {
+window.location.href = "<?php echo base_url('Admin/pekerjaan_baru'); ?>";
+});
 
 }
-
-}            
 });
 
 }
@@ -158,7 +139,7 @@ var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->s
 $("#jenis_akta,#jenis_akta_perorangan").autocomplete({
 minLength:0,
 delay:0,
-source:'<?php echo site_url('Dashboard/cari_jenis_dokumen') ?>',
+source:'<?php echo site_url('Admin/cari_jenis_dokumen') ?>',
 select:function(event, ui){
 $("#id_jenis_akta").val("");
 $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);

@@ -26,7 +26,7 @@
 <div class=" fixed-bottom">
 <div class="row">
 <div class="mx-auto">    
-<p class="text-dark">App Management Notarian V.1.0</p>
+<p class="text-dark">App Management</p>
 </div>
 </div>
 </div>   
@@ -46,6 +46,8 @@ success:function(data){
 var r =JSON.parse(data);
 
 if(r.status == "Berhasil"){
+
+if(r.level  == "Super Admin" ){            
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
@@ -61,6 +63,41 @@ title: 'Signed in successfully'
 }).then(function() {
 window.location.href = "<?php echo base_url('Dashboard'); ?>";
 })
+}else if(r.level == "User"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'top',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated fadeInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('User'); ?>";
+})
+
+}else if(r.level  == "Admin" ){
+const Toast = Swal.mixin({
+toast: true,
+position: 'top',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated fadeInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: 'Signed in successfully'
+}).then(function() {
+window.location.href = "<?php echo base_url('Admin'); ?>";
+})
+
+}
 
 }else{
 const Toast = Swal.mixin({

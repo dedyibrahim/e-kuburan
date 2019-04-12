@@ -1,30 +1,29 @@
-<body>
+<body >
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar'); ?>
+<?php  $this->load->view('umum/V_sidebar_user'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar'); ?>
-<div class="container-fluid">
-<div class="card p-2 mt-2">
-
-    <div class="row">
-        <div class="col">
-            <h5 align="center">Dokumen yang sedang dalam proses <br> <i class="fa fa-3x fa-exchange-alt"></i></h5>
-
-<table style="width:100%;" id="dokumen_proses" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
-<tr role="row">
-<th  align="center" aria-controls="datatable-fixed-header"  >No</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >no berkas</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >nama client</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >jenis client</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >jenis perizinan</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >tanggal dibuat</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >aksi</th>
+<?php  $this->load->view('umum/V_navbar_user'); ?>
+<div class="container-fluid p-2 m-2">
+<div class="row p-2 m-2 ">
+<div class="col rounded-top " style="background-color: #dcdcdc">
+<h4 align="center">Daftar tugas perizinan yang telah selesai dikerjakan</h4>
+</div>
+</div>
+<div class="row p-2 m-2">
+    <div class="col">
+<table style="width:100%;" id="data_selesai" class="table table-striped table-condensed table-xs table-bordered  table-hover table-sm"><thead>
+<th align="center" aria-controls="datatable-fixed-header"  >No</th>
+<th align="center" aria-controls="datatable-fixed-header"  >Nama client</th>
+<th align="center" aria-controls="datatable-fixed-header"  >Jenis tugas</th>
+<th align="center" aria-controls="datatable-fixed-header"  >Dokumen</th>
+<th align="center" aria-controls="datatable-fixed-header"  >Aksi</th>
 </thead>
 <tbody align="center">
 </table> 
-        </div>
-    </div>
+    </div>    
 </div>
+</div>
+
 <script type="text/javascript">
 $(document).ready(function() {
 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
@@ -40,10 +39,10 @@ return {
 };
 };
 
-var t = $("#dokumen_proses").dataTable({
+var t = $("#data_selesai").dataTable({
 initComplete: function() {
 var api = this.api();
-$('#dokumen_proses')
+$('#data_selesai')
 .off('.DT')
 .on('keyup.DT', function(e) {
 if (e.keyCode == 13) {
@@ -56,7 +55,8 @@ sProcessing: "loading..."
 },
 processing: true,
 serverSide: true,
-ajax: {"url": "<?php echo base_url('Dashboard/json_dokumen_proses') ?> ", 
+
+ajax: {"url": "<?php echo base_url('User/json_data_perizinan_selesai') ?> ", 
 "type": "POST",
 data: function ( d ) {
 d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
@@ -64,14 +64,12 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_berkas",
+"data": "id_data_dokumen",
 "orderable": false
 },
-{"data": "no_berkas"},
 {"data": "nama_client"},
-{"data": "jenis_client"},
 {"data": "jenis_perizinan"},
-{"data": "tanggal_dibuat"},
+{"data": "nama_dokumen"},
 {"data": "view"}
 
 
@@ -86,5 +84,8 @@ $('td:eq(0)', row).html(index);
 }
 });
 });
-</script>    
+
+</script>  
+       
 </body>
+</html>

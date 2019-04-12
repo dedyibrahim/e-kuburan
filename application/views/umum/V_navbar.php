@@ -1,48 +1,131 @@
-<nav class="navbar navbar-expand-lg navbar-light  ">
-<div class="container-fluid">
-<button type="button" id="sidebarCollapse" class="btn btn-success"><i class="fas fa-align-justify"></i></button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <button class="btn btn-success" id="menu-toggle"><span id="z" class="fa fa-chevron-left"> </span> Menu</button>
 
-<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-<i class="fas fa-align-justify"></i>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
 </button>
-
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
     
-<ul class="nav navbar-nav ml-auto">
-<li class="nav-item active">  <input type="text" class="form-control mt-1 mr-5" placeholder="Cari Berkas . . . ">  </li>
+ <div class="input-group col-md-7 mx-auto" id="adv-search">
+     <input type="text" class="form-control" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
+                <div class="input-group-btn">
+                    <div class="btn-group" role="group">
+                        <div class="dropdown dropdown-lg">
+                            <button type="button" style="padding: 0.875rem 0.75rem;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <form class="form-horizontal" method="post"  action="<?php echo base_url('Dashboard/cari_dokumen') ?>" enctype="multipart/form-data" >
+                                    <input type="hidden" name="nama_dokumen" class="form-control" id="pencarian_id_nama_dokumen"  />
+                                    <input type="hidden" name="<?php echo  $this->security->get_csrf_token_name(); ?>" class="form-control" value="<?php echo  $this->security->get_csrf_hash() ?>"  />
+     
+                                  <div class="form-group">
+                                    <label for="filter">Nama Client</label>
+                                    <input type="text" class="form-control" id="pencarian_nama_klien">   
+                                    <input type="hidden" name="no_client" class="form-control" id="pencarian_no_nama_client">   
+                                 </div>
+                                    <hr>
+                                    <button type="submit" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span> Cari Dokumen</button>
+                                </form>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
+                    </div>
+                </div>
+            </div>
+    
+    <style>
+
+.dropdown.dropdown-lg .dropdown-menu {
+    margin-top: -1px;
+    padding: 6px 20px;
+}
+.input-group-btn .btn-group {
+    display: flex !important;
+}
+.btn-group .btn {
+    border-radius: 0;
+    margin-left: -1px;
+}
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn-group .form-horizontal .btn[type="submit"] {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+.form-group .form-control:last-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+@media screen and (min-width: 768px) {
+    #adv-search {
+        width: 500px;
+        margin: 0 auto;
+    }
+    .dropdown.dropdown-lg {
+        position: static !important;
+    }
+    .dropdown.dropdown-lg .dropdown-menu {
+        min-width: 600px;
+    }
+}
+    </style>
+    
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 <li class="nav-item active">
-<a class="nav-link" href="#"><i class="color_fa fa-2x fa fa-user"></i></a>
+    <a class="nav-link" href="<?php echo base_url() ?>">Home <span class="sr-only">(current)</span></a>
 </li>
-<li class="nav-item active">
-<a class="nav-link" href="<?php echo base_url('Dashboard/keluar'); ?>"><i class=" color_fa fa-2x fa fa-sign-out-alt"> </i></a>
+<li class="nav-item">
+<a class="nav-link" href="#">Riwayat pekerjaan</a>
+</li>
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+Pilihan
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="#">Pengaturan akun</a>
+<a class="dropdown-item" href="#">Profil</a>
+<div class="dropdown-divider"></div>
+<a class="dropdown-item" href="<?php echo base_url('Dashboard/keluar') ?>">Keluar</a>
+</div>
 </li>
 </ul>
 </div>
-</div>
 </nav>
+
+
 <div class="container-fluid">
 <div class="row">
-
-<div class="col-md-3 ">
+<div class="col-md-3">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-file-word float-right fa-4x sticky-top"></span>
+<span class="fa fa-file-word float-right fa-3x sticky-top"></span>
 Dokumen Total <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data dokumen</div>
-</div>	
-</div>	
+<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Selesai<div class="float-right">
+    <?php 
+$query3 = $this->db->get('data_berkas')->num_rows();
 
+echo $query3;
+?>
+</div></div>
+</div>	
+</div>	
 <div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-user-tie float-right fa-4x sticky-top"></span>
+<span class="fa fa-user-tie float-right fa-3x sticky-top"></span>
 Client Total <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right"><?php 
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right">
+    <?php 
 $query1 = $this->db->get('data_client')->num_rows();
 
 echo $query1;
@@ -51,16 +134,16 @@ echo $query1;
 </div></a>	
 </div>	
 
-    
-        <div class="col-md-3  "><a href="<?php echo base_url('Dashboard/dokumen_proses') ?>">
+
+<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/dokumen_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-exchange-alt float-right fa-4x sticky-top"></span>
+<span class="fa fa-exchange-alt float-right fa-3x sticky-top"></span>
 Dokumen Di Proses <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Total data di proses 
-    <div class="float-right"><?php 
+<div class="float-right"><?php 
 $query = $this->db->get_where('data_berkas',array('status_berkas'=>"Proses"))->num_rows();
 
 echo $query;
@@ -68,18 +151,83 @@ echo $query;
 </div>
 </div>
 </div>	</a>
-        </div>
+</div>
 
 <div class="col-md-3 ">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-users float-right fa-4x sticky-top"></span>
+<span class="fa fa-users float-right fa-3x sticky-top"></span>
 Total user <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total user </div>
+<div class="footer p-2" style="background-color:	#1ecee7;">Total user <div class="float-right">
+<?php 
+$query2 = $this->db->get('user')->num_rows();
+echo $query2;
+?>
+</div></div>
 </div>	
 </div>	
 
 </div>	
 </div>
+<script>
+
+$(function () {
+$("#pencarian_nama_dokumen").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
+select:function(event, ui){
+$("#pencarian_id_nama_dokumen").val(ui.item.no_nama_dokumen);
+
+}
+
+}
+);
+});
+
+$(function () {
+$("#pencarian_user").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_user') ?>',
+select:function(event, ui){
+$("#pencarian_no_user").val(ui.item.no_user);
+
+}
+
+}
+);
+});
+
+$(function () {
+$("#pencarian_nama_klien").autocomplete({
+minLength:0,
+delay:0,
+source:'<?php echo base_url('Dashboard/cari_nama_klien') ?>',
+select:function(event, ui){
+
+$("#pencarian_no_nama_client").val(ui.item.no_client);
+
+
+}
+
+}
+);
+});
+
+
+$("#menu-toggle").click(function(e) {
+e.preventDefault();
+$("#wrapper").toggleClass("toggled");
+var cek_icon = $(".fa-chevron-left").html();
+if(cek_icon != undefined){
+$("#z").addClass("fa-chevron-right");
+}else{
+$("#z").addClass("fa-chevron-left");
+}
+
+
+});
+</script>

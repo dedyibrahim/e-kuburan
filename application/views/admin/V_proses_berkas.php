@@ -1,17 +1,12 @@
 <body onload="refresh();">
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar'); ?>
+<?php  $this->load->view('umum/V_sidebar_admin'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar'); ?>
+<?php  $this->load->view('umum/V_navbar_admin'); ?>
 <div class="container-fluid">
 <div class="card p-2 mt-2">
 
-<?php 
 
-
-$data2 = $data->row_array();
-
-?>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
 <li class="nav-item">
@@ -31,10 +26,10 @@ $data2 = $data->row_array();
 <div class="tab-content">
 <div class="row m-3">
 <div class="col-md-6 card p-2">
-Jenis Perizinan:<?php echo $data2['jenis_perizinan'] ?><br>
-Jenis Client:<?php echo $data2['jenis_client'] ?><br>
-Nama:<?php echo $data2['nama_client'] ?><br>
-Alamat:<?php echo $data2['alamat_client'] ?><br>
+Jenis Perizinan : <?php  $data2 = $data->row_array(); echo $data2['jenis_perizinan'] ?><br>
+Jenis Client : <?php echo $data2['jenis_client'] ?><br>
+Nama : <?php echo $data2['nama_client'] ?><br>
+Alamat : <?php echo $data2['alamat_client'] ?><br>
 </div>
 
 <div class=" col">
@@ -110,7 +105,7 @@ foreach ($d->result_array() as $n){
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Dashboard/create_perorangan') ?>">
+<form  id="fileForm" method="post" enctype="multipart/form-data" action="<?php echo base_url('Admin/create_perorangan') ?>">
 <div class="modal-body" >
 <label>Nama Identitas</label>
 <input type="text" name="nama_identitas" id="nama_identitas" class="form-control required" accept="text/plain">
@@ -187,7 +182,7 @@ var no_nama_dokumen = $(".simpan_syarat option:selected").val();
 var nama_dokumen    = $(".simpan_syarat option:selected").text();
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/simpan_syarat') ?>",
+url:"<?php echo base_url('Admin/simpan_syarat') ?>",
 data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_berkas="+no_berkas,
 success:function(data){
 
@@ -264,7 +259,7 @@ $(function () {
 $("#cari_data_perorangan").autocomplete({
 minLength:0,
 delay:0,
-source:'<?php echo base_url('Dashboard/cari_data_perorangan') ?>',
+source:'<?php echo base_url('Admin/cari_data_perorangan') ?>',
 select:function(event, ui){
 var no_berkas = "<?php echo $this->uri->segment(3) ?>";
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -272,7 +267,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/simpan_syarat_perorangan') ?>",
+url:"<?php echo base_url('Admin/simpan_syarat_perorangan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas+"&no_nama_perorangan="+ui.item.no_nama_perorangan+"&nama_identitas="+ui.item.nama_identitas+"&jenis_identitas="+ui.item.jenis_identitas+"&file_berkas="+ui.item.file_berkas+"&file_lampiran="+ui.item.file_lampiran+"&no_identitas="+ui.item.no_identitas+"&status_jabatan="+ui.item.status_jabatan,
 success:function(data){
 
@@ -320,7 +315,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/form_perizinan') ?>",
+url:"<?php echo base_url('Admin/form_perizinan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $("#form_perizinan").html(data);  
@@ -334,7 +329,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/form_perorangan') ?>",
+url:"<?php echo base_url('Admin/form_perorangan') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $("#data_perorangan").html(data);  
@@ -347,7 +342,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/hapus_syarat') ?>",
+url:"<?php echo base_url('Admin/hapus_syarat') ?>",
 data:"token="+token+"&id_syarat_dokumen="+id,
 success:function(data){
 refresh();
@@ -358,7 +353,7 @@ function hapus_perorangan(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/hapus_data_syarat_perorangan') ?>",
+url:"<?php echo base_url('Admin/hapus_data_syarat_perorangan') ?>",
 data:"token="+token+"&id_data_syarat_perorangan="+id,
 success:function(data){
 $("#syarat_perorangan"+id).hide('slow');
@@ -530,7 +525,7 @@ formData.append('file_perorangan',file_perorangan.get(0).files[0]);
 formData.append('id_data_perorangan',no_nama_perorangan);
 
 $.ajax({
-url        : '<?php echo base_url('Dashboard/simpan_file_perorangan') ?>',
+url        : '<?php echo base_url('Admin/simpan_file_perorangan') ?>',
 type       : 'POST',
 contentType: false,
 cache      : false,
@@ -577,13 +572,110 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/hapus_lampiran') ?>",
+url:"<?php echo base_url('Admin/hapus_lampiran') ?>",
 data:"token="+token+"&id_data_perorangan="+id_data_perorangan,
 success:function(data){
 refresh();
 }
+
+});
+
+}
+
+
+function upload_syarat(id){
+$(".upload_perizinan"+id).show();
+var dokumen_perizinan = $("#dokumen_perizinan"+id).get(0).files[0];
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$(".btn_upload_syarat"+id).attr("disabled", true);
+$(".btn_hapus_syarat"+id).attr("disabled", true);
+
+
+formData = new FormData();
+formData.append('token',token);         
+formData.append('dokumen_perizinan',dokumen_perizinan);
+formData.append('id_syarat_dokumen',id);
+
+$.ajax({
+url        : '<?php echo base_url('Dashboard/simpan_file_perizinan') ?>',
+type       : 'POST',
+contentType: false,
+cache      : false,
+processData: false,
+data       : formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
+}else{
+jqXHR = new window.XMLHttpRequest();
+}
+
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+console.log(percentComplete);
+$("#upload_perizinan_progress"+id).attr('style',  'width:'+percentComplete+'%');
+}
+
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+
+var r = JSON.parse(data);
+if(r.status == "Berhasil"){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false, 
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'success',
+title: r.pesan
+}).then(function(){
+$(".upload_perizinan"+id).hide();
+$(".btn").removeAttr("disabled");    
+refresh();    
+});    
+
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false, 
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: 'error',
+title: r.pesan
+});
+$(".upload_perizinan"+id).hide();
+$(".btn_hapus_syarat"+id).removeAttr("disabled");    
+$(".btn_upload_syarat"+id).removeAttr("disabled");    
+refresh();    
+
+}
+
+}
+
 });
 }
+
 
 
 function load_form_utama(){
@@ -592,7 +684,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/form_utama') ?>",
+url:"<?php echo base_url('Admin/form_utama') ?>",
 data:"token="+token+"&no_berkas="+no_berkas,
 success:function(data){
 $(".form_utama").html(data);  
@@ -616,7 +708,7 @@ formData.append('file_jenis',jenis);
 formData.append('no_berkas',no_berkas);
 
 $.ajax({
-url        : '<?php echo base_url('Dashboard/simpan_utama') ?>',
+url        : '<?php echo base_url('Admin/simpan_utama') ?>',
 type       : 'POST',
 contentType: false,
 cache      : false,
@@ -694,7 +786,7 @@ function dokumen_sebelumnya(id){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/dokumen_sebelumnya') ?>",
+url:"<?php echo base_url('Admin/dokumen_sebelumnya') ?>",
 data:"token="+token+"&no_berkas="+id,
 success:function(data){
 $(".data_dokumen_sebelumnya").html(data);      
@@ -747,7 +839,7 @@ function update_utama(no_berkas,jenis_utama){
 
 Swal.fire({
 title: '<?php echo $this->session->userdata('nama_lengkap') ?> yakin!',
-text: "Jika ingin di update maka dokumen sebelumnya akan di hapus dalam sistem.",
+text: "Jika ingin di ganti maka dokumen sebelumnya akan di hapus dalam sistem.",
 type: 'warning',
 showCancelButton: true,
 confirmButtonColor: '#3085d6',
@@ -767,7 +859,7 @@ Swal.fire(
 var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/perbaharui_utama') ?>",
+url:"<?php echo base_url('Admin/perbaharui_utama') ?>",
 data:"token="+token+"&no_berkas="+no_berkas+"&jenis_utama="+jenis_utama,
 success:function(data){
 $('#modal_dokumen_lain').modal('hide'); 
@@ -782,7 +874,7 @@ refresh();
 }
 
 function download_utama(no_berkas,jenis){
-window.location="<?php echo base_url('Dashboard/download_utama') ?>/"+no_berkas+"/"+jenis;
+window.location="<?php echo base_url('Admin/download_utama') ?>/"+no_berkas+"/"+jenis;
 }
 
 function download_perizinan(no_client,no_nama_dokumen){
@@ -791,126 +883,7 @@ window.location="<?php echo base_url('Dashboard/download_perizinan') ?>/"+no_cli
 
 </script>
 <!---------------------script upload file perorangan------------------------>
-<script>
-
-(function($){
-var days	= 24*60*60,
-hours	= 60*60,
-minutes	= 60;
-$.fn.countup = function(prop){
-
-var options = $.extend({
-callback	: function(){},
-start		: new Date()
-},prop);
-
-var passed = 0, d, h, m, s, 
-positions;
-
-init(this, options);
-
-positions = this.find('.position');
-
-
-
-(function tick(){
-
-passed = Math.floor((new Date() - options.start) / 1000);
-
-d = Math.floor(passed / days);
-updateDuo(0, 1, d);
-passed -= d*days;
-
-h = Math.floor(passed / hours);
-updateDuo(2, 3, h);
-passed -= h*hours;
-
-m = Math.floor(passed / minutes);
-updateDuo(4, 5, m);
-passed -= m*minutes;
-
-s = passed;
-updateDuo(6, 7, s);
-
-options.callback(d, h, m, s);
-
-setTimeout(tick, 1000);
-})();
-
-// This function updates two digit positions at once
-function updateDuo(minor,major,value){
-switchDigit(positions.eq(minor),Math.floor(value/10)%10);
-switchDigit(positions.eq(major),value%10);
-}
-
-return this;
-};
-
-
-function init(elem, options){
-elem.addClass('countdownHolder');
-$.each(['Days','Hours','Minutes','Seconds'],function(i){
-
-$('<span class="count'+this+'">').html(
-'<span class="position">\
-<span class="digit static">0</span>\
-</span>\
-<span class="position">\
-<span class="digit static">0</span>\
-</span>'
-).appendTo(elem);
-
-
-if(this!="Seconds"){
-elem.append('<span class="countDiv countDiv'+i+'"></span>');
-}
-});
-
-}
-
-function switchDigit(position,number){
-
-var digit = position.find('.digit')
-
-if(digit.is(':animated')){
-return false;
-}
-
-if(position.data('digit') == number){
-return false;
-}
-
-position.data('digit', number);
-
-var replacement = $('<span>',{
-'class':'digit',
-css:{
-top:'-2.1em',
-opacity:0
-},
-html:number
-});
-
-digit
-.before(replacement)
-.removeClass('static')
-.animate({top:'2.5em',opacity:0},'fast',function(){
-digit.remove();
-})
-
-replacement
-.delay(100)
-.animate({top:0,opacity:1},'fast',function(){
-replacement.addClass('static');
-});
-}
-})(jQuery);
-
-
-$('#countdown').countup({
-start: new Date('<?php echo $data2['count_up'] ?>')
-});
-
+<script type="text/javascript">
 
 function tentukan_user(id){
 var nama     = $(".tentukan_user"+id+" option:selected").text();
@@ -920,7 +893,7 @@ var token     = "<?php echo $this->security->get_csrf_hash() ?>";
 if(no_user !=''){
 $.ajax({
 type:"post",
-url:"<?php echo base_url('Dashboard/simpan_pekerjaan_user') ?>",
+url:"<?php echo base_url('Admin/simpan_pekerjaan_user') ?>",
 data:"token="+token+"&no_user="+no_user+"&nama_user="+nama+"&id_syarat_dokumen="+id,
 success:function(data){
 refresh();

@@ -1,13 +1,11 @@
 <body>
-<div class="wrapper">
+<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar'); ?>
-<div id="content">
+<div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar'); ?>
+<div class="container-fluid">
+<div class="card p-2 mt-2">
 
-<div class="data_content card p-2 m-3 ">
-
-
-<!-- Nav tabs -->
 <ul class="nav nav-tabs">
 <li class="nav-item">
 <a class="nav-link active" data-toggle="tab" href="#jenis">Pengaturan Jenis Dokumen <i class="fas fa-cogs"></i></a>
@@ -125,14 +123,15 @@
 <input type="text" class="form-control" id="phone_edit" placeholder="Nomor Handphone . . .">
 <label>Level</label>
 <select class="form-control" id="level_edit">
+<option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>
 
 <label>Status</label>
 <select class="form-control" id="status_edit">
-<option value="Admin">Aktif</option>
-<option Value="Super Admin">Tidak Aktif</option>
+<option value="Aktif">Aktif</option>
+<option Value="Tidak Aktif">Tidak Aktif</option>
 </select>
 </div>
 <div class="modal-footer">
@@ -220,6 +219,7 @@
 
 <label>Level</label>
 <select class="form-control" id="level">
+<option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>

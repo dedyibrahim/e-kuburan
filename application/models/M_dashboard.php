@@ -74,6 +74,27 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
+public function cari_nama_klien($term){
+$this->db->from("data_client");
+$this->db->limit(15);
+$array = array('nama_client' => $term);
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
+
+public function cari_user($term){
+$this->db->from("user");
+$this->db->limit(15);
+$array = array('nama_lengkap' => $term ,'level' =>"User");
+$this->db->like($array);
+$query = $this->db->get();
+if($query->num_rows() >0 ){
+return $query->result();
+}
+}
 
 public function simpan_syarat($data){
 $this->db->insert('data_syarat_jenis_dokumen',$data);    
@@ -156,6 +177,22 @@ $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  o
 return $this->datatables->generate();
 }
 
+function json_data_perorangan(){
+    
+$this->datatables->select('id_perorangan,'
+.'data_perorangan.id_perorangan as id_perorangan,'
+.'data_perorangan.no_nama_perorangan as no_nama_perorangan,'
+.'data_perorangan.nama_identitas as nama_identitas,'
+.'data_perorangan.no_identitas as no_identitas,'
+.'data_perorangan.jenis_identitas as jenis_identitas,'
+.'data_perorangan.status_jabatan as status_jabatan,'
+);
+$this->datatables->from('data_perorangan');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
+return $this->datatables->generate();
+}
+
+
 public function hapus_syarat_dokumen($id_syarat_dokumen){
 $this->db->delete('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$id_syarat_dokumen));    
 }
@@ -222,6 +259,32 @@ $this->db->insert('data_perorangan',$data);
 public function simpan_syarat_perorangan($data){
 $this->db->insert('data_syarat_perorangan',$data);    
 }
+public function ambil_data_syarat_perorangan($id_syarat){
+ $query = $this->db->get_where('data_syarat_perorangan',array('id_data_syarat_perorangan'=>$id_syarat));
+ return $query;
+    
+    
+}
+public function ambil_data_perorangan($id_perorangan){
+ $query = $this->db->get_where('data_perorangan',array('id_perorangan'=>$id_perorangan));
+ return $query;
+    
+    
+}
+public function data_dokumen_utama($no_berkas){
+ $query = $this->db->get_where('data_dokumen_utama',array('no_berkas'=> base64_decode($no_berkas)));
+ return $query;
+    
+}
+
+public function data_perizinan($no_berkas){
+$query = $this->db->get_where('data_perizinan',array('no_berkas'=> base64_decode($no_berkas)));
+
+return $query;
+
+    
+}
+
 
 
 }
