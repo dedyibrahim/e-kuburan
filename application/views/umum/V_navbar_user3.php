@@ -5,31 +5,14 @@
 <span class="navbar-toggler-icon"></span>
 </button>
     
-<div class="input-group col-md-7 mx-auto" id="adv-search">
-<input type="text" class="form-control" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
-<div class="input-group-btn">
+<form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('User3/cari_file') ?>" method="post" >        
+<input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
+<input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
 <div class="btn-group" role="group">
-<div class="dropdown dropdown-lg">
-<button type="button" style="padding: 0.875rem 0.75rem;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-<div class="dropdown-menu dropdown-menu-right" role="menu">
-<form class="form-horizontal" method="post"  action="<?php echo base_url('Dashboard/cari_dokumen') ?>" enctype="multipart/form-data" >
-<input type="hidden" name="nama_dokumen" class="form-control" id="pencarian_id_nama_dokumen"  />
-<input type="hidden" name="<?php echo  $this->security->get_csrf_token_name(); ?>" class="form-control" value="<?php echo  $this->security->get_csrf_hash() ?>"  />
+<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
+</div>
 
-<div class="form-group">
-<label for="filter">Nama Client</label>
-<input type="text" class="form-control" id="pencarian_nama_klien">   
-<input type="hidden" name="no_client" class="form-control" id="pencarian_no_nama_client">   
-</div>
-<hr>
-<button type="submit" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span> Cari Dokumen</button>
 </form>
-</div>
-</div>
-<button type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
-</div>
-</div>
-</div>
 
 <style>
 

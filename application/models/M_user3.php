@@ -16,17 +16,17 @@ return $query;
 
 function json_data_perizinan_selesai(){
     
-$this->datatables->select('id_data_dokumen,'
-.'data_dokumen.nama_dokumen as nama_dokumen,'
-.'data_berkas.jenis_perizinan as jenis_perizinan,'
+$this->datatables->select('id_data_berkas,'
 .'data_client.nama_client as nama_client,'
+.'data_berkas.nama_file as nama_file,'
+.'data_pekerjaan.jenis_perizinan as jenis_perizinan,'
 );
-$this->datatables->from('data_dokumen');
-$this->datatables->join('data_berkas', 'data_berkas.no_berkas = data_dokumen.no_berkas');
-$this->datatables->join('data_client', 'data_client.no_client = data_dokumen.no_client');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Tambah pekerjaan <i class='fa fa-plus'></i></button>",'no_client');
-$this->datatables->where('data_dokumen.status_dokumen','Selesai');
-$this->datatables->where('data_dokumen.no_user',$this->session->userdata('no_user'));
+$this->datatables->from('data_berkas');
+$this->datatables->join('data_client', 'data_client.no_client = data_berkas.no_client');
+$this->datatables->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_berkas.no_pekerjaan');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); >EDIT</button>",'no_client');
+$this->datatables->where('data_berkas.status','Selesai');
+$this->datatables->where('data_berkas.no_pengurus',$this->session->userdata('no_user'));
 return $this->datatables->generate();
 }
 

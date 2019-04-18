@@ -29,8 +29,8 @@
             <td class="text-center"><?php echo $data['target_kelar_perizinan'] ?></td>
             <td>
                 <select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option">
-                    <option value="1">Tolak Tugas</option>
-                    <option value="2">Alihkan Tugas</option>
+                    <option value="1"></option>
+                    <option value="2">Buat Laporan</option>
                     <option value="3">Lihat Persyaratan</option>
                     <option value="4">Upload Berkas</option>
                 </select>    
@@ -48,20 +48,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Buat Laporan</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Masukan Progress Pekerjaan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
           
-          <input type="hidden" value="" id="no_nama_dokumen">
-          <input type="hidden" value="" id="no_berkas">
-          <textarea id="laporan"class="form-control"></textarea>
+          <input type="hidden" value="" id="no_pekerjaan">
+          <input type="hidden" value="" id="id_data_berkas">
+          <textarea id="laporan"class="form-control" placeholder="masukan progress pekerjaan"></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="simpan_laporan">Simpan laporan</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-sm btn-success" id="simpan_laporan">Simpan laporan</button>
       </div>
     </div>
   </div>
@@ -90,94 +90,17 @@
 function aksi_option(no_pekerjaan,id_data_berkas){
 var aksi_option = $(".data_option option:selected").val();
 if(aksi_option == 1){
-form_tolak_tugas();
+//form_tolak_tugas();
 }else if(aksi_option == 2){
-form_alihkan_tugas();
+$('#modal_laporan').modal('show');
+$("#no_pekerjaan").val(no_pekerjaan);
+$("#id_data_berkas").val(id_data_berkas);
 }else if(aksi_option == 3){
 form_lihat_persyaratan(no_pekerjaan);    
 }else if(aksi_option == 4){
 form_upload_berkas(no_pekerjaan,id_data_berkas);
 }
-
 }
- 
-/*function upload_syarat(id){
-$(".upload_perizinan"+id).show();
-var dokumen_perizinan = $("#dokumen_perizinan"+id).get(0).files[0];
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-$(".btn_upload_syarat"+id).attr("disabled", true);
-$(".btn_hapus_syarat"+id).attr("disabled", true);
-formData = new FormData();
-formData.append('token',token);         
-formData.append('dokumen_perizinan',dokumen_perizinan);
-formData.append('id_syarat_dokumen',id);
-$.ajax({
-url        : '<?php echo base_url('User3/simpan_file_perizinan') ?>',
-type       : 'POST',
-contentType: false,
-cache      : false,
-processData: false,
-data       : formData,
-xhr        : function (){
-var jqXHR = null;
-if ( window.ActiveXObject ){
-jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
-}else{
-jqXHR = new window.XMLHttpRequest();
-}
-jqXHR.upload.addEventListener( "progress", function ( evt ){
-if ( evt.lengthComputable ){
-var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
-console.log(percentComplete);
-$("#upload_perizinan_progress"+id).attr('style',  'width:'+percentComplete+'%');
-}
-}, false );
-jqXHR.addEventListener( "progress", function ( evt ){
-if ( evt.lengthComputable ){
-var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
-}
-}, false );
-return jqXHR;
-},
-success    : function ( data ){
-var r = JSON.parse(data);
-if(r.status == "Berhasil"){
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false, 
-customClass: 'animated zoomInDown'
-});
-Toast.fire({
-type: 'success',
-title: r.pesan
-}).then(function(){
-$(".upload_perizinan"+id).hide();
-$(".btn").removeAttr("disabled");
-window.location.href ="<?php echo base_url('User3/halaman_proses') ?>";
-});    
-}else{
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false, 
-customClass: 'animated zoomInDown'
-});
-Toast.fire({
-type: 'error',
-title: r.pesan
-});
-$(".upload_perizinan"+id).hide();
-$(".btn_hapus_syarat"+id).removeAttr("disabled");    
-$(".btn_upload_syarat"+id).removeAttr("disabled");    
-}
-}
-});
-}*/
  
   
 function form_lihat_persyaratan(no_pekerjaan){
@@ -205,18 +128,48 @@ $('#modal_data').modal('show');
 }
 });
 }
-
-function form_alihkan_tugas(no_pekerjaan,id_data_berkas){
-
-}
-
 function form_tolak_tugas(no_pekerjaan,id_data_berkas){
-
 }
 
 function download(id_data_berkas){
 window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
 }
+
+$(document).ready(function(){
+$("#simpan_laporan").click(function(){
+var no_pekerjaan   = $("#no_pekerjaan").val();
+var id_data_berkas = $("#id_data_berkas").val();
+var laporan        = $("#laporan").val();
+var token           = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+data:"token="+token+"&laporan="+laporan+"&id_data_berkas="+id_data_berkas+"&no_pekerjaan="+no_pekerjaan,
+url :"<?php echo base_url('User3/simpan_laporan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+$('#modal_laporan').modal('hide');
+$("#laporan").val("")
+
+}
+});
+
+}); 
+
+});
 
 </script>    
 </html>

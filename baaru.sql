@@ -39,6 +39,7 @@ CREATE TABLE `data_berkas` (
   `tanggal_tugas` varchar(255) DEFAULT NULL,
   `tanggal_proses_tugas` varchar(255) DEFAULT NULL,
   `target_kelar_perizinan` varchar(255) DEFAULT NULL,
+  `tanggal_upload` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_data_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   KEY `no_client` (`no_client`),
@@ -47,7 +48,7 @@ CREATE TABLE `data_berkas` (
   CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_2` FOREIGN KEY (`no_pekerjaan`) REFERENCES `data_pekerjaan` (`no_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_3` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +57,7 @@ CREATE TABLE `data_berkas` (
 
 LOCK TABLES `data_berkas` WRITE;
 /*!40000 ALTER TABLE `data_berkas` DISABLE KEYS */;
-INSERT INTO `data_berkas` VALUES (150,'C_000001','000001','N_0001','0007',NULL,NULL,'Surat Izin Usaha Perdagangan ( SIUP )','Perizinan','Proses',NULL,'Wisnu Subroto N.A','0002','12/04/2019','12/04/2019','13/04/2019');
+INSERT INTO `data_berkas` VALUES (275,'C_000002','000002','N_0009','0007','Dok000002','4d5e7abd26b0e58cf36e8c99af293789.docx','Anggaran dasar PT Jaya abadi.','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'16/04/2019 15:2553'),(282,'C_000002','000002','N_0002','0007','Dok000002','2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','NPWP PT Jaya Abadi teksindo','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','18/04/2019','18/04/2019','25/04/2019','18/04/2019 10:0814'),(283,'C_000003','000003','N_0006','0007','Dok000003','8994c27b368fa959426ff87dc8370f8d.jpg','KTP Bapak Sukoco','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:1759'),(284,'C_000003','000003','N_0006','0007','Dok000003','dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','KTP Adi riyatna','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:1854'),(285,'C_000003','000003','N_0010','0007','Dok000003','621e4d6c2535f88ff36f33fc3b1eb179.jpg','Kartu Keluarga  Bapak zaenudin','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:2000'),(289,'C_000002','000002','N_0004','0007',NULL,NULL,'Tanda daftar perusahaan ( TDP )','Perizinan','Proses',NULL,'MK Fadzri Patriajaya','0012','18/04/2019','18/04/2019','19/04/2019',NULL),(290,'C_000002','000002','N_0003','0007','Dok000002','bb74361940532b9a724eb6167b9ef274.jpg','SK Kehakiman PT Jaya abadi teksindo','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','18/04/2019','18/04/2019','25/04/2019','18/04/2019 10:0849'),(291,'C_000001','000001','N_0010','0007',NULL,NULL,'Kartu Keluarga KK','Perizinan','',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `data_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +83,7 @@ CREATE TABLE `data_client` (
   KEY `no_client` (`no_client`),
   KEY `no_user` (`no_user`),
   CONSTRAINT `data_client_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +92,7 @@ CREATE TABLE `data_client` (
 
 LOCK TABLES `data_client` WRITE;
 /*!40000 ALTER TABLE `data_client` DISABLE KEYS */;
-INSERT INTO `data_client` VALUES (27,'C_000001','PT MELAMUN TIGA BELAS','Badan Hukum','Jl.Raya Bogor','11/04/2019 14:11:29','Yus Suwandari','0007','Dok000001',''),(28,'C_000002','PT Melamun Tiga Belas','Badan Hukum','JL.muara karang Blok L9 T No.8 Penjaringan Jakarta','12/04/2019 08:37:23','Yus Suwandari','0007','Dok000002','093498884');
+INSERT INTO `data_client` VALUES (33,'C_000001','PT MELAMUN TIGA BELAS','Badan Hukum','Jl.Raya Bogor','16/04/2019 13:48:56','Yus Suwandari','0007','Dok000001','0998888233'),(34,'C_000002','PT Jaya abadi teksindo','Badan Hukum','Jl.Raya Bogor KM.21 ','16/04/2019 15:24:37','Yus Suwandari','0007','Dok000002','099499399884'),(35,'C_000003','PT Faraday dunia','Badan Hukum','Jl.Muara Karang Blok L9 T No.9','18/04/2019 09:00:38','Yus Suwandari','0007','Dok000003','099988843'),(36,'C_000004','PT Milabakti tiga ratus','Perorangan','Jl.Muara Karang Blok L9 T No.8','18/04/2019 09:01:29','Yus Suwandari','0007','Dok000004','8934788383');
 /*!40000 ALTER TABLE `data_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +111,7 @@ CREATE TABLE `data_daftar_persyaratan` (
   `nama_lampiran` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_data_daftar_persyaratan`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +120,7 @@ CREATE TABLE `data_daftar_persyaratan` (
 
 LOCK TABLES `data_daftar_persyaratan` WRITE;
 /*!40000 ALTER TABLE `data_daftar_persyaratan` DISABLE KEYS */;
-INSERT INTO `data_daftar_persyaratan` VALUES (7,'S_001','Komisaris utama','N_0006','KTP (Kartu Tanda Penduduk)'),(8,'S_002','Direktur utama','N_0006','KTP (Kartu Tanda Penduduk)'),(9,'S_003','Jumlah Saham','',''),(10,'S_004','Jumlah karyawan','','');
+INSERT INTO `data_daftar_persyaratan` VALUES (7,'S_001','Komisaris utama','N_0006','KTP (Kartu Tanda Penduduk)'),(8,'S_002','Direktur utama','N_0006','KTP (Kartu Tanda Penduduk)'),(9,'S_003','Jumlah Saham','',''),(10,'S_004','Jumlah karyawan','',''),(11,'S_005','Copy SIUP','N_0001','Surat Izin Usaha Perdagangan ( SIUP )'),(12,'S_006','Copy TDP','N_0004','Tanda daftar perusahaan ( TDP )'),(13,'S_007','Copy NPWP','N_0002','Nomor pokok wajib pajak (NPWP)'),(14,'S_008','Copy Domisili','N_0005','Domisili'),(15,'S_009','Copy-copy surat BKPM','N_0007','SP BKPM'),(16,'S_010','Anggaran dasar','N_0009','Anggaran Dasar'),(17,'S_011','RUPS','N_0008','RUPS'),(18,'S_012','Jenis badan usaha','',''),(19,'S_013','Kartu Keluarga','N_0010','Kartu Keluarga KK');
 /*!40000 ALTER TABLE `data_daftar_persyaratan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +167,7 @@ CREATE TABLE `data_meta` (
   PRIMARY KEY (`id_data_meta`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`),
   CONSTRAINT `data_meta_ibfk_1` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +176,7 @@ CREATE TABLE `data_meta` (
 
 LOCK TABLES `data_meta` WRITE;
 /*!40000 ALTER TABLE `data_meta` DISABLE KEYS */;
-INSERT INTO `data_meta` VALUES (25,'N_0006','NIK'),(26,'N_0006','Nama'),(28,'N_0006','Tanggal lahir'),(30,'N_0005','No Domisili'),(31,'N_0005','Keterangan'),(32,'N_0004','No TDP'),(33,'N_0004','Keterangan'),(34,'N_0003','No SK'),(35,'N_0002','No NPWP'),(36,'N_0002','Nama'),(37,'N_0002','Tanggal lahir'),(38,'N_0001','No SIUP'),(39,'N_0001','Keterangan'),(40,'N_0006','Alamat');
+INSERT INTO `data_meta` VALUES (41,'N_0006','NIK'),(42,'N_0005','No.Domisili'),(43,'N_0004','No TDP'),(44,'N_0003','No SK'),(45,'N_0002','No NPWP'),(46,'N_0001','No SIUP'),(47,'N_0009','Keterangan'),(48,'N_0008','Keterangan'),(49,'N_0007','Keterangan'),(50,'N_0010','No KK ');
 /*!40000 ALTER TABLE `data_meta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +199,7 @@ CREATE TABLE `data_meta_berkas` (
   PRIMARY KEY (`id_data_meta_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   CONSTRAINT `data_meta_berkas_ibfk_1` FOREIGN KEY (`nama_berkas`) REFERENCES `data_berkas` (`nama_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,6 +208,7 @@ CREATE TABLE `data_meta_berkas` (
 
 LOCK TABLES `data_meta_berkas` WRITE;
 /*!40000 ALTER TABLE `data_meta_berkas` DISABLE KEYS */;
+INSERT INTO `data_meta_berkas` VALUES (100,'4d5e7abd26b0e58cf36e8c99af293789.docx','C_000002','000002','N_0009','Nama_berkas','Anggaran dasar PT Jaya abadi.','Dok000002'),(101,'4d5e7abd26b0e58cf36e8c99af293789.docx','C_000002','000002','N_0009','Keterangan','-','Dok000002'),(114,'8994c27b368fa959426ff87dc8370f8d.jpg','C_000003','000003','N_0006','Nama_berkas','KTP Bapak Sukoco','Dok000003'),(115,'8994c27b368fa959426ff87dc8370f8d.jpg','C_000003','000003','N_0006','NIK','2398479834838','Dok000003'),(116,'dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','C_000003','000003','N_0006','Nama_berkas','KTP Adi riyatna','Dok000003'),(117,'dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','C_000003','000003','N_0006','NIK','23784672873','Dok000003'),(118,'621e4d6c2535f88ff36f33fc3b1eb179.jpg','C_000003','000003','N_0010','Nama_berkas','Kartu Keluarga  Bapak zaenudin','Dok000003'),(119,'621e4d6c2535f88ff36f33fc3b1eb179.jpg','C_000003','000003','N_0010','No_KK_','234234234','Dok000003'),(120,'2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','C_000002','000002','N_0002','Nama_berkas','NPWP PT Jaya Abadi teksindo','Dok000002'),(121,'2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','C_000002','000002','N_0002','No_NPWP','2343432434','Dok000002'),(122,'bb74361940532b9a724eb6167b9ef274.jpg','C_000002','000002','N_0003','Nama_berkas','SK Kehakiman PT Jaya abadi teksindo','Dok000002'),(123,'bb74361940532b9a724eb6167b9ef274.jpg','C_000002','000002','N_0003','No_SK','234343','Dok000002');
 /*!40000 ALTER TABLE `data_meta_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +237,7 @@ CREATE TABLE `data_pekerjaan` (
   KEY `no_client` (`no_client`),
   KEY `no_pekerjaan` (`no_pekerjaan`),
   CONSTRAINT `data_pekerjaan_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +246,7 @@ CREATE TABLE `data_pekerjaan` (
 
 LOCK TABLES `data_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_pekerjaan` VALUES (26,'C_000001','000001','Proses','11/04/2019 14:11:29','Apr,11,2019, 14:11:29',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','11/04/2019 14:11:29','2019/04/11','12/04/2019'),(27,'C_000002','000002','Masuk','12/04/2019 08:37:23','Apr,12,2019, 08:37:23',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','12/04/2019 08:37:23','','30/04/2019');
+INSERT INTO `data_pekerjaan` VALUES (32,'C_000001','000001','Proses','16/04/2019 13:48:56','Apr,16,2019, 13:48:56',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','16/04/2019 13:48:56','2019/04/16','19/04/2019'),(33,'C_000002','000002','Proses','16/04/2019 15:24:37','Apr,16,2019, 15:24:37',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','16/04/2019 15:24:37','2019/04/16','30/04/2019'),(34,'C_000003','000003','Proses','18/04/2019 09:00:39','Apr,18,2019, 09:00:39',NULL,'0007','Yus Suwandari','Akta perubahan Yayasan','18/04/2019 09:00:39','2019/04/18','22/04/2019'),(35,'C_000004','000004','Masuk','18/04/2019 09:01:29','Apr,18,2019, 09:01:29',NULL,'0007','Yus Suwandari','Akta pendirian Perseroan Terbatas ( PT )','18/04/2019 09:01:29','','20/04/2019');
 /*!40000 ALTER TABLE `data_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,10 +260,15 @@ DROP TABLE IF EXISTS `data_persyaratan`;
 CREATE TABLE `data_persyaratan` (
   `id_data_persyaratan` int(11) NOT NULL AUTO_INCREMENT,
   `no_pekerjaan` varchar(255) NOT NULL,
+  `meta_syarat` varchar(255) DEFAULT NULL,
   `key_syarat` varchar(255) NOT NULL,
   `value_syarat` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_persyaratan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_data_persyaratan`),
+  KEY `no_pekerjaan` (`no_pekerjaan`),
+  KEY `meta_syarat` (`meta_syarat`),
+  CONSTRAINT `data_persyaratan_ibfk_1` FOREIGN KEY (`no_pekerjaan`) REFERENCES `data_pekerjaan` (`no_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_persyaratan_ibfk_2` FOREIGN KEY (`meta_syarat`) REFERENCES `data_berkas` (`nama_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +277,37 @@ CREATE TABLE `data_persyaratan` (
 
 LOCK TABLES `data_persyaratan` WRITE;
 /*!40000 ALTER TABLE `data_persyaratan` DISABLE KEYS */;
+INSERT INTO `data_persyaratan` VALUES (39,'000001',NULL,'Jenis badan usaha','Pertambangan'),(42,'000002','4d5e7abd26b0e58cf36e8c99af293789.docx','Anggaran dasar','Anggaran dasar PT Jaya abadi'),(43,'000002',NULL,'Jumlah Saham','13000 lembar'),(44,'000003',NULL,'Jumlah Saham','6000'),(45,'000003',NULL,'Jenis badan usaha','Pertambangan'),(46,'000003','8994c27b368fa959426ff87dc8370f8d.jpg','Komisaris utama','Bapak Sukoco adi ningrat'),(47,'000003','dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','Direktur utama','Bapak Adi riyatna'),(48,'000003','621e4d6c2535f88ff36f33fc3b1eb179.jpg','Kartu Keluarga','Kartu Keluarga  Bapak zaenudin');
 /*!40000 ALTER TABLE `data_persyaratan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_progress_perizinan`
+--
+
+DROP TABLE IF EXISTS `data_progress_perizinan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_progress_perizinan` (
+  `id_data_progress_perizinan` int(11) NOT NULL AUTO_INCREMENT,
+  `id_data_berkas` varchar(255) NOT NULL,
+  `no_pekerjaan` varchar(255) NOT NULL,
+  `no_user` varchar(255) NOT NULL,
+  `laporan` text NOT NULL,
+  `waktu` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_data_progress_perizinan`),
+  KEY `id_data_berkas` (`id_data_berkas`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_progress_perizinan`
+--
+
+LOCK TABLES `data_progress_perizinan` WRITE;
+/*!40000 ALTER TABLE `data_progress_perizinan` DISABLE KEYS */;
+INSERT INTO `data_progress_perizinan` VALUES (9,'270','000001','0012','Masuk kedalam kelurahan','16/04/2019 13:56:14');
+/*!40000 ALTER TABLE `data_progress_perizinan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -288,7 +325,7 @@ CREATE TABLE `nama_dokumen` (
   `pembuat` varchar(255) NOT NULL,
   PRIMARY KEY (`id_nama_dokumen`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +334,7 @@ CREATE TABLE `nama_dokumen` (
 
 LOCK TABLES `nama_dokumen` WRITE;
 /*!40000 ALTER TABLE `nama_dokumen` DISABLE KEYS */;
-INSERT INTO `nama_dokumen` VALUES (1,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','2019-03-06 06:35:35.892906','Dedy Ibrahim'),(2,'N_0002','Nomor pokok wajib pajak (NPWP)','2019-03-06 06:36:01.479696','Dedy Ibrahim'),(3,'N_0003','SK Kehakiman','2019-03-06 06:36:20.751813','Dedy Ibrahim'),(4,'N_0004','Tanda daftar perusahaan ( TDP )','2019-03-06 06:36:57.464862','Dedy Ibrahim'),(5,'N_0005','Domisili','2019-03-06 06:37:33.825515','Dedy Ibrahim'),(6,'N_0006','KTP (Kartu Tanda Penduduk)','2019-04-08 08:00:54.463990','Admin');
+INSERT INTO `nama_dokumen` VALUES (1,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','2019-03-06 06:35:35.892906','Dedy Ibrahim'),(2,'N_0002','Nomor pokok wajib pajak (NPWP)','2019-03-06 06:36:01.479696','Dedy Ibrahim'),(3,'N_0003','SK Kehakiman','2019-03-06 06:36:20.751813','Dedy Ibrahim'),(4,'N_0004','Tanda daftar perusahaan ( TDP )','2019-03-06 06:36:57.464862','Dedy Ibrahim'),(5,'N_0005','Domisili','2019-03-06 06:37:33.825515','Dedy Ibrahim'),(6,'N_0006','KTP (Kartu Tanda Penduduk)','2019-04-08 08:00:54.463990','Admin'),(7,'N_0007','SP BKPM','2019-04-15 04:10:33.049895','Admin'),(8,'N_0008','RUPS','2019-04-15 04:11:48.579680','Admin'),(9,'N_0009','Anggaran Dasar','2019-04-15 04:12:05.210502','Admin'),(10,'N_0010','Kartu Keluarga KK','2019-04-16 06:47:10.757792','Admin');
 /*!40000 ALTER TABLE `nama_dokumen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-12 14:57:14
+-- Dump completed on 2019-04-18 17:01:55

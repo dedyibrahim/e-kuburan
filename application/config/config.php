@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -24,7 +23,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://192.168.0.117/';
-
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -36,7 +34,6 @@ $config['base_url'] = 'http://192.168.0.117/';
 |
 */
 $config['index_page'] = 'index.php';
-
 /*
 |--------------------------------------------------------------------------
 | URI PROTOCOL

@@ -6,32 +6,24 @@
 <div class="container-fluid">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Lengkapi persyaratan <?php echo $data2['nama_client'] ?></h4>
+<h4 align="center">Lengkapi persyaratan <?php echo $data2['nama_client'] ?> <button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
+</h4>
+
 </div>
 </div>
 
 
-<div class="row m-3">
-<div class="col-md-6">
-Jenis Perizinan : <?php echo $data2['jenis_perizinan'] ?><br>
-Jenis Client : <?php echo $data2['jenis_client'] ?><br>
-Nama : <?php echo $data2['nama_client'] ?><br>
-Alamat : <?php echo $data2['alamat_client'] ?><br>
-</div>
-<div class="col text-center p-5">
-<button class="btn btn-success  float-right"  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
-</div>    
-</div>
-    <hr>
+
+<hr>
 <div class="container">
 <div class="row">
-<div class="col">
+<div class="col-md-4">
 
 
 <div class="row ">
 
 <div class="col  mx-auto ">
-<p class="text-center"> Definisikan persyaratan</p>     
+<p class="text-center"> Definisikan persyaratan </p>     
 <input type="text" class="form-control" name="definisikan_persyaratan" id="definisikan_persyaratan">
 <hr>
 </div>
@@ -54,27 +46,32 @@ Alamat : <?php echo $data2['alamat_client'] ?><br>
 </div>    
 </div>    
 
-<div class="col">
+<div class="col card">
 <div class="row ">
 
-<div class="col   mx-auto ">
-<p class="text-center">Persyaratan terdefinisikan</p>
+<div class="col   card-header  mx-auto ">
+<p class="text-center">Persyaratan Terdefinisikan</p>
+<hr>
+<?php foreach ($data_persyaratan->result_array() as $dp){ ?>
+    <?php echo  $dp['key_syarat'] ?> : <?php echo  $dp['value_syarat'] ?><br>
+
+<?php } ?>
+<hr>    
+<div class="text-center">Daftar berkas persyaratan yang dilampirkan</div>
 <hr>
 <?php foreach ($data_upload->result_array() as $u){  ?>
-<div class="card p-2 m-2">
-<?php $meta = $this->db->get_where('data_meta_berkas',array('nama_berkas'=>$u['nama_berkas']) );
-foreach ($meta->result_array() as  $m){
-?>
-<?php 
-$subjectVal = $m['nama_meta']; 
-$hasil_meta = str_replace('_', '&nbsp;', $subjectVal); 
-echo  $hasil_meta;
-?> : <?php echo $m['value_meta'] ?> <br> 
-<?php } ?>   
+<div class="card p-2">
+    <div class="row">
+        <div class="col"><?php echo $u['nama_file'] ?></div> 
+        <div class="col-md-3 text-right">
+            <button class="btn btn-success btn-sm" onclick="download('<?php echo $u['id_data_berkas'] ?>')"><span class="fa fa-download"></span></button>
+            <a href="<?php echo base_url('User2/hapus_berkas_persyaratan/'.$u['no_pekerjaan']."/".$u['id_data_berkas']) ?>"><button class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></a>
+        </div>    
+    </div>
 </div>
 <?php } ?>
 </div>
-<hr>
+
 </div>
 
 </div>
@@ -199,6 +196,10 @@ $("#data_dokumen_persyaratan").html(data);
 }
 );
 });
+
+function download(id_data_berkas){
+window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
+}
 </script>
 </body>
 

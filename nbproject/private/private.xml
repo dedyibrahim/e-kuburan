@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/notaris.com/application/views/user2/V_lengkapi_persyaratan.php</file>
+            <file>file:/var/www/notaris.com/application/views/user3/V_pencarian.php</file>
+            <file>file:/var/www/notaris.com/application/views/umum/V_navbar_user1.php</file>
+            <file>file:/var/www/notaris.com/application/controllers/User1.php</file>
+            <file>file:/var/www/notaris.com/application/controllers/User3.php</file>
+            <file>file:/var/www/notaris.com/application/views/umum/V_navbar_user2.php</file>
+            <file>file:/var/www/notaris.com/application/config/config.php</file>
             <file>file:/var/www/notaris.com/application/controllers/User2.php</file>
-            <file>file:/var/www/notaris.com/application/models/M_user2.php</file>
+            <file>file:/var/www/notaris.com/application/views/umum/V_navbar_user3.php</file>
+            <file>file:/var/www/notaris.com/application/views/user1/V_pencarian.php</file>
         </group>
     </open-files>
 </project-private>

@@ -561,7 +561,25 @@ redirect(404);
     
 }
 
+public function cari_file(){
+if($this->input->post()){
+$input = $this->input->post();
+$this->db->select('*');
+$this->db->from('data_meta_berkas');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
+$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
+$this->db->like($array);
 
+$query = $this->db->get();
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_pencarian',['query'=>$query]);
+
+}else{
+redirect(404);    
+}    
+}
 }
 
 

@@ -4,38 +4,54 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
+<div class="container-fluid">
+<div class="row">    
+<div class="col mt-2">
+<table class="table table-hover table-striped ">
+<tr>
+<th>Nama client</th>
+<th>Jenis Pekerjaan</th>
+<th>Tanggal tugas</th>
+<th class="text-center">Target kelar</th>
+<th>Aksi</th>
+</tr>
 <?php foreach ($query->result_array() as $data){ ?> 
-
-<div class="row p-1 ">
-<div class="col card  p-1 m-2">
-<div class="row  p-1">
-<div class="col-md-8  "><h5 align="center">Data client yang dalam antrian</h5><hr>
-<p style="font-size:15px; ">Nama client : <?php echo $data['nama_client'] ?><br>
-Jenis client : <?php echo $data['jenis_client'] ?><br>
-Alamat client : <?php echo $data['alamat_client'] ?><br>
-Jenis perizinan : <?php echo $data['jenis_perizinan'] ?><br>
-</div>
-<div class="col ">
-<h5 class="text-center" >Buat Persyaratan </h5>
-<hr>
-<p style="font-size:15px; "> 
-Dibuat pekerjaan : <?php echo $data['tanggal_antrian'] ?><br>
-Target kelar: <?php echo $data['target_kelar'] ?>
-</p>
-
-<button onclick="tambahkan_kedalam_proses('<?php echo base64_encode($data['no_pekerjaan']) ?>');" class="btn btn-sm btn-success btn-block">Proses Berkas <span class="fa fa-list-alt"> </span></button>   
-</div>
-</div>
-</div>    
-</div>
+<tr>
+<td><?php echo $data['nama_client'] ?></td>
+<td><?php echo $data['jenis_perizinan'] ?></td>
+<td><?php echo $data['tanggal_antrian'] ?></td>
+<td><?php echo $data['target_kelar'] ?></td>
+<td>
+<select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
+<option></option>
+<option value="1">Proses Perizinan</option>
+<option value="2">Alihkan Pekerjaan</option>
+</select>    
+</td>
+</tr>
 <?php } ?>
-    
-    
-
+ </table>        
+</div>
+</div>
+</div> 
 </div>    
 </div>
 </div>
 <script type="text/javascript">
+function aksi_option(no_pekerjaan,id_data_pekerjaan){
+var aksi_option = $(".data_option"+id_data_pekerjaan+" option:selected").val();
+if(aksi_option == 1){
+tambahkan_kedalam_proses(no_pekerjaan);
+}else if(aksi_option == 2){
+//form_alihkan_tugas();
+}else if(aksi_option == 3){
+//form_lihat_persyaratan(no_pekerjaan);    
+}else if(aksi_option == 4){
+//form_upload_berkas(no_pekerjaan,id_data_berkas);
+}
+
+}     
+    
 function tambahkan_kedalam_proses(no_pekerjaan){
 
 const Toast = Swal.mixin({
@@ -49,7 +65,7 @@ customClass: 'animated zoomInDown'
 
 Toast.fire({
 type: "info",
-title: "Pekerjaan diproses"
+title: "Pilih jenis perizinan"
 }).then(function() {
 window.location.href = "<?php echo base_url('User2/proses_pekerjaan/'); ?>"+no_pekerjaan;
 });

@@ -49,60 +49,7 @@ $this->load->view('umum/V_header');
 $this->load->view('user3/V_halaman_proses',['data_tugas'=>$data_tugas]);
 }
 
-public function simpan_file_perizinan(){
-if($this->input->post()){
-$get_syarat = $this->db->get_where('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$this->input->post('id_syarat_dokumen')))->row_array();
 
-$config['upload_path']          = './berkas/'.$get_syarat['file_berkas'].'/';
-$config['allowed_types']        = 'jpg|png|pdf|docx|doc|xls|xlsx|';
-$config['encrypt_name']         = TRUE;
-$this->upload->initialize($config);
-
-if (!$this->upload->do_upload('dokumen_perizinan')){
-
-$status = array(
-"status"=>"Gagal",
-"pesan" => $this->upload->display_errors()
-);
-echo json_encode($status);
-}else{
-
-$data2 = array(
-'file_berkas'      => $get_syarat['file_berkas'],
-'lampiran'         => $this->upload->data('file_name'),
-'status_berkas'    => "Selesai",
-'tanggal_selesai'  => date('Y/m/d H:i:s'),  
-);
-$this->db->update('data_syarat_jenis_dokumen',$data2,array('id_syarat_dokumen'=>$this->input->post('id_syarat_dokumen')));
-
-$data_dokumen = array(
-'no_nama_dokumen'  => $get_syarat['no_nama_dokumen'],
-'nama_dokumen'     => $get_syarat['nama_dokumen'],
-'no_berkas'        => $get_syarat['no_berkas'],
-'no_client'        => $get_syarat['no_client'],
-'file_berkas'      => $get_syarat['file_berkas'],
-'lampiran'         => $this->upload->data('file_name'),
-'pengupload'       => $this->session->userdata('nama_lengkap'),
-'no_user'          => $this->session->userdata('no_user'),
-'status_dokumen'   => 'Selesai',
-);    
-$this->db->insert('data_dokumen',$data_dokumen);    
-   
-
-
-
-
-$status = array(
-"status"=>"Berhasil",
-"pesan" =>"File ".$get_syarat['nama_dokumen']." Berhasil di upload",
-);
-echo json_encode($status);
-    
-}
-}else{
-redirect(404);    
-}    
-}
 
 public function halaman_selesai(){
 $data_tugas = $this->M_user3->data_tugas('Selesai');    
@@ -192,8 +139,9 @@ $data_berkas = array(
 'nama_berkas'       => $this->upload->data('file_name'),
 'nama_file'         => $this->input->post('Nama_berkas'),    
 'Pengupload'        => $this->session->userdata('nama_lengkap'),
-'status'            =>'Selesai'    
-    
+'status'            =>'Selesai',    
+'tanggal_upload'    => date('d/m/Y H:is' ),  
+   
 );    
 $this->db->update('data_berkas',$data_berkas,array('id_data_berkas'=>$input['id_data_berkas']));
 
@@ -220,6 +168,48 @@ redirect(base_url('User3/halaman_proses'));
 }else{
 redirect(404);    
 }
-
 }
+
+public function simpan_laporan(){
+if($this->input->post()){
+$input = $this->input->post();
+$data = array(
+'id_data_berkas'    =>$input['id_data_berkas'],
+'no_pekerjaan'      =>$input['no_pekerjaan'],
+'no_user'           =>$this->session->userdata('no_user'),
+'laporan'           =>$input['laporan'],
+'waktu'             =>date('d/m/Y H:i:s')    
+);
+$this->db->insert('data_progress_perizinan',$data);
+
+$status = array(
+"status"=>"success",
+"pesan" =>"laporan berhasil tersimpan",
+);
+echo json_encode($status);
+   
+}else{
+redirect(404);    
+}    
+}
+public function cari_file(){
+if($this->input->post()){
+$input = $this->input->post();
+$this->db->select('*');
+$this->db->from('data_meta_berkas');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
+$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
+$this->db->like($array);
+
+$query = $this->db->get();
+$this->load->view('umum/V_header');
+$this->load->view('user3/V_pencarian',['query'=>$query]);
+
+}else{
+redirect(404);    
+}    
+}
+
 }

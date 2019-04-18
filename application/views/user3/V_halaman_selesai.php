@@ -64,12 +64,12 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_dokumen",
+"data": "id_data_berkas",
 "orderable": false
 },
 {"data": "nama_client"},
 {"data": "jenis_perizinan"},
-{"data": "nama_dokumen"},
+{"data": "nama_file"},
 {"data": "view"}
 
 
