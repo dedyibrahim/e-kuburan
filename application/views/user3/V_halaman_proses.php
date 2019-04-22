@@ -9,62 +9,62 @@
 <h4 align="center">Data perizinan yang perlu diproses </h4>
 </div>
 </div>
-    
+
 <div class="row p-1 m-1">
-    <table class="table table-hover table-striped ">
-        <tr>
-            <th>Nama client</th>
-            <th>Nama Tugas</th>
-            <th>Dari</th>
-            <th class="text-center">Target kelar perizinan</th>
-            <th>Aksi</th>
-        </tr>
-        
-    
+<table class="table table-hover table-striped ">
+<tr>
+<th>Nama client</th>
+<th>Nama Tugas</th>
+<th>Dari</th>
+<th class="text-center">Target kelar perizinan</th>
+<th>Aksi</th>
+</tr>
+
+
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
-        <tr>
-            <td><?php echo $data['nama_client'] ?></td>
-            <td><?php echo $data['nama_file'] ?></td>
-            <td><?php echo $data['nama_lengkap'] ?></td>
-            <td class="text-center"><?php echo $data['target_kelar_perizinan'] ?></td>
-            <td>
-                <select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option">
-                    <option value="1"></option>
-                    <option value="2">Buat Laporan</option>
-                    <option value="3">Lihat Persyaratan</option>
-                    <option value="4">Upload Berkas</option>
-                </select>    
-            </td>
-        </tr>
-        
+<tr>
+<td><?php echo $data['nama_client'] ?></td>
+<td><?php echo $data['nama_file'] ?></td>
+<td><?php echo $data['nama_lengkap'] ?></td>
+<td class="text-center"><?php echo $data['target_kelar_perizinan'] ?></td>
+<td>
+<select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option<?php echo $data['id_data_berkas'] ?>">
+<option value="1"></option>
+<option value="2">Buat Laporan</option>
+<option value="3">Lihat Persyaratan</option>
+<option value="4">Upload Berkas</option>
+</select>    
+</td>
+</tr>
+
 <?php } ?>
-    </table>
+</table>
 </div>
 </div>
 
 <!-------------------modal laporan--------------------->
 
 <div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Masukan Progress Pekerjaan</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          
-          <input type="hidden" value="" id="no_pekerjaan">
-          <input type="hidden" value="" id="id_data_berkas">
-          <textarea id="laporan"class="form-control" placeholder="masukan progress pekerjaan"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-sm btn-success" id="simpan_laporan">Simpan laporan</button>
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Masukan Progress Pekerjaan</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+
+<input type="hidden" value="" id="no_pekerjaan">
+<input type="hidden" value="" id="id_data_berkas">
+<textarea id="laporan"class="form-control" placeholder="masukan progress pekerjaan"></textarea>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+<button type="button" class="btn btn-sm btn-success" id="simpan_laporan">Simpan laporan</button>
+</div>
+</div>
+</div>
 </div>
 
 <!-------------modal--------------------->
@@ -88,7 +88,7 @@
 
 <script type="text/javascript">
 function aksi_option(no_pekerjaan,id_data_berkas){
-var aksi_option = $(".data_option option:selected").val();
+var aksi_option = $(".data_option"+id_data_berkas+" option:selected").val();
 if(aksi_option == 1){
 //form_tolak_tugas();
 }else if(aksi_option == 2){
@@ -101,8 +101,8 @@ form_lihat_persyaratan(no_pekerjaan);
 form_upload_berkas(no_pekerjaan,id_data_berkas);
 }
 }
- 
-  
+
+
 function form_lihat_persyaratan(no_pekerjaan){
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({

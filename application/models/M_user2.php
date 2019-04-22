@@ -61,6 +61,22 @@ $this->datatables->from('data_perorangan');
 $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
 return $this->datatables->generate();
 }
+function json_data_pekerjaan_selesai(){
+    
+$this->datatables->select('id_data_pekerjaan,'
+.'data_pekerjaan.id_data_pekerjaan as id_data_pekerjaan,'
+.'data_pekerjaan.no_pekerjaan as no_pekerjaan,'
+.'data_pekerjaan.jenis_perizinan as jenis_perizinan,'
+.'data_pekerjaan.pembuat_pekerjaan as pembuat_pekerjaan,'
+.'data_client.nama_client as nama_client,'
+.'data_pekerjaan.tanggal_selesai as tanggal_selesai,'
+);
+$this->datatables->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->datatables->where('data_pekerjaan.no_user',$this->session->userdata('no_user'));
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
+return $this->datatables->generate();
+}
 
 public function data_pekerjaan($param){
 $this->db->select('*');

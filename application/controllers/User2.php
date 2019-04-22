@@ -138,6 +138,9 @@ $this->load->view('user2/V_data_perorangan');
 public function json_data_perorangan(){
 echo $this->M_user2->json_data_perorangan();       
 }
+public function json_data_pekerjaan_selesai(){
+echo $this->M_user2->json_data_pekerjaan_selesai();       
+}
 
 public function pekerjaan_baru(){
 $query = $this->M_user2->data_berkas('Baru');
@@ -158,6 +161,11 @@ $query = $this->M_user2->data_pekerjaan('Proses');
     
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_pekerjaan_proses',['query' =>$query]);
+    
+}public function pekerjaan_selesai(){
+    
+$this->load->view('umum/V_header');
+$this->load->view('user2/V_pekerjaan_selesai');
     
 }
 
@@ -441,7 +449,7 @@ $input = $this->input->post();
 
 $data = array(
 'status_pekerjaan'=>'Proses',    
-'tanggal_proses'=>date('Y/m/d')    
+'tanggal_proses'=>date('d/m/Y')    
 );
 $this->db->update('data_pekerjaan',$data,array('no_pekerjaan'=> base64_decode($input['no_pekerjaan'])));
 
@@ -456,6 +464,28 @@ echo json_encode($status);
 redirect(404);    
 }
 }
+public function update_selesaikan_pekerjaan(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data = array(
+'status_pekerjaan'  =>'Selesai',    
+'tanggal_selesai'    =>date('d/m/Y')    
+);
+$this->db->update('data_pekerjaan',$data,array('no_pekerjaan'=> base64_decode($input['no_pekerjaan'])));
+
+
+$status = array(
+"status"     => "success",
+"pesan"      => "Perizinan berhasil diproses"    
+);
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}
+}
+
 
 public function hapus_berkas_persyaratan(){
 $param1 = $this->uri->segment(3);

@@ -13,7 +13,6 @@
 </div>
 
 </form>
-    
 <style>
 .dropdown.dropdown-lg .dropdown-menu {
     margin-top: -1px;
@@ -60,7 +59,7 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo base_url() ?>">Home <span class="sr-only">(current)</span></a>
+<a class="nav-link" href="<?php echo base_url() ?>">Home <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item">
 <a class="nav-link" href="#">Riwayat pekerjaan</a>
@@ -92,7 +91,7 @@ Pilihan
 In <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen dalam antrian  <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan Masuk  <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Masuk" ))->num_rows(); ?>   
    
 </div></div>
@@ -107,7 +106,7 @@ In <br>
 Proses <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen sedang dikerjakan
+<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan Dikerjakan
 <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Proses" ))->num_rows(); ?>   
     
@@ -123,7 +122,7 @@ Proses <br>
 Out <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Diselesaikan <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Selesai" ))->num_rows(); ?>   
 
 </div></div>

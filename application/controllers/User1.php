@@ -17,9 +17,10 @@ redirect(base_url('Login'));
 }
 
 public function index(){
+$data_user  = $this->db->get_where('user',array ('sublevel'=>'Level 2'));   
 $data_tugas = $this->M_user1->data_tugas('Masuk');    
 $this->load->view('umum/V_header');
-$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas]);
+$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas,'data_user'=>$data_user]);
     
 }
  
@@ -62,8 +63,8 @@ $this->load->view('umum/V_header');
 $this->load->view('user1/V_halaman_selesai',['data_tugas'=>$data_tugas]);
     
 }
-public function json_data_perizinan_selesai(){
-echo $this->M_user1->json_data_perizinan_selesai();       
+public function json_data_pekerjaan_selesai(){
+echo $this->M_user1->json_data_pekerjaan_selesai();       
 }
 
 public function tampilkan_modal(){

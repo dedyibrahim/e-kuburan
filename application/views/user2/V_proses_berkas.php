@@ -6,7 +6,7 @@
 <div class="container-fluid">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Pilih jenis perizinan yang ingin di proses</h4>
+<h4 align="center">Pilih jenis perizinan yang ingin di proses <button class="btn btn-success btn-sm  float-right "  onclick="update_selesaikan_pekerjaan('<?php echo $this->uri->segment(3) ?>');">Update selesaikan pekerjaan <span class="fa fa-hourglass-end"></span></button></h4>
 </div>
 </div>
 
@@ -44,6 +44,37 @@ foreach ($d->result_array() as $n){
 </div>
     
 <script type="text/javascript">
+function update_selesaikan_pekerjaan(no_pekerjaan){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan,
+url:"<?php echo base_url('User2/update_selesaikan_pekerjaan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User2/pekerjaan_proses/'); ?>";
+});
+
+}
+});
+    
+    
+}  
+    
+    
 function lihat_progress_perizinan(id_data_berkas){
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
 
