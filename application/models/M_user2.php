@@ -10,7 +10,13 @@ $this->datatables->select('id_data_client,'
 );
 $this->datatables->from('data_client');
 $this->datatables->where('no_user',$this->session->userdata('no_user'));
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Tambah pekerjaan <i class='fa fa-plus'></i></button>",'no_client');
+$this->datatables->add_column('view',""
+        . "<select onchange=opsi_client('$1','$2') class='form-control opsi_pekerjaan$1'>"
+        . "<option></option>"
+        . "<option value='1'>Lihat berkas</option>"
+        . "<option value='2'>Pekerjaan baru</option>"
+        . "</select>"
+        . "",'id_data_client , base64_encode(no_client)');
 return $this->datatables->generate();
 }
 public function simpan_syarat($data){
@@ -27,16 +33,7 @@ if($query->num_rows() >0 ){
 return $query->result();
 }
 }
-public function cari_persyaratan($term){
-$this->db->from("data_daftar_persyaratan");
-$this->db->limit(15);
-$array = array('nama_persyaratan' => $term);
-$this->db->like($array);
-$query = $this->db->get();
-if($query->num_rows() >0 ){
-return $query->result();
-}
-}
+
 public function hitung_pekerjaan(){
        $query = $this->db->get('data_pekerjaan');
 return $query;
@@ -74,7 +71,7 @@ $this->datatables->select('id_data_pekerjaan,'
 $this->datatables->from('data_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->datatables->where('data_pekerjaan.no_user',$this->session->userdata('no_user'));
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_perorangan');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); >Lihat File <i class='fa fa-eye'></i></button>",'id_perorangan');
 return $this->datatables->generate();
 }
 

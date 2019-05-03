@@ -90,7 +90,6 @@
 function aksi_option(no_pekerjaan,id_data_berkas){
 var aksi_option = $(".data_option"+id_data_berkas+" option:selected").val();
 if(aksi_option == 1){
-//form_tolak_tugas();
 }else if(aksi_option == 2){
 $('#modal_laporan').modal('show');
 $("#no_pekerjaan").val(no_pekerjaan);
@@ -100,6 +99,7 @@ form_lihat_persyaratan(no_pekerjaan);
 }else if(aksi_option == 4){
 form_upload_berkas(no_pekerjaan,id_data_berkas);
 }
+$(".data_option"+id_data_berkas).val("");
 }
 
 

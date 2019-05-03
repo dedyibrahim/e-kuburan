@@ -84,27 +84,27 @@ Pilihan
 
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-3">
+<div class="col-md-3"><a href="<?php echo base_url('Dashboard/data_berkas') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-file-word float-right fa-3x sticky-top"></span>
-Dokumen Total <br>
+Data berkas <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Selesai<div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">total data berkas<div class="float-right">
     <?php 
 $query3 = $this->db->get('data_berkas')->num_rows();
 
 echo $query3;
 ?>
 </div></div>
-</div>	
+</div></a>	
 </div>	
 <div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-user-tie float-right fa-3x sticky-top"></span>
-Client Total <br>
+Data client <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right">
@@ -118,16 +118,16 @@ echo $query1;
 </div>	
 
 
-<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/dokumen_proses') ?>">
+<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/pekerjaan_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-exchange-alt float-right fa-3x sticky-top"></span>
-Dokumen Di Proses <br>
+Pekerjaan diproses<br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data di proses 
+<div class="footer p-2" style="background-color:	#1ecee7;">Total pekerjaan diproses 
 <div class="float-right"><?php 
-$query = $this->db->get_where('data_berkas',array('status_berkas'=>"Proses"))->num_rows();
+$query = $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>"Proses"))->num_rows();
 
 echo $query;
 ?>
@@ -136,20 +136,20 @@ echo $query;
 </div>	</a>
 </div>
 
-<div class="col-md-3 ">
+<div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_user') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-users float-right fa-3x sticky-top"></span>
-Total user <br>
+Data user <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total user <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data user <div class="float-right">
 <?php 
 $query2 = $this->db->get('user')->num_rows();
 echo $query2;
 ?>
 </div></div>
-</div>	
+</div></a>	
 </div>	
 
 </div>	

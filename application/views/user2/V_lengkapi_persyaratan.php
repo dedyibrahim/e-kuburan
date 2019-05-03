@@ -2,87 +2,159 @@
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
-<?php $data2 = $data->row_array();  ?>
+<?php  $static = $data->row_array(); ?>
 <div class="container-fluid">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Lengkapi persyaratan <?php echo $data2['nama_client'] ?> <button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
+<h4 align="center">Lengkapi persyaratan  <?php echo $static['nama_client'] ?> <button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
 </h4>
-
 </div>
 </div>
-
-
-
 <hr>
 <div class="container">
 <div class="row">
-<div class="col-md-4">
-
-
-<div class="row ">
-
-<div class="col  mx-auto ">
-<p class="text-center"> Definisikan persyaratan </p>     
-<input type="text" class="form-control" name="definisikan_persyaratan" id="definisikan_persyaratan">
-<hr>
-</div>
-
-</div>
-
-<div class="row">
-<div class="col mx-auto " >
-<form  id='fileForm' method='post' enctype="multipart/form-data" action="<?php echo base_url('User2/simpan_persyaratan/'.$this->uri->segment(3)) ?>">
-
-<input type="hidden" name="<?php echo $this->security->get_csrf_token_name() ?>" value="<?php echo  $this->security->get_csrf_hash() ?>" class="form-control" >
-<input type="hidden" name="no_client" value="<?php echo $data2['no_client'] ?>">
-<input type="hidden" name="no_pekerjaan" value="<?php echo $data2['no_pekerjaan'] ?>">
-<input type="hidden" name="nama_folder" value="<?php echo $data2['nama_folder'] ?>">
-<div id="data_dokumen_persyaratan">
-
-</div>
-</form>
-</div>
-</div>    
-</div>    
-
-<div class="col card">
-<div class="row ">
-
-<div class="col   card-header  mx-auto ">
-<p class="text-center">Persyaratan Terdefinisikan</p>
-<hr>
-<?php foreach ($data_persyaratan->result_array() as $dp){ ?>
-    <?php echo  $dp['key_syarat'] ?> : <?php echo  $dp['value_syarat'] ?><br>
-
+<div class="col">
+<table class="table table-sm table-bordered table-striped table-condensed">
+<tr>
+<th>Nama Persyaratan minimal</th>
+<th class="text-center">Aksi</th>
+</tr>
+<?php
+foreach ($data->result_array() as $d){ ?>
+<tr>
+<td><?php echo $d['nama_dokumen'] ?></td>    
+<td class="text-center"><button class="btn btn-success" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button></td>    
+</tr>    
 <?php } ?>
-<hr>    
-<div class="text-center">Daftar berkas persyaratan yang dilampirkan</div>
+<tr>
+    <th class="text-center" colspan="2">Pilih persyaratan Tambahan</th>    
+</tr>
+<tr>
+<td colspan="2">
+<select onchange="persyaratan_tambahan('<?php echo $static['id_data_persyaratan'] ?>','<?php echo $static['no_client'] ?>','<?php echo $static['no_pekerjaan'] ?>','<?php echo $static['nama_folder'] ?>');" class="form-control persyaratan_tambahan">
+<option></option>    
+<?php foreach ($nama_dokumen->result_array() as $dok){ ?>
+<option value="<?php  echo $dok['no_nama_dokumen']?>"><?php echo $dok['nama_dokumen'] ?></option>
+<?php } ?>
+</select>
+</td>    
+</tr>
+
+</table>
 <hr>
-<?php foreach ($data_upload->result_array() as $u){  ?>
+<h5 align="center">Data Persyaratan yang sudah dilampirkan</h5>
+
+<?php foreach ($data_berkas->result_array() as $u){  ?>
 <div class="card p-2">
-    <div class="row">
-        <div class="col"><?php echo $u['nama_file'] ?></div> 
-        <div class="col-md-3 text-right">
-            <button class="btn btn-success btn-sm" onclick="download('<?php echo $u['id_data_berkas'] ?>')"><span class="fa fa-download"></span></button>
-            <a href="<?php echo base_url('User2/hapus_berkas_persyaratan/'.$u['no_pekerjaan']."/".$u['id_data_berkas']) ?>"><button class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></a>
-        </div>    
-    </div>
+<div class="row">
+<div class="col"><?php echo $u['nama_file'] ?></div> 
+<div class="col-md-3 text-right">
+<button class="btn btn-success btn-sm" onclick="download('<?php echo $u['id_data_berkas'] ?>')"><span class="fa fa-download"></span></button>
+<a href="<?php echo base_url('User2/hapus_berkas_persyaratan/'.$u['no_pekerjaan']."/".$u['id_data_berkas']) ?>"><button class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></a>
+</div>    
+</div>
 </div>
 <?php } ?>
 </div>
-
-</div>
-
 </div>
 </div>
 </div>
 </div>
-
+    
+<div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLabel">Upload persyaratan <span class="i"><span></h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
+      <div class="modal-body form_persyaratan">
+     
+      </div>
+        </form>
+    </div>
+  </div>
 </div>
-</div>
-
+    
+    
 <script type="text/javascript">
+
+function persyaratan_tambahan(id_data_persyaratan,no_client,no_pekerjaan,nama_folder){
+var no_nama_dokumen = $(".persyaratan_tambahan option:selected").val();
+var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
+
+tampil_modal_upload(id_data_persyaratan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder);
+
+$(".persyaratan_tambahan").val("");
+}
+
+function tampil_modal_upload(id_data_persyaratan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_persyaratan="+nama_dokumen+"&no_pekerjaan="+no_pekerjaan+"&nama_folder="+nama_folder+"&no_client="+no_client,
+url:"<?php echo base_url('User2/form_persyaratan') ?>",
+success:function(data){
+$('.form_persyaratan').html(data);    
+$('#modal_upload').modal('show');
+$('.i').html(nama_dokumen);
+
+}    
+    
+});
+
+
+
+
+}
+
+function simpan_persyaratan(){
+
+var file_siap_upload  = $("#file"+id_data_persyaratan).get(0).files[0];
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+
+formData = new FormData();
+formData.append('token',token);         
+formData.append('file',file_siap_upload);
+formData.append('no_jenis',no_jenis);
+formData.append('nama_jenis',nama_jenis);
+
+$.ajax({
+url        : '<?php echo base_url('User2/simpan_file_persyaratan') ?>',
+type       : 'POST',
+contentType: false,
+cache      : false,
+processData: false,
+data       : formData,
+xhr        : function (){
+var jqXHR = null;
+if ( window.ActiveXObject ){
+jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
+}else{
+jqXHR = new window.XMLHttpRequest();
+}
+jqXHR.upload.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+$("#upload_perizinan_progress"+id).attr('style',  'width:'+percentComplete+'%');
+}
+}, false );
+jqXHR.addEventListener( "progress", function ( evt ){
+if ( evt.lengthComputable ){
+var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
+}
+}, false );
+return jqXHR;
+},
+success    : function ( data ){
+}
+});
+}    
+    
 function lanjutkan_proses_perizinan(no_pekerjaan){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
@@ -110,92 +182,8 @@ window.location.href = "<?php echo base_url('User2/pekerjaan_proses/'); ?>";
 
 }
 });
-    
-    
 }
 
-
-$("#fileForm").validate({
-highlight: function (element, errorClass) {
-$(element).closest('.form-control').addClass('is-invalid');
-},
-unhighlight: function (element, errorClass) {
-$(element).closest(".form-control").removeClass("is-invalid");
-}    
-
-});
-
-
-
-function upload_siap(){
-var file_siap_upload  = $("#file_siap_upload").get(0).files[0];
-var no_jenis          = $("#no_jenis_siap").val();
-var nama_jenis        = $("#nama_jenis_siap").val();
-var token             = "<?php echo $this->security->get_csrf_hash() ?>";
-
-formData = new FormData();
-formData.append('token',token);         
-formData.append('file_upload',file_siap_upload);
-formData.append('no_jenis',no_jenis);
-formData.append('nama_jenis',nama_jenis);
-
-$.ajax({
-url        : '<?php echo base_url('User2/simpan_file_siap_upload') ?>',
-type       : 'POST',
-contentType: false,
-cache      : false,
-processData: false,
-data       : formData,
-xhr        : function (){
-var jqXHR = null;
-if ( window.ActiveXObject ){
-jqXHR = new window.ActiveXObject( "Microsoft.XMLHTTP" );
-}else{
-jqXHR = new window.XMLHttpRequest();
-}
-
-jqXHR.upload.addEventListener( "progress", function ( evt ){
-if ( evt.lengthComputable ){
-var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
-$("#upload_perizinan_progress"+id).attr('style',  'width:'+percentComplete+'%');
-}
-
-}, false );
-jqXHR.addEventListener( "progress", function ( evt ){
-if ( evt.lengthComputable ){
-var percentComplete = Math.round( (evt.loaded * 100) / evt.total );
-
-}
-}, false );
-return jqXHR;
-},
-success    : function ( data ){
-
-}
-
-});
-
-}
-$(function () {
-var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
-$("#definisikan_persyaratan").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo site_url('User2/cari_persyaratan') ?>',
-select:function(event, ui){
-$.ajax({
-type:"post",
-data:"token="+token+"&no_nama_dokumen="+ui.item.no_nama_dokumen+"&no_daftar_persyaratan="+ui.item.no_daftar_persyaratan+"&nama_persyaratan="+ui.item.nama_persyaratan,
-url:"<?php echo base_url('User2/form_persyaratan') ?>",
-success:function(data){
-$("#data_dokumen_persyaratan").html(data);
-}
-});
-
-}
-}
-);
-});
 
 function download(id_data_berkas){
 window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;

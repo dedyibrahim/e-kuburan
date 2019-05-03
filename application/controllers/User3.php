@@ -212,4 +212,35 @@ redirect(404);
 }    
 }
 
+public function tolak_tugas(){
+if($this->input->post()){
+$input = $this->input->post();    
+$data = array(
+'id_data_berkas'    =>$input['id_data_berkas'],
+'no_pekerjaan'      =>$input['no_pekerjaan'],
+'no_user'           =>$this->session->userdata('no_user'),
+'laporan'           =>$this->session->userdata('nama_lengkap')." Menolak Tugas ".$input['nama_tugas']." dengan alasan ".$input['alasan_penolakan'],
+'waktu'             =>date('d/m/Y H:i:s')    
+);
+$this->db->insert('data_progress_perizinan',$data);
+  
+
+$update = array(
+'status' => 'Ditolak',    
+);
+$this->db->update('data_berkas',$update,array('id_data_berkas'=>$input['id_data_berkas']));
+
+
+$status = array(
+"status"=>"success",
+"pesan" =>"Penolakan tugas berhasil",
+);
+echo json_encode($status);
+  
+}else{
+redirect(404);    
+}
+    
+}
+
 }

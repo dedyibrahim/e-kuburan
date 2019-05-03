@@ -6,7 +6,7 @@
 <div class="container-fluid ">
 <div class="row  p-1 m-1">
 <div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang masuk</h4>
+<h4 align="center">Data perizinan yang perlu dikerjakan</h4>
 </div>
 </div>
 
@@ -24,17 +24,15 @@
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
 <tr>
 <td><?php echo $data['nama_client'] ?></td>
-<td><?php echo $data['nama_file'] ?></td>
-<td><?php echo $data['nama_lengkap'] ?></td>
+<td id="nama_file<?php echo $data['id_data_berkas']?>"><?php echo $data['nama_file'] ?></td>
+<td ><?php echo $data['nama_lengkap'] ?></td>
 <td><?php echo $data['tanggal_tugas'] ?></td>
 <td>
-<select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option">
+<select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option<?php echo $data['id_data_berkas'] ?>">
 <option></option>
 <option value="1">Terima Tugas</option>
 <option value="2">Tolak Tugas</option>
-<option value="3">Alihkan Tugas</option>
-<option value="4">Lihat Persyaratan</option>
-
+<option value="3">Lihat Persyaratan</option>
 </select>    
 </td>
 </tr>
@@ -75,6 +73,25 @@
 </div>
 </div>
 
+<!-------------modal tolak perizinan--------------------->
+<div class="modal fade" id="modal_tolak_perizinan" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+<div class="modal-content ">
+<div class="modal-header">
+    <h6>Penolakan tugas <span class="nama_tugas"></span></h6>
+</div>
+<div class="modal-body ">
+<input type="hidden" class="id_data_berkas">    
+<input type="hidden" class="no_pekerjaan">    
+<textarea class="form-control alasan_penolakan" placeholder="Masukan alasan penolakan"></textarea>
+</div>
+<div class="modal-footer">
+<button class="btn btn-sm btn-success simpan_penolakan">Simpan Penolakan</button>
+</div>    
+</div>
+</div>
+</div>
+
 
 <style>
 .swal2-overflow {
@@ -85,19 +102,59 @@ overflow-y: visible;
 
 </body>
 <script type="text/javascript">
+$(document).ready(function(){
+$(".simpan_penolakan").click(function(){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+var alasan_penolakan  = $(".alasan_penolakan").val();
+var id_data_berkas    = $(".id_data_berkas").val();
+var no_pekerjaan      = $(".no_pekerjaan").val();
+var nama_tugas        = $("#nama_file"+id_data_berkas).text();
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User3/tolak_tugas') ?>",
+data:"token="+token+"&id_data_berkas="+id_data_berkas+"&alasan_penolakan="+alasan_penolakan+"&no_pekerjaan="+no_pekerjaan+"&nama_tugas="+nama_tugas,
+success:function(data){
+var r  = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
+});
+}
+
+});
+
+});    
+    
+});
+
+
 
 function aksi_option(no_pekerjaan,id_data_berkas){
-var aksi_option = $(".data_option option:selected").val();
+var aksi_option = $(".data_option"+id_data_berkas+" option:selected").val();
 if(aksi_option == 1){
 proses_perizinan(id_data_berkas);   
 }else if(aksi_option == 2){
-alert(2);    
+$('#modal_tolak_perizinan').modal('show');
+var nama_file = $("#nama_file"+id_data_berkas).text();
+$(".nama_tugas").html(nama_file);
+$(".id_data_berkas").val(id_data_berkas);
+$(".no_pekerjaan").val(no_pekerjaan);
+
 }else if(aksi_option == 3){
 lihat_persyaratan(no_pekerjaan);    
-}else if(aksi_option == 4){
-lihat_persyaratan(no_pekerjaan);    
 }
-
+$(".data_option"+id_data_berkas).val("");
 }
 
 function proses_perizinan(id){

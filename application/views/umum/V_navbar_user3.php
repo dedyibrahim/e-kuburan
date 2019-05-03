@@ -92,7 +92,7 @@ Pilihan
 In <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen dalam antrian  <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Perizinan dalam antrian  <div class="float-right">
 <?php echo $this->db->get_where('data_berkas',array('no_pengurus'=>$this->session->userdata('no_user'),'status'=>'Masuk'))->num_rows(); ?>   
 </div></div>
 </div></a>	
@@ -106,7 +106,7 @@ In <br>
 Proses <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen sedang dikerjakan
+<div class="footer p-2" style="background-color:	#1ecee7;">Perizinan sedang dikerjakan
 <div class="float-right">
 <?php echo $this->db->get_where('data_berkas',array('no_pengurus'=>$this->session->userdata('no_user'),'status'=>'Proses'))->num_rows(); ?>   
     
@@ -122,7 +122,7 @@ Proses <br>
 Out <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color: #1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
+<div class="footer p-2" style="background-color: #1ecee7;">Perizinan selesai dikerjakan <div class="float-right">
 <?php echo $this->db->get_where('data_berkas',array('no_pengurus'=>$this->session->userdata('no_user'),'status'=>'Selesai'))->num_rows(); ?>   
 
 </div></div>

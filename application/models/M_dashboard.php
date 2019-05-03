@@ -109,7 +109,14 @@ $this->datatables->select('id_jenis_dokumen,'
 );
 
 $this->datatables->from('data_jenis_dokumen');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  > Lihat Jenis <i class='fa fa-eye'></i></button>",'id_jenis_dokumen , no_jenis_dokumen');
+$this->datatables->add_column('view',""
+        . "<select onchange=opsi_jenis_pekerjaan('$1','$2') class='form-control opsi_pekerjaan$1'>"
+        . "<option></option>"
+        . "<option value='1'>Tambah Persyaratan</option>"
+        . "<option value='2'>Lihat persyaratan</option>"
+        . "<option value='3'>Edit Pekerjaan</option>"
+        . "</select>"
+        . "",'id_jenis_dokumen , no_jenis_dokumen');
 return $this->datatables->generate();
 }
 function json_data_jenis(){
@@ -146,24 +153,48 @@ $this->datatables->select('id_nama_dokumen,'
 .'nama_dokumen.nama_dokumen as nama_dokumen,'
 );
 $this->datatables->from('nama_dokumen');
-$this->datatables->add_column('view','<button class="btn btn-success btn-sm"  onclick=lihat_meta("$1");>Data Meta <i class="fa fa-eye"></i></button> ||  <button onclick=tambah_meta("$1"); class="btn btn-success btn-sm">Tambah <i class="fa fa-plus"></i></button> ', 'no_nama_dokumen');
+$this->datatables->add_column('view',""
+        . "<select onchange=opsi_nama_dokumen('$1','$2') class='form-control opsi_nama_dokumen$1'>"
+        . "<option></option>"
+        . "<option value='1'>Lihat Meta</option>"
+        . "<option value='2'>Tambah Meta</option>"
+        . "<option value='3'>Edit nama dokumen</option>"
+        . "</select>"
+        . "",'id_nama_dokumen,no_nama_dokumen');
+
 return $this->datatables->generate();
 }
 
-function json_dokumen_proses(){
+
+
+function json_data_berkas(){
     
 $this->datatables->select('id_data_berkas,'
-.'data_berkas.no_berkas as no_berkas,'
-.'data_berkas.tanggal_dibuat as tanggal_dibuat,'
-.'data_berkas.jenis_perizinan as jenis_perizinan,'
+.'data_berkas.nama_file as nama_file,'
+.'data_berkas.pengupload as pengupload,'
+.'data_berkas.tanggal_upload as tanggal_upload,'
 .'data_client.nama_client as nama_client,'
-.'data_client.jenis_client as jenis_client,'
 );
 $this->datatables->from('data_berkas');
 $this->datatables->join('data_client', 'data_client.no_client = data_berkas.no_client');
 $this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Proses</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
 return $this->datatables->generate();
 }
+function json_data_pekerjaan(){
+    
+$this->datatables->select('id_data_pekerjaan,'
+.'data_pekerjaan.no_pekerjaan as no_pekerjaan,'
+.'data_pekerjaan.jenis_perizinan as jenis_perizinan,'
+.'data_pekerjaan.pembuat_pekerjaan as pembuat_pekerjaan,'
+.'data_pekerjaan.tanggal_dibuat as tanggal_dibuat,'
+.'data_client.nama_client as nama_client,'
+);
+$this->datatables->from('data_pekerjaan');
+$this->datatables->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Berkas</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
+return $this->datatables->generate();
+}
+
 function json_data_client(){
     
 $this->datatables->select('id_data_client,'
@@ -173,7 +204,13 @@ $this->datatables->select('id_data_client,'
 .'data_client.nama_client as nama_client,'
 );
 $this->datatables->from('data_client');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=buat_pekerjaan('$1'); > Tambah pekerjaan <i class='fa fa-plus'></i></button>",'no_client');
+$this->datatables->add_column('view',""
+        . "<select onchange=opsi_client('$1','$2') class='form-control opsi_pekerjaan$1'>"
+        . "<option></option>"
+        . "<option value='1'>Lihat berkas</option>"
+        . "</select>"
+        . "",'id_data_client , base64_encode(no_client)');
+
 return $this->datatables->generate();
 }
 

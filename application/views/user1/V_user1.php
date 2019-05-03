@@ -18,30 +18,14 @@
 <th>Pekerjaan</th>
 <th>Tanggal dibuat</th>
 <th>Target selesai</th>
-<th class="text-center">Aksi</th>
 </tr>       
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
 <tr>        
 <td><?php echo $data['nama_client'] ?></td>
-<td>
-    <select disabled="" class="form-control pekerjaan<?php echo $data['id_data_pekerjaan'] ?>">    
- <option><?php echo $data['pembuat_client'] ?></option>
-        <?php
-        foreach ($data_user->result_array() as $user){
-        echo "<option value=".$user['no_user'].">".$user['nama_lengkap']."</option>";
-            
-        }?>
-    </select>
-   </td>   
+<td><?php echo $data['pembuat_pekerjaan'] ?></td>   
 <td><?php echo $data['tanggal_dibuat'] ?></td>
 <td><?php echo $data['target_kelar'] ?></td>
-<td>
- <select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
-<option></option>
-<option value="1">Lihat Laporan</option>
-<option value="2">Alihkan Pekerjaan</option>
-</select>    
-</td>
+
 </tr>
 <?php } ?>
 
@@ -49,11 +33,11 @@
 
 </table>    
 
-    </div>
 </div>
 </div>
 </div>
-    
+</div>
+
 
 </body>
 <script type="text/javascript">
@@ -65,6 +49,38 @@ alert(1);
 $('.pekerjaan'+id_data_pekerjaan).removeAttr("disabled");
 }
 }
+function alihkan_tugas(no_pekerjaan,id_data_pekerjaan){
+var no_user             = $(".pekerjaan"+id_data_pekerjaan+" option:selected").val();
+var pembuat_pekerjaan   = $(".pekerjaan"+id_data_pekerjaan+" option:selected").text();
+var token               = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_user="+no_user+"&pembuat_pekerjaan="+pembuat_pekerjaan,
+url:"<?php echo base_url('User1/alihkan_pekerjaan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User1'); ?>";
+});
+}
+
+});
+}
+
+
 
 </script>
 </html>

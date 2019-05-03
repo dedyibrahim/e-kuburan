@@ -1,4 +1,4 @@
-<body >
+<body>
 <div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
@@ -17,15 +17,15 @@
 </tr>
 <?php foreach ($query->result_array() as $data){ ?> 
 <tr>
-<td><?php echo $data['nama_client'] ?></td>
-<td><?php echo $data['jenis_perizinan'] ?></td>
+<td id='nama_client<?php echo $data['id_data_pekerjaan'] ?>'><?php echo $data['nama_client'] ?></td>
+<td ><?php echo $data['jenis_perizinan'] ?></td>
 <td><?php echo $data['tanggal_antrian'] ?></td>
 <td><?php echo $data['target_kelar'] ?></td>
 <td>
 <select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
 <option></option>
 <option value="1">Proses Perizinan</option>
-<option value="2">Alihkan Pekerjaan</option>
+<option value="2">Buat laporan</option>
 </select>    
 </td>
 </tr>
@@ -37,23 +37,36 @@
 </div>    
 </div>
 </div>
-<script type="text/javascript">
-function aksi_option(no_pekerjaan,id_data_pekerjaan){
-var aksi_option = $(".data_option"+id_data_pekerjaan+" option:selected").val();
-if(aksi_option == 1){
-tambahkan_kedalam_proses(no_pekerjaan);
-}else if(aksi_option == 2){
-//form_alihkan_tugas();
-}else if(aksi_option == 3){
-//form_lihat_persyaratan(no_pekerjaan);    
-}else if(aksi_option == 4){
-//form_upload_berkas(no_pekerjaan,id_data_berkas);
-}
-
-}     
+<div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h6>Progress <span class="laporan_client"></span></h6>  
+        </div>   
+      <div class="modal-body">
+          <input class="no_pekerjaan" value="" type="hidden">
+          <input class="id_data_pekerjaan" value="" type="hidden">
+          <textarea class="form-control laporan" placeholder="laporkan progress pekerjaan"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm simpan_progress">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>    
     
-function tambahkan_kedalam_proses(no_pekerjaan){
-
+<script type="text/javascript">
+$(document).ready(function(){
+$(".simpan_progress").click(function(){
+var laporan             = $(".laporan").val();
+var no_pekerjaan        = $(".no_pekerjaan").val();
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&laporan="+laporan,
+url:"<?php echo base_url('User2/simpan_progress_pekerjaan') ?>",
+success:function(data){
+var r = JSON.parse(data);
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',
@@ -64,11 +77,36 @@ customClass: 'animated zoomInDown'
 });
 
 Toast.fire({
-type: "info",
-title: "Pilih jenis perizinan"
-}).then(function() {
-window.location.href = "<?php echo base_url('User2/proses_pekerjaan/'); ?>"+no_pekerjaan;
+type: r.status,
+title: r.pesan
 });
+$('#modal_laporan').modal('hide');
+$(".laporan").val("");
+}
+});
+    
+
+});    
+    
+});    
+    
+function aksi_option(no_pekerjaan,id_data_pekerjaan){
+var aksi_option = $(".data_option"+id_data_pekerjaan+" option:selected").val();
+if(aksi_option == 1){
+tambahkan_kedalam_proses(no_pekerjaan);
+}else if(aksi_option == 2){
+$('#modal_laporan').modal('show');
+var nama_client = $("#nama_client"+id_data_pekerjaan).text();
+$(".laporan_client").text(nama_client);
+$(".no_pekerjaan").val(no_pekerjaan);
+$(".id_data_pekerjaan").val(id_data_pekerjaan);
+}
+$(".data_option"+id_data_pekerjaan).val("");
+
+}     
+    
+function tambahkan_kedalam_proses(no_pekerjaan){
+window.location.href = "<?php echo base_url('User2/proses_pekerjaan/'); ?>"+no_pekerjaan;
 }
 
    

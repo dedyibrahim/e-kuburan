@@ -14,9 +14,6 @@
 <li>
 <a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/data_client'); ?>">Data Client <i class="fa fa-list-alt float-right"></i></a>
 </li>
-<li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/data_perorangan'); ?>">Data Perorangan <i class="fa fa-users float-right"></i></a>
-</li>
 </ul>
 </li>
 
