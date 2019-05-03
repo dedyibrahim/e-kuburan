@@ -16,7 +16,7 @@
 <input type="password" class="form-control" id="password" placeholder="Password . . .">
 </div>
 <div class="card-footer">
-<button class="btn btn-success btn-block" id="proses_login">Masuk <i class="fa fa-key"></i></button>
+<button class="btn btn-success btn-sm btn-block" id="proses_login">Masuk <i class="fa fa-key"></i></button>
 </div>
 </div>    
 </div>

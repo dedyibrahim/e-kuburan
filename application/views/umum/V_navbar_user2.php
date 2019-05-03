@@ -5,34 +5,15 @@
 <span class="navbar-toggler-icon"></span>
 </button>
     
-<div class="input-group col-md-7 mx-auto" id="adv-search">
-<input type="text" class="form-control" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
-<div class="input-group-btn">
+<form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('User2/cari_file') ?>" method="post" >        
+<input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
+<input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
 <div class="btn-group" role="group">
-<div class="dropdown dropdown-lg">
-<button type="button" style="padding: 0.875rem 0.75rem;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-<div class="dropdown-menu dropdown-menu-right" role="menu">
-<form class="form-horizontal" method="post"  action="<?php echo base_url('Dashboard/cari_dokumen') ?>" enctype="multipart/form-data" >
-<input type="hidden" name="nama_dokumen" class="form-control" id="pencarian_id_nama_dokumen"  />
-<input type="hidden" name="<?php echo  $this->security->get_csrf_token_name(); ?>" class="form-control" value="<?php echo  $this->security->get_csrf_hash() ?>"  />
-
-<div class="form-group">
-<label for="filter">Nama Client</label>
-<input type="text" class="form-control" id="pencarian_nama_klien">   
-<input type="hidden" name="no_client" class="form-control" id="pencarian_no_nama_client">   
+<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
 </div>
-<hr>
-<button type="submit" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span> Cari Dokumen</button>
+
 </form>
-</div>
-</div>
-<button type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
-</div>
-</div>
-</div>
-
 <style>
-
 .dropdown.dropdown-lg .dropdown-menu {
     margin-top: -1px;
     padding: 6px 20px;
@@ -78,7 +59,7 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 <li class="nav-item active">
-    <a class="nav-link" href="<?php echo base_url() ?>">Home <span class="sr-only">(current)</span></a>
+<a class="nav-link" href="<?php echo base_url() ?>">Home <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item">
 <a class="nav-link" href="#">Riwayat pekerjaan</a>
@@ -110,7 +91,7 @@ Pilihan
 In <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen dalam antrian  <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan Masuk  <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Masuk" ))->num_rows(); ?>   
    
 </div></div>
@@ -125,7 +106,7 @@ In <br>
 Proses <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen sedang dikerjakan
+<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan Dikerjakan
 <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Proses" ))->num_rows(); ?>   
     
@@ -141,7 +122,7 @@ Proses <br>
 Out <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen selesai dikerjakan <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Diselesaikan <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('no_user'=>$this->session->userdata('no_user'),'status_pekerjaan'=>"Selesai" ))->num_rows(); ?>   
 
 </div></div>
@@ -152,51 +133,6 @@ Out <br>
 </div>
 
 <script type="text/javascript">
-    
-$(function () {
-$("#pencarian_nama_dokumen").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
-select:function(event, ui){
-$("#pencarian_id_nama_dokumen").val(ui.item.no_nama_dokumen);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_user").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_user') ?>',
-select:function(event, ui){
-$("#pencarian_no_user").val(ui.item.no_user);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_nama_klien").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_klien') ?>',
-select:function(event, ui){
-
-$("#pencarian_no_nama_client").val(ui.item.no_client);
-
-
-}
-
-}
-);
-});
-
 $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");

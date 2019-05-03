@@ -26,48 +26,35 @@
 </div>
 
 <!------------- Modal Tambah pekerjaan---------------->
-<div class="modal fade bd-example-modal-lg" id="modal_tambah_pekerjaan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal fade bd-example-modal-md" id="modal_tambah_pekerjaan" tabindex="-1" role="dialog" aria-labelledby="tambah_syarat1" aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
 <div class="modal-content">
 <div class="modal-header">
-<h5 class="modal-title" >Tambah Data Perizinan <span id="title"> </span> </h5>
+<h5 class="modal-title" >Buat pekerjaan baru <span id="title"> </span> </h5>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
 <div class="modal-body p-3 " >
-<div class="row">
-<div class="col-md-6">
+<div class="row  p-3" >
+
+<div class="col">
+<form  id="fileForm" method="post" action="<?php echo base_url('User2/buat_pekerjaan_baru') ?>">
+
 <label>Jenis Pekerjaan</label>
+<input type="hidden" name="no_client"  id="no_client" class="form-control required"  accept="text/plain">
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
-<label>ID Jenis</label>
-<input type="text" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+<input type="hidden" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
+<label>Target selesai</label>
+<input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
+<hr>
 
-<input type="hidden" name="no_client" readonly="" id="no_client" class="form-control required"  accept="text/plain">
-
-<div id="form_badan_hukum">
-<label >Nama</label>
-<input type="text" name="nama_client" id="nama_client" readonly="" class="form-control required"  accept="text/plain">
+<button type="submit" class="btn btn-success btn-sm  mx-auto btn-block simpan_perizinan">Simpan client & Buat pekerjaan <i class="fa fa-save"></i></button>
 </div>
-<div id="form_alamat_hukum">
-<label >Alamat</label>
-<textarea rows="6" id="alamat_client" readonly="" class="form-control required"  accept="text/plain"></textarea>
+</form>
+</div>    
 </div>
 
-</div>
-<div class="col">   
-<label>Cari perizinan</label>
-<input type="text" class="form-control" id="cari_user" placeholder="Cari yang akan mengurusi Perizinan" >
-<div class="data_perizinan">
-
-</div>  
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<button class="btn  btn-success" id="simpan_user">Proses Perizinan</button> 
-</div>
 </div>
 </div>
 </div>
@@ -139,38 +126,78 @@ $('td:eq(0)', row).html(index);
 </script>    
 
 <script type="text/javascript">
-
-function buat_pekerjaan(no_client){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/getClient') ?>",
-data:"token="+token+"&no_client="+no_client,
-success:function(data){
-
-var r = JSON.parse(data);
-
-$("#title").html(r.nama_client);
-$("#nama_client").val(r.nama_client);
-$("#no_client").val(r.no_client);
-$("#alamat_client").html(r.alamat_client);
-
-$('#modal_tambah_pekerjaan').modal('show');
-
+function opsi_client(id_data_client,no_client){
+var val = $('.opsi_pekerjaan'+id_data_client).val();
+if(val == 1){
+window.location.href= "<?php echo base_url('User2/lihat_berkas_client/')?>"+no_client ;    
+}else if(val == 2){
+$('#modal_tambah_pekerjaan').modal('show');    
+$('#no_client').val(no_client);
+}
+$('.opsi_pekerjaan'+id_data_client).val("")
 }
 
+$("#fileForm").submit(function(e) {
+e.preventDefault();
+$.validator.messages.required = '';
+}).validate({
+highlight: function (element, errorClass) {
+$(element).closest('.form-control').addClass('is-invalid');
+},
+unhighlight: function (element, errorClass) {
+$(element).closest(".form-control").removeClass("is-invalid");
+},    
+submitHandler: function(form) {
+$(".simpan_perizinan").attr("disabled", true);
+    
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+formData = new FormData();
+formData.append('token',token);
+formData.append('jenis_akta',$("#jenis_akta").val()),
+formData.append('id_jenis',$("#id_jenis_akta").val()),
+formData.append('target_kelar',$("#target_kelar").val()),
+formData.append('no_client',$("#no_client").val()),
+
+
+$.ajax({
+url: form.action,
+processData: false,
+contentType: false,
+type: form.method,
+data: formData,
+success:function(data){   
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function(){
+window.location.href='<?php echo base_url('User2/pekerjaan_antrian') ?>';    
 });
 
 }
 
+});
+return false; 
+}
+});
+
+    
 
 $(function () {
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
 $("#jenis_akta,#jenis_akta_perorangan").autocomplete({
 minLength:0,
 delay:0,
-source:'<?php echo site_url('Dashboard/cari_jenis_dokumen') ?>',
+source:'<?php echo site_url('User2/cari_jenis_dokumen') ?>',
 select:function(event, ui){
 $("#id_jenis_akta").val("");
 $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
@@ -179,98 +206,10 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 );
 });
 
-$(document).ready(function(){
-$("#simpan_user").click(function(){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
-var jenis_akta     = $("#jenis_akta").val();
-var id_jenis_akta  = $("#id_jenis_akta").val();
-var no_client      = $("#no_client").val();
-
-if(id_jenis_akta != '' && jenis_akta != ''){
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/simpan_data_berkas') ?>",
-data:"token="+token+"&no_client="+no_client+"&jenis_akta="+jenis_akta+"&id_jenis_akta="+id_jenis_akta,
-success:function(data){
-var r = JSON.parse(data);    
-if(r.status == "Berhasil" ){
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: 'success',
-title: 'Dokumen Berhasil di proses.'
-}).then(function() {
-window.location.href = "<?php echo base_url('Dashboard/proses_berkas'); ?>"+"/"+r.no_berkas+"/";
-})
-$('#modal_tambah_pekerjaan').modal('hide');
-}else{
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: 'error',
-title: r.pesan
-})
-
-}
-}
-});
-}else{
-const Toast = Swal.mixin({
-toast: true,
-position: 'center',
-showConfirmButton: false,
-timer: 3000,
-animation: false,
-customClass: 'animated zoomInDown'
-});
-
-Toast.fire({
-type: 'warning',
-title: 'Jenis Akta belum terpilih.'
-})
-}
-
+$(function() {
+$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'dd/mm/yy'
 });
 });
-$(function () {
-var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
-$("#cari_user").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo site_url('Dashboard/cari_user') ?>',
-select:function(event, ui){
-var token    = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('Dashboard/set_client_perizinan') ?>",
-data:"token="+token+"&no_user="+ui.item.no_user+"&nama_lengkap="+ui.item.nama_lengkap+"&email="+ui.item.email,
-success:function(){
-refresh();    
-}
-});
-
-
-}
-});
-});
-
 
 
 </script>

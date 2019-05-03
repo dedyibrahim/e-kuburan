@@ -5,31 +5,14 @@
 <span class="navbar-toggler-icon"></span>
 </button>
     
- <div class="input-group col-md-7 mx-auto" id="adv-search">
-     <input type="text" class="form-control" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
-                <div class="input-group-btn">
-                    <div class="btn-group" role="group">
-                        <div class="dropdown dropdown-lg">
-                            <button type="button" style="padding: 0.875rem 0.75rem;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                            <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                <form class="form-horizontal" method="post"  action="<?php echo base_url('Dashboard/cari_dokumen') ?>" enctype="multipart/form-data" >
-                                    <input type="hidden" name="nama_dokumen" class="form-control" id="pencarian_id_nama_dokumen"  />
-                                    <input type="hidden" name="<?php echo  $this->security->get_csrf_token_name(); ?>" class="form-control" value="<?php echo  $this->security->get_csrf_hash() ?>"  />
-     
-                                  <div class="form-group">
-                                    <label for="filter">Nama Client</label>
-                                    <input type="text" class="form-control" id="pencarian_nama_klien">   
-                                    <input type="hidden" name="no_client" class="form-control" id="pencarian_no_nama_client">   
-                                 </div>
-                                    <hr>
-                                    <button type="submit" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span> Cari Dokumen</button>
-                                </form>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
-                    </div>
-                </div>
-            </div>
+<form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('Dashboard/cari_file') ?>" method="post" >        
+<input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
+<input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
+<div class="btn-group" role="group">
+<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
+</div>
+
+</form>
     
     <style>
 
@@ -101,27 +84,27 @@ Pilihan
 
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-3">
+<div class="col-md-3"><a href="<?php echo base_url('Dashboard/data_berkas') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-file-word float-right fa-3x sticky-top"></span>
-Dokumen Total <br>
+Data berkas <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Dokumen Selesai<div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">total data berkas<div class="float-right">
     <?php 
 $query3 = $this->db->get('data_berkas')->num_rows();
 
 echo $query3;
 ?>
 </div></div>
-</div>	
+</div></a>	
 </div>	
 <div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-user-tie float-right fa-3x sticky-top"></span>
-Client Total <br>
+Data client <br>
 <h4>&nbsp;</h4>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right">
@@ -135,16 +118,16 @@ echo $query1;
 </div>	
 
 
-<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/dokumen_proses') ?>">
+<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/pekerjaan_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-exchange-alt float-right fa-3x sticky-top"></span>
-Dokumen Di Proses <br>
+Pekerjaan diproses<br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data di proses 
+<div class="footer p-2" style="background-color:	#1ecee7;">Total pekerjaan diproses 
 <div class="float-right"><?php 
-$query = $this->db->get_where('data_berkas',array('status_berkas'=>"Proses"))->num_rows();
+$query = $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>"Proses"))->num_rows();
 
 echo $query;
 ?>
@@ -153,69 +136,25 @@ echo $query;
 </div>	</a>
 </div>
 
-<div class="col-md-3 ">
+<div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_user') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-users float-right fa-3x sticky-top"></span>
-Total user <br>
+Data user <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total user <div class="float-right">
+<div class="footer p-2" style="background-color:	#1ecee7;">Total data user <div class="float-right">
 <?php 
 $query2 = $this->db->get('user')->num_rows();
 echo $query2;
 ?>
 </div></div>
-</div>	
+</div></a>	
 </div>	
 
 </div>	
 </div>
 <script>
-
-$(function () {
-$("#pencarian_nama_dokumen").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_dokumen') ?>',
-select:function(event, ui){
-$("#pencarian_id_nama_dokumen").val(ui.item.no_nama_dokumen);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_user").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_user') ?>',
-select:function(event, ui){
-$("#pencarian_no_user").val(ui.item.no_user);
-
-}
-
-}
-);
-});
-
-$(function () {
-$("#pencarian_nama_klien").autocomplete({
-minLength:0,
-delay:0,
-source:'<?php echo base_url('Dashboard/cari_nama_klien') ?>',
-select:function(event, ui){
-
-$("#pencarian_no_nama_client").val(ui.item.no_client);
-
-
-}
-
-}
-);
-});
 
 
 $("#menu-toggle").click(function(e) {

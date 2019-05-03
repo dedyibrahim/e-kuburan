@@ -39,6 +39,7 @@ CREATE TABLE `data_berkas` (
   `tanggal_tugas` varchar(255) DEFAULT NULL,
   `tanggal_proses_tugas` varchar(255) DEFAULT NULL,
   `target_kelar_perizinan` varchar(255) DEFAULT NULL,
+  `tanggal_upload` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_data_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   KEY `no_client` (`no_client`),
@@ -47,7 +48,7 @@ CREATE TABLE `data_berkas` (
   CONSTRAINT `data_berkas_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_2` FOREIGN KEY (`no_pekerjaan`) REFERENCES `data_pekerjaan` (`no_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `data_berkas_ibfk_3` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +57,7 @@ CREATE TABLE `data_berkas` (
 
 LOCK TABLES `data_berkas` WRITE;
 /*!40000 ALTER TABLE `data_berkas` DISABLE KEYS */;
-INSERT INTO `data_berkas` VALUES (150,'C_000001','000001','N_0001','0007',NULL,NULL,'Surat Izin Usaha Perdagangan ( SIUP )','Perizinan','Proses',NULL,'Wisnu Subroto N.A','0002','12/04/2019','12/04/2019','13/04/2019');
+INSERT INTO `data_berkas` VALUES (275,'C_000002','000002','N_0009','0007','Dok000002','4d5e7abd26b0e58cf36e8c99af293789.docx','Anggaran dasar PT Jaya abadi.','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'16/04/2019 15:2553'),(282,'C_000002','000002','N_0002','0007','Dok000002','2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','NPWP PT Jaya Abadi teksindo','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','18/04/2019','18/04/2019','25/04/2019','18/04/2019 10:0814'),(283,'C_000003','000003','N_0006','0007','Dok000003','8994c27b368fa959426ff87dc8370f8d.jpg','KTP Bapak Sukoco','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:1759'),(284,'C_000003','000003','N_0006','0007','Dok000003','dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','KTP Adi riyatna','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:1854'),(285,'C_000003','000003','N_0010','0007','Dok000003','621e4d6c2535f88ff36f33fc3b1eb179.jpg','Kartu Keluarga  Bapak zaenudin','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'18/04/2019 09:2000'),(289,'C_000002','000002','N_0004','0007','Dok000002','e4746f55864f305fe92112523ca8672e.jpg','TDP PT Jaya abadi teksindo','Perizinan','Selesai','MK Fadzri Patriajaya','MK Fadzri Patriajaya','0012','18/04/2019','18/04/2019','19/04/2019','22/04/2019 09:5629'),(290,'C_000002','000002','N_0003','0007','Dok000002','bb74361940532b9a724eb6167b9ef274.jpg','SK Kehakiman PT Jaya abadi teksindo','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','18/04/2019','18/04/2019','25/04/2019','18/04/2019 10:0849'),(291,'C_000001','000001','N_0010','0007','Dok000001','8b930c1c65f9f5ec4d076f66e5f0e9a1.docx','Kartu Keluarga KK Bapak sukoco','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','22/04/2019','22/04/2019','22/04/2019','22/04/2019 09:4826'),(292,'C_000001','000001','N_0002','0007','Dok000001','82905e46e8ff28df2b259acb03581ad0.jpg','NPWP PT Melamun Tiga belas','Perizinan','Selesai','MK Fadzri Patriajaya','MK Fadzri Patriajaya','0012','22/04/2019','22/04/2019','23/04/2019','22/04/2019 09:5724'),(293,'C_000001','000001','N_0003','0007','Dok000001','79dac8b6341ace473ba2957b2f525a8b.docx','SK Kehakiman PT Melamun 13','Perizinan','Selesai','Wisnu Subroto N.A','Wisnu Subroto N.A','0002','22/04/2019','22/04/2019','23/04/2019','22/04/2019 09:4851'),(294,'C_000004','000004','N_0006','0007','Dok000004','ec8541c4b25d0f64e70cccd760bd8c75.jpg','KTP Bapak Adi riyatna','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'22/04/2019 09:5815'),(295,'C_000004','000004','N_0006','0007','Dok000004','e24b831cc2517976ec91e014d828ce3a.docx','KTP Bapak Sukoco','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'22/04/2019 09:5849'),(296,'C_000008','000008','N_0006','0007','Dok000008','e58efc638d78a52137334fd216f2db10.pdf','Ktp Bapak adi riyatna','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'22/04/2019 15:0328'),(297,'C_000008','000008','N_0009','0007','Dok000008','792384e3394e2d8c0ecacce48bef2627.pdf','Anggaran Dasar PT Selamet riyadi','Persyaratan','','Yus Suwandari',NULL,NULL,NULL,NULL,NULL,'22/04/2019 15:0516');
 /*!40000 ALTER TABLE `data_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +83,7 @@ CREATE TABLE `data_client` (
   KEY `no_client` (`no_client`),
   KEY `no_user` (`no_user`),
   CONSTRAINT `data_client_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +92,7 @@ CREATE TABLE `data_client` (
 
 LOCK TABLES `data_client` WRITE;
 /*!40000 ALTER TABLE `data_client` DISABLE KEYS */;
-INSERT INTO `data_client` VALUES (27,'C_000001','PT MELAMUN TIGA BELAS','Badan Hukum','Jl.Raya Bogor','11/04/2019 14:11:29','Yus Suwandari','0007','Dok000001',''),(28,'C_000002','PT Melamun Tiga Belas','Badan Hukum','JL.muara karang Blok L9 T No.8 Penjaringan Jakarta','12/04/2019 08:37:23','Yus Suwandari','0007','Dok000002','093498884');
+INSERT INTO `data_client` VALUES (33,'C_000001','PT MELAMUN TIGA BELAS','Badan Hukum','Jl.Raya Bogor','16/04/2019 13:48:56','Yus Suwandari','0007','Dok000001','0998888233'),(34,'C_000002','PT Jaya abadi teksindo','Badan Hukum','Jl.Raya Bogor KM.21 ','16/04/2019 15:24:37','Yus Suwandari','0007','Dok000002','099499399884'),(35,'C_000003','PT Faraday dunia','Badan Hukum','Jl.Muara Karang Blok L9 T No.9','18/04/2019 09:00:38','Yus Suwandari','0007','Dok000003','099988843'),(36,'C_000004','PT Milabakti tiga ratus','Perorangan','Jl.Muara Karang Blok L9 T No.8','18/04/2019 09:01:29','Yus Suwandari','0007','Dok000004','8934788383'),(37,'C_000005','PT Rasa abadi','Badan Hukum','Jl,Muara Karang ','22/04/2019 10:10:49','Yus Suwandari','0007','Dok000005','088484994443'),(38,'C_000006','PT jANCUK INDONESIA','Badan Hukum','Jl.Muara Karang Blok L9 NO 9 JAKARATA','22/04/2019 15:01:28','Yus Suwandari','0007','Dok000006','234323'),(39,'C_000007','PT PODOMORO LAND','Badan Hukum','Jl.Raya gianyar bali','22/04/2019 15:02:12','Yus Suwandari','0007','Dok000007','23423'),(40,'C_000008','PT Selamet riyadi','Perorangan','adsad','22/04/2019 15:02:47','Yus Suwandari','0007','Dok000008','23984789'),(41,'C_000009','PT Kubangan batu bara','Badan Hukum','Jl.Raya Leuwinanggung ','22/04/2019 16:34:04','Esthi Herlina','0008','Dok000009','89778998883');
 /*!40000 ALTER TABLE `data_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +111,7 @@ CREATE TABLE `data_daftar_persyaratan` (
   `nama_lampiran` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_data_daftar_persyaratan`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +120,7 @@ CREATE TABLE `data_daftar_persyaratan` (
 
 LOCK TABLES `data_daftar_persyaratan` WRITE;
 /*!40000 ALTER TABLE `data_daftar_persyaratan` DISABLE KEYS */;
-INSERT INTO `data_daftar_persyaratan` VALUES (7,'S_001','Komisaris utama','N_0006','KTP (Kartu Tanda Penduduk)'),(8,'S_002','Direktur utama','N_0006','KTP (Kartu Tanda Penduduk)'),(9,'S_003','Jumlah Saham','',''),(10,'S_004','Jumlah karyawan','','');
+INSERT INTO `data_daftar_persyaratan` VALUES (7,'S_001','Komisaris utama','N_0006','KTP (Kartu Tanda Penduduk)'),(8,'S_002','Direktur utama','N_0006','KTP (Kartu Tanda Penduduk)'),(9,'S_003','Jumlah Saham','',''),(10,'S_004','Jumlah karyawan','',''),(11,'S_005','Copy SIUP','N_0001','Surat Izin Usaha Perdagangan ( SIUP )'),(12,'S_006','Copy TDP','N_0004','Tanda daftar perusahaan ( TDP )'),(13,'S_007','Copy NPWP','N_0002','Nomor pokok wajib pajak (NPWP)'),(14,'S_008','Copy Domisili','N_0005','Domisili'),(15,'S_009','Copy-copy surat BKPM','N_0007','SP BKPM'),(16,'S_010','Anggaran dasar','N_0009','Anggaran Dasar'),(17,'S_011','RUPS','N_0008','RUPS'),(18,'S_012','Jenis badan usaha','',''),(19,'S_013','Kartu Keluarga','N_0010','Kartu Keluarga KK');
 /*!40000 ALTER TABLE `data_daftar_persyaratan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +167,7 @@ CREATE TABLE `data_meta` (
   PRIMARY KEY (`id_data_meta`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`),
   CONSTRAINT `data_meta_ibfk_1` FOREIGN KEY (`no_nama_dokumen`) REFERENCES `nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +176,7 @@ CREATE TABLE `data_meta` (
 
 LOCK TABLES `data_meta` WRITE;
 /*!40000 ALTER TABLE `data_meta` DISABLE KEYS */;
-INSERT INTO `data_meta` VALUES (25,'N_0006','NIK'),(26,'N_0006','Nama'),(28,'N_0006','Tanggal lahir'),(30,'N_0005','No Domisili'),(31,'N_0005','Keterangan'),(32,'N_0004','No TDP'),(33,'N_0004','Keterangan'),(34,'N_0003','No SK'),(35,'N_0002','No NPWP'),(36,'N_0002','Nama'),(37,'N_0002','Tanggal lahir'),(38,'N_0001','No SIUP'),(39,'N_0001','Keterangan'),(40,'N_0006','Alamat');
+INSERT INTO `data_meta` VALUES (41,'N_0006','NIK'),(42,'N_0005','No.Domisili'),(43,'N_0004','No TDP'),(44,'N_0003','No SK'),(45,'N_0002','No NPWP'),(46,'N_0001','No SIUP'),(47,'N_0009','Keterangan'),(48,'N_0008','Keterangan'),(49,'N_0007','Keterangan'),(50,'N_0010','No KK ');
 /*!40000 ALTER TABLE `data_meta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +199,7 @@ CREATE TABLE `data_meta_berkas` (
   PRIMARY KEY (`id_data_meta_berkas`),
   KEY `nama_berkas` (`nama_berkas`),
   CONSTRAINT `data_meta_berkas_ibfk_1` FOREIGN KEY (`nama_berkas`) REFERENCES `data_berkas` (`nama_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,6 +208,7 @@ CREATE TABLE `data_meta_berkas` (
 
 LOCK TABLES `data_meta_berkas` WRITE;
 /*!40000 ALTER TABLE `data_meta_berkas` DISABLE KEYS */;
+INSERT INTO `data_meta_berkas` VALUES (100,'4d5e7abd26b0e58cf36e8c99af293789.docx','C_000002','000002','N_0009','Nama_berkas','Anggaran dasar PT Jaya abadi.','Dok000002'),(101,'4d5e7abd26b0e58cf36e8c99af293789.docx','C_000002','000002','N_0009','Keterangan','-','Dok000002'),(114,'8994c27b368fa959426ff87dc8370f8d.jpg','C_000003','000003','N_0006','Nama_berkas','KTP Bapak Sukoco','Dok000003'),(115,'8994c27b368fa959426ff87dc8370f8d.jpg','C_000003','000003','N_0006','NIK','2398479834838','Dok000003'),(116,'dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','C_000003','000003','N_0006','Nama_berkas','KTP Adi riyatna','Dok000003'),(117,'dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','C_000003','000003','N_0006','NIK','23784672873','Dok000003'),(118,'621e4d6c2535f88ff36f33fc3b1eb179.jpg','C_000003','000003','N_0010','Nama_berkas','Kartu Keluarga  Bapak zaenudin','Dok000003'),(119,'621e4d6c2535f88ff36f33fc3b1eb179.jpg','C_000003','000003','N_0010','No_KK_','234234234','Dok000003'),(120,'2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','C_000002','000002','N_0002','Nama_berkas','NPWP PT Jaya Abadi teksindo','Dok000002'),(121,'2d9524c6f2e8c1a6b2a2817359f3edd1.jpg','C_000002','000002','N_0002','No_NPWP','2343432434','Dok000002'),(122,'bb74361940532b9a724eb6167b9ef274.jpg','C_000002','000002','N_0003','Nama_berkas','SK Kehakiman PT Jaya abadi teksindo','Dok000002'),(123,'bb74361940532b9a724eb6167b9ef274.jpg','C_000002','000002','N_0003','No_SK','234343','Dok000002'),(124,'8b930c1c65f9f5ec4d076f66e5f0e9a1.docx','C_000001','000001','N_0010','Nama_berkas','Kartu Keluarga KK Bapak sukoco','Dok000001'),(125,'8b930c1c65f9f5ec4d076f66e5f0e9a1.docx','C_000001','000001','N_0010','No_KK_','8778747883','Dok000001'),(126,'79dac8b6341ace473ba2957b2f525a8b.docx','C_000001','000001','N_0003','Nama_berkas','SK Kehakiman PT Melamun 13','Dok000001'),(127,'79dac8b6341ace473ba2957b2f525a8b.docx','C_000001','000001','N_0003','No_SK','234343','Dok000001'),(128,'e4746f55864f305fe92112523ca8672e.jpg','C_000002','000002','N_0004','Nama_berkas','TDP PT Jaya abadi teksindo','Dok000002'),(129,'e4746f55864f305fe92112523ca8672e.jpg','C_000002','000002','N_0004','No_TDP','8783499883','Dok000002'),(130,'82905e46e8ff28df2b259acb03581ad0.jpg','C_000001','000001','N_0002','Nama_berkas','NPWP PT Melamun Tiga belas','Dok000001'),(131,'82905e46e8ff28df2b259acb03581ad0.jpg','C_000001','000001','N_0002','No_NPWP','82378468773','Dok000001'),(132,'ec8541c4b25d0f64e70cccd760bd8c75.jpg','C_000004','000004','N_0006','Nama_berkas','KTP Bapak Adi riyatna','Dok000004'),(133,'ec8541c4b25d0f64e70cccd760bd8c75.jpg','C_000004','000004','N_0006','NIK','2398479834838','Dok000004'),(134,'e24b831cc2517976ec91e014d828ce3a.docx','C_000004','000004','N_0006','Nama_berkas','KTP Bapak Sukoco','Dok000004'),(135,'e24b831cc2517976ec91e014d828ce3a.docx','C_000004','000004','N_0006','NIK','2398479834838','Dok000004'),(136,'e58efc638d78a52137334fd216f2db10.pdf','C_000008','000008','N_0006','Nama_berkas','Ktp Bapak adi riyatna','Dok000008'),(137,'e58efc638d78a52137334fd216f2db10.pdf','C_000008','000008','N_0006','NIK','2398479834838','Dok000008'),(138,'792384e3394e2d8c0ecacce48bef2627.pdf','C_000008','000008','N_0009','Nama_berkas','Anggaran Dasar PT Selamet riyadi','Dok000008'),(139,'792384e3394e2d8c0ecacce48bef2627.pdf','C_000008','000008','N_0009','Keterangan','-','Dok000008');
 /*!40000 ALTER TABLE `data_meta_berkas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +237,7 @@ CREATE TABLE `data_pekerjaan` (
   KEY `no_client` (`no_client`),
   KEY `no_pekerjaan` (`no_pekerjaan`),
   CONSTRAINT `data_pekerjaan_ibfk_1` FOREIGN KEY (`no_client`) REFERENCES `data_client` (`no_client`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +246,7 @@ CREATE TABLE `data_pekerjaan` (
 
 LOCK TABLES `data_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_pekerjaan` VALUES (26,'C_000001','000001','Proses','11/04/2019 14:11:29','Apr,11,2019, 14:11:29',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','11/04/2019 14:11:29','2019/04/11','12/04/2019'),(27,'C_000002','000002','Masuk','12/04/2019 08:37:23','Apr,12,2019, 08:37:23',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','12/04/2019 08:37:23','','30/04/2019');
+INSERT INTO `data_pekerjaan` VALUES (32,'C_000001','000001','Selesai','16/04/2019 13:48:56','Apr,16,2019, 13:48:56',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','16/04/2019 13:48:56','2019/04/22','19/04/2019'),(33,'C_000002','000002','Selesai','16/04/2019 15:24:37','Apr,16,2019, 15:24:37',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','16/04/2019 15:24:37','2019/04/22','30/04/2019'),(34,'C_000003','000003','Selesai','18/04/2019 09:00:39','Apr,18,2019, 09:00:39',NULL,'0007','Yus Suwandari','Akta perubahan Yayasan','18/04/2019 09:00:39','2019/04/22','22/04/2019'),(35,'C_000004','000004','Selesai','18/04/2019 09:01:29','Apr,18,2019, 09:01:29',NULL,'0007','Yus Suwandari','Akta pendirian Perseroan Terbatas ( PT )','18/04/2019 09:01:29','2019/04/22','20/04/2019'),(36,'C_000005','000005','Selesai','22/04/2019 10:10:49','Apr,22,2019, 10:10:49',NULL,'0007','Yus Suwandari','Akta perubahan CV','22/04/2019 10:10:49','2019/04/22','23/04/2019'),(37,'C_000006','000006','Masuk','22/04/2019 15:01:28','Apr,22,2019, 15:01:28',NULL,'0007','Yus Suwandari','Akta pendirian Perseroan Terbatas ( PT )','22/04/2019 15:01:28','','23/04/2019'),(38,'C_000007','000007','Masuk','22/04/2019 15:02:13','Apr,22,2019, 15:02:13',NULL,'0007','Yus Suwandari','Akta perubahan perseroan terbatas ( PT )','22/04/2019 15:02:13','','23/04/2019'),(39,'C_000008','000008','Selesai','22/04/2019 15:02:47','Apr,22,2019, 15:02:47','22/04/2019','0007','Yus Suwandari','Akta perubahan CV','22/04/2019 15:02:47','22/04/2019','25/04/2019'),(40,'C_000009','000009','Masuk','22/04/2019 16:34:04','Apr,22,2019, 16:34:04',NULL,'0008','Esthi Herlina','Akta perubahan perseroan terbatas ( PT )','22/04/2019 16:34:04','','27/04/2019');
 /*!40000 ALTER TABLE `data_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,10 +260,15 @@ DROP TABLE IF EXISTS `data_persyaratan`;
 CREATE TABLE `data_persyaratan` (
   `id_data_persyaratan` int(11) NOT NULL AUTO_INCREMENT,
   `no_pekerjaan` varchar(255) NOT NULL,
+  `meta_syarat` varchar(255) DEFAULT NULL,
   `key_syarat` varchar(255) NOT NULL,
   `value_syarat` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_data_persyaratan`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id_data_persyaratan`),
+  KEY `no_pekerjaan` (`no_pekerjaan`),
+  KEY `meta_syarat` (`meta_syarat`),
+  CONSTRAINT `data_persyaratan_ibfk_1` FOREIGN KEY (`no_pekerjaan`) REFERENCES `data_pekerjaan` (`no_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `data_persyaratan_ibfk_2` FOREIGN KEY (`meta_syarat`) REFERENCES `data_berkas` (`nama_berkas`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +277,37 @@ CREATE TABLE `data_persyaratan` (
 
 LOCK TABLES `data_persyaratan` WRITE;
 /*!40000 ALTER TABLE `data_persyaratan` DISABLE KEYS */;
+INSERT INTO `data_persyaratan` VALUES (39,'000001',NULL,'Jenis badan usaha','Pertambangan'),(42,'000002','4d5e7abd26b0e58cf36e8c99af293789.docx','Anggaran dasar','Anggaran dasar PT Jaya abadi'),(43,'000002',NULL,'Jumlah Saham','13000 lembar'),(44,'000003',NULL,'Jumlah Saham','6000'),(45,'000003',NULL,'Jenis badan usaha','Pertambangan'),(46,'000003','8994c27b368fa959426ff87dc8370f8d.jpg','Komisaris utama','Bapak Sukoco adi ningrat'),(47,'000003','dab75cc2e5e791e3a7fc99a4a23a3df9.jpg','Direktur utama','Bapak Adi riyatna'),(48,'000003','621e4d6c2535f88ff36f33fc3b1eb179.jpg','Kartu Keluarga','Kartu Keluarga  Bapak zaenudin'),(49,'000004','ec8541c4b25d0f64e70cccd760bd8c75.jpg','Direktur utama','Bapak Adi riyatna'),(50,'000004',NULL,'Jumlah Saham','6000'),(51,'000004','e24b831cc2517976ec91e014d828ce3a.docx','Komisaris utama','Bapak Sukoco adi ningrat'),(52,'000008','e58efc638d78a52137334fd216f2db10.pdf','Direktur utama','Bapak Adi riyatna'),(53,'000008',NULL,'Jumlah karyawan','100'),(54,'000008',NULL,'Jenis badan usaha','Pengolahan air '),(55,'000008','792384e3394e2d8c0ecacce48bef2627.pdf','Anggaran dasar','Anggaran Dasar PT Selamet riyadi');
 /*!40000 ALTER TABLE `data_persyaratan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_progress_perizinan`
+--
+
+DROP TABLE IF EXISTS `data_progress_perizinan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_progress_perizinan` (
+  `id_data_progress_perizinan` int(11) NOT NULL AUTO_INCREMENT,
+  `id_data_berkas` varchar(255) NOT NULL,
+  `no_pekerjaan` varchar(255) NOT NULL,
+  `no_user` varchar(255) NOT NULL,
+  `laporan` text NOT NULL,
+  `waktu` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_data_progress_perizinan`),
+  KEY `id_data_berkas` (`id_data_berkas`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_progress_perizinan`
+--
+
+LOCK TABLES `data_progress_perizinan` WRITE;
+/*!40000 ALTER TABLE `data_progress_perizinan` DISABLE KEYS */;
+INSERT INTO `data_progress_perizinan` VALUES (9,'270','000001','0012','Masuk kedalam kelurahan','16/04/2019 13:56:14'),(10,'291','000001','0002','Sudah berada diperjalanan','22/04/2019 09:46:43'),(11,'293','000001','0002','Sudah dikecamatan','22/04/2019 09:47:00'),(12,'289','000002','0012','Sudah dalam kecamatan','22/04/2019 09:50:21'),(13,'289','000002','0012','Masuk ke KPP','22/04/2019 09:55:22'),(14,'292','000001','0012','Masuk ke kelurahan','22/04/2019 09:55:38'),(15,'292','000001','0012','Masuk ke kecamatan','22/04/2019 09:56:53');
+/*!40000 ALTER TABLE `data_progress_perizinan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -288,7 +325,7 @@ CREATE TABLE `nama_dokumen` (
   `pembuat` varchar(255) NOT NULL,
   PRIMARY KEY (`id_nama_dokumen`),
   KEY `no_nama_dokumen` (`no_nama_dokumen`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,7 +334,7 @@ CREATE TABLE `nama_dokumen` (
 
 LOCK TABLES `nama_dokumen` WRITE;
 /*!40000 ALTER TABLE `nama_dokumen` DISABLE KEYS */;
-INSERT INTO `nama_dokumen` VALUES (1,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','2019-03-06 06:35:35.892906','Dedy Ibrahim'),(2,'N_0002','Nomor pokok wajib pajak (NPWP)','2019-03-06 06:36:01.479696','Dedy Ibrahim'),(3,'N_0003','SK Kehakiman','2019-03-06 06:36:20.751813','Dedy Ibrahim'),(4,'N_0004','Tanda daftar perusahaan ( TDP )','2019-03-06 06:36:57.464862','Dedy Ibrahim'),(5,'N_0005','Domisili','2019-03-06 06:37:33.825515','Dedy Ibrahim'),(6,'N_0006','KTP (Kartu Tanda Penduduk)','2019-04-08 08:00:54.463990','Admin');
+INSERT INTO `nama_dokumen` VALUES (1,'N_0001','Surat Izin Usaha Perdagangan ( SIUP )','2019-03-06 06:35:35.892906','Dedy Ibrahim'),(2,'N_0002','Nomor pokok wajib pajak (NPWP)','2019-03-06 06:36:01.479696','Dedy Ibrahim'),(3,'N_0003','SK Kehakiman','2019-03-06 06:36:20.751813','Dedy Ibrahim'),(4,'N_0004','Tanda daftar perusahaan ( TDP )','2019-03-06 06:36:57.464862','Dedy Ibrahim'),(5,'N_0005','Domisili','2019-03-06 06:37:33.825515','Dedy Ibrahim'),(6,'N_0006','KTP (Kartu Tanda Penduduk)','2019-04-08 08:00:54.463990','Admin'),(7,'N_0007','SP BKPM','2019-04-15 04:10:33.049895','Admin'),(8,'N_0008','RUPS','2019-04-15 04:11:48.579680','Admin'),(9,'N_0009','Anggaran Dasar','2019-04-15 04:12:05.210502','Admin'),(10,'N_0010','Kartu Keluarga KK','2019-04-16 06:47:10.757792','Admin');
 /*!40000 ALTER TABLE `nama_dokumen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-12 14:57:14
+-- Dump completed on 2019-04-22 17:02:48

@@ -7,8 +7,9 @@
 =======
         <group>
             <file>file:/var/www/notaris.com/application/views/user2/V_lengkapi_persyaratan.php</file>
+            <file>file:/var/www/notaris.com/application/views/user2/V_dokumen_utama.php</file>
             <file>file:/var/www/notaris.com/application/controllers/User2.php</file>
-            <file>file:/var/www/notaris.com/application/models/M_user2.php</file>
+            <file>file:/var/www/notaris.com/application/views/user2/V_proses_berkas.php</file>
         </group>
 >>>>>>> b1737126321eb381c8a20db09b5fa75c535bb5ab
     </open-files>

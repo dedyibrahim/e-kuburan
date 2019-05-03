@@ -8,20 +8,53 @@ $this->load->model('M_dashboard');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
-
 if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
 redirect(base_url('Login'));
 }else if($this->session->userdata('status') != 'Aktif' && $this->session->userdata('level') != 'Admin' || $this->session->userdata('level') != 'Super Admin' ){
 redirect(base_url('Login'));
 }
-
 } 
 
 
 public function index(){
-
 $this->setting();    
 } 
+
+public function hapus_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();
+echo print_r($input);
+$this->db->delete('data_persyaratan',array('id_data_persyaratan'=>$input['id_data_persyaratan']));
+}else{
+redirect(404);    
+}    
+}
+
+public function get_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();
+$data = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen'=>$input['no_jenis_dokumen']));
+
+echo "<table class='table table-sm table-striped table-hover'>"
+. "<tr>"
+."<th>Nama File</th>"
+."<th>Aksi</th>"
+. "</tr>";
+foreach ($data->result_array() as $d){
+echo  "<tr class='hapus_syarat".$d['id_data_persyaratan']."'>"
+."<td >".$d['nama_dokumen']."</td>"
+."<td><button onclick=hapus_syarat(".$d['id_data_persyaratan']."); class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>"
+. "</tr>";    
+}
+
+echo "</table>";
+
+
+}else{
+redirect(4);    
+}    
+    
+}
 
 public function keluar(){
 $this->session->sess_destroy();
@@ -214,69 +247,7 @@ $json[]= array(
 }
 echo json_encode($json);
 }
-public function cari_nama_klien(){
-$term = strtolower($this->input->get('term'));
 
-$query = $this->M_dashboard->cari_nama_klien($term);
-foreach ($query as $d) {
-$json[]= array(
-'label'                    => $d->nama_client,   
-'no_client'                => $d->no_client,
-);   
-}
-
-echo json_encode($json);
-}
-
-
-
-
-public function cari_data_perorangan(){
-$term = strtolower($this->input->get('term'));    
-$query = $this->M_dashboard->cari_data_perorangan($term);
-
-foreach ($query as $d) {
-$json[]= array(
-'label'                             => $d->nama_identitas,   
-'nama_identitas'                    => $d->nama_identitas,
-'no_nama_perorangan'                => $d->no_nama_perorangan,
-'no_identitas'                      => $d->no_identitas,
-'jenis_identitas'                   => $d->jenis_identitas,
-'file_berkas'                       => $d->file_berkas,
-'file_lampiran'                     => $d->lampiran,
-'status_jabatan'                   => $d->status_jabatan,
-);   
-}
-
-echo json_encode($json);
-}
-
-public function cari_jenis_dokumen(){
-$term = strtolower($this->input->get('term'));    
-$query = $this->M_dashboard->cari_jenis_dokumen($term);
-
-foreach ($query as $d) {
-$json[]= array(
-'label'                    => $d->nama_jenis,   
-'no_jenis_dokumen'         => $d->no_jenis_dokumen,
-);   
-}
-echo json_encode($json);
-}
-public function cari_user(){
-$term = strtolower($this->input->get('term'));    
-$query = $this->M_dashboard->cari_user($term);
-
-foreach ($query as $d) {
-$json[]= array(
-'label'                    => $d->nama_lengkap,   
-'nama_lengkap'             => $d->nama_lengkap,
-'no_user'                  => $d->no_user,    
-'email'                    => $d->email    
-);   
-}
-echo json_encode($json);
-}
 
 public function json_data_jenis_dokumen(){
 echo $this->M_dashboard->json_data_jenis_dokumen();       
@@ -306,12 +277,102 @@ echo $this->M_dashboard->json_dokumen_proses();
 public function json_data_nama_dokumen(){
 echo $this->M_dashboard->json_data_nama_dokumen();       
 }
+public function json_data_berkas(){
+echo $this->M_dashboard->json_data_berkas();       
+}
+public function json_data_pekerjaan(){
+echo $this->M_dashboard->json_data_pekerjaan();       
+}
 
+public function data_dokumen(){
+
+$query = $this->db->get_where('nama_dokumen',array('id_nama_dokumen'=>$this->input->post('id_nama_dokumen')))->row_array();
+
+$data = array(
+'id_nama_dokumen' =>$query['id_nama_dokumen'],    
+'no_nama_dokumen' =>$query['no_nama_dokumen'],   
+'nama_dokumen'    =>$query['nama_dokumen'],
+);
+
+echo json_encode($data);
+
+}
+
+public function data_pekerjaan(){
+if($this->input->post()){
+$input = $this->input->post();    
+
+$query = $this->db->get_where('data_jenis_dokumen',array('id_jenis_dokumen'=>$input['id_jenis_dokumen']))->row_array();
+$data = array(
+'no_jenis_dokumen' =>$query['no_jenis_dokumen'],
+'pekerjaan'        =>$query['pekerjaan'],
+'nama_jenis'       =>$query['nama_jenis'],
+);    
+echo json_encode($data);
+
+
+}else{
+redirect(404);    
+}
+
+}
+public function update_jenis_pekerjaan(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data = array(
+'no_jenis_dokumen' =>$input['no_jenis_dokumen'],
+'pekerjaan'        =>$input['pekerjaan'],
+'nama_jenis'       =>$input['nama_jenis'],
+'pembuat_jenis'    => $this->session->userdata('nama_lengkap'),  
+);
+
+$this->db->update('data_jenis_dokumen',$data,array('id_jenis_dokumen'=>$input['id_jenis_dokumen']));
+
+$status = array(
+"status"=>"success",
+"pesan"=>"Data pekerjaan berhasil diperbaharui"
+);
+
+echo json_encode($status);
+    
+}else{
+redirect(404);    
+}       
+}
+
+public function update_nama_dokumen(){
+if($this->input->post()){    
+$input = $this->input->post();
+
+$data = array(
+'no_nama_dokumen'   => $input['no_nama_dokumen'],
+'nama_dokumen'      => $input['nama_dokumen'],
+'pembuat'           => $this->session->userdata('nama_lengkap'),   
+);
+$this->db->update('nama_dokumen',$data,array('id_nama_dokumen'=>$input['id_nama_dokumen']));
+
+$status = array(
+"status"=>"success",
+"pesan"=>"Nama dokumen berhasil diperbaharui"
+);
+
+echo json_encode($status);
+    
+}else{
+redirect(404);    
+}    
+}
 
 
 public function jenis_dokumen(){
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_jenis_dokumen');
+}
+
+public function  data_user(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_data_user');    
 }
 
 public function nama_dokumen(){
@@ -415,9 +476,9 @@ $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_proses_berkas',['data'=>$data]);
 }
 
-public function dokumen_proses(){
+public function pekerjaan_proses(){
 $this->load->view('umum/V_header');
-$this->load->view('dashboard/V_dokumen_proses');
+$this->load->view('dashboard/V_pekerjaan_proses');
 }
 
 
@@ -453,7 +514,29 @@ $this->load->view('dashboard/V_data_perorangan');
 
 }
 
+public function simpan_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();
 
+$data = array(
+'nama_dokumen'      =>$input['nama_dokumen'], 
+'no_nama_dokumen'   =>$input['no_nama_dokumen'], 
+'no_jenis_dokumen'  =>$input['no_jenis_dokumen']   
+);
+
+$this->db->insert('data_persyaratan',$data);
+
+$status = array(
+"status"      =>"success",
+"pesan"       =>"Persyaratan berhasil ditambahkan" 
+);
+
+echo json_encode($status);
+}else{
+redirect(404);    
+} 
+    
+}
 
 
 public function simpan_pekerjaan_user(){
@@ -536,31 +619,49 @@ $this->db->delete('data_meta',array('id_data_meta'=>$this->input->post('id_data_
 redirect(404);    
 }    
 }
-public function simpan_persyaratan(){
+
+
+public function cari_file(){
 if($this->input->post()){
 $input = $this->input->post();
-$no_daftar_persyaratan= str_pad($this->db->get_where('data_daftar_persyaratan')->num_rows()+1,3 ,"0",STR_PAD_LEFT);
+$this->db->select('*');
+$this->db->from('data_meta_berkas');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
+$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
+$this->db->like($array);
 
-$data = array(
-'no_daftar_persyaratan' =>"S_".$no_daftar_persyaratan,
-'nama_persyaratan'      =>$input['nama_persyaratan'],
-'no_nama_dokumen'       =>$input['no_nama_dokumen'],    
-'nama_lampiran'         =>$input['nama_lampiran']    
-);
-$this->db->insert('data_daftar_persyaratan',$data);
-
-$status = array(
-"status"      =>"success",
-"pesan"       =>"Daftar persyaratan berhasil ditambahkan" 
-);
-echo json_encode($status); 
+$query = $this->db->get();
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_pencarian',['query'=>$query]);
 
 }else{
 redirect(404);    
-} 
+}    
+}
+public function data_berkas(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_data_berkas');
     
 }
 
+
+public function lihat_berkas_client(){
+$no_client  = base64_decode($this->uri->segment(3));
+$query = $this->db->get_where('data_berkas',array('no_client'=>$no_client));
+
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_lihat_berkas_client',['query'=>$query]);
+
+}
+
+public function download_berkas(){
+$data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->uri->segment(3)))->row_array();    
+$file_path = "./berkas/".$data['nama_folder']."/".$data['nama_berkas']; 
+$info = new SplFileInfo($data['nama_berkas']);
+force_download($data['nama_file'].".".$info->getExtension(), file_get_contents($file_path));
+}
 
 }
 

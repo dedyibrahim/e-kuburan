@@ -10,79 +10,56 @@
 </div>
 </div>
 
-<div class="row p-2 ">
+<div class="row ">
+<div class="col">    
+<table class="table table-sm table-striped table-hover">
+<tr>
+<th>Nama Client</th>
+<th>Pekerjaan</th>
+<th>Tanggal dibuat</th>
+<th>Target selesai</th>
+</tr>       
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
-<div class='col-md-4 mb-2 '>
-<div class='card'>
-<div class="card-header text-center">
-<?php echo $data['nama_client'] ?>
-</div>
-<div class="card-body p-2">
- <p style='font-size:12px;'>Nama client : <?php echo $data['nama_client'] ?><br>   
-Jenis client : <?php echo $data['jenis_client'] ?><br>   
-Tugas : <?php echo $data['pembuat_client'] ?><br>   
-Tanggal Penugasan : <?php echo $data['tanggal_dibuat'] ?></p>
-</div>
-<div class="card-footer text-center">
-Target Kelar : <?php echo $data['target_kelar'] ?><br>   
-</div>
-</div>
-</div>
+<tr>        
+<td><?php echo $data['nama_client'] ?></td>
+<td><?php echo $data['pembuat_pekerjaan'] ?></td>   
+<td><?php echo $data['tanggal_dibuat'] ?></td>
+<td><?php echo $data['target_kelar'] ?></td>
+
+</tr>
 <?php } ?>
+
+
+
+</table>    
+
+</div>
+</div>
 </div>
 </div>
 
-
-<!-------------modal--------------------->
-<div class="modal fade" id="modal_proses" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">
-<div class="modal-dialog modal-md" role="document">
-<div class="modal-content ">
-<div class="modal-header">
-<h5 class="modal-title" id="modal_dinamis">Modal</h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body data_modal">
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-<button type="button" class="btn btn-primary">Save changes</button>
-</div>
-</div>
-</div>
-</div>
-<style>
-.swal2-overflow {
-overflow-x: visible;
-overflow-y: visible;
-}    
-
-</style>    
 
 </body>
 <script type="text/javascript">
-function proses_perizinan(id){
-swal.fire({
-title: 'Target Kelar Perizinan <br><hr>',
-html: '<input class="form-control" id="target_kelar">',
-showCancelButton: true,
-confirmButtonColor: '#3085d6',
-cancelButtonColor: '#d33',
-confirmButtonText: 'Simpan target',
-customClass: 'swal2-overflow',
-onOpen: function() {
-$('#target_kelar').datepicker({ minDate:0});
+function aksi_option(no_pekerjaan,id_data_pekerjaan){
+var val = $(".data_option"+id_data_pekerjaan+" option:selected").val();
+if(val == 1){
+alert(1);    
+}else if (val == 2){
+$('.pekerjaan'+id_data_pekerjaan).removeAttr("disabled");
 }
-}).then((result) => {
-var target_kelar = $("#target_kelar").val();
-var token           = "<?php echo $this->security->get_csrf_hash() ?>";
+}
+function alihkan_tugas(no_pekerjaan,id_data_pekerjaan){
+var no_user             = $(".pekerjaan"+id_data_pekerjaan+" option:selected").val();
+var pembuat_pekerjaan   = $(".pekerjaan"+id_data_pekerjaan+" option:selected").text();
+var token               = "<?php echo $this->security->get_csrf_hash() ?>";
+
 $.ajax({
 type:"post",
-url:"<?php echo base_url('User/proses_tugas') ?>",
-data:"token="+token+"&id_syarat_dokumen="+id+"&target_kelar="+target_kelar,
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_user="+no_user+"&pembuat_pekerjaan="+pembuat_pekerjaan,
+url:"<?php echo base_url('User1/alihkan_pekerjaan') ?>",
 success:function(data){
-var r  = JSON.parse(data);
+var r = JSON.parse(data);
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',
@@ -96,36 +73,14 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function() {
-window.location.href = "<?php echo base_url('User/halaman_proses'); ?>";
+window.location.href = "<?php echo base_url('User1'); ?>";
 });
-
 }
-
-});
 
 });
 }
 
-function tampilkan_modal(id_syarat_dokumen,jenis_modal){
-var token           = "<?php echo $this->security->get_csrf_hash() ?>";
-
-$.ajax({
-type:"post",
-url:"<?php echo base_url('User/tampilkan_modal') ?>",
-data:"token="+token+"&jenis_modal="+jenis_modal,
-success:function(data){
-$(".data_modal").html(data);
-$('#modal_dinamis').modal('show');
-}
-});
-
-} 
 
 
-</script>    
-<script>
-$(function() {
-$("input[name='target_kelar']").datepicker({ minDate:0});
-});
 </script>
 </html>

@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -23,8 +22,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+<<<<<<< HEAD
 $config['base_url'] = 'http://localhost/-notaris/';
 
+=======
+$config['base_url'] = 'http://192.168.0.117/';
+>>>>>>> 27864351ae6fa5618a027b4c1c63523fdb3d6770
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -36,7 +39,6 @@ $config['base_url'] = 'http://localhost/-notaris/';
 |
 */
 $config['index_page'] = 'index.php';
-
 /*
 |--------------------------------------------------------------------------
 | URI PROTOCOL

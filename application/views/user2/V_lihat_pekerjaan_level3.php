@@ -23,7 +23,7 @@
         <tr>
             <td><?php echo $d['nama_file']  ?></td>
             <td><?php echo $d['nama_client']  ?></td>
-            <td><?php echo $d['status_berkas']  ?></td>
+            <td><?php echo $d['status']  ?></td>
             <td><?php echo $d['target_kelar_perizinan']  ?></td>
         </tr>
       <?php } ?>    

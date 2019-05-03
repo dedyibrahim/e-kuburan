@@ -24,8 +24,13 @@
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
 <input type="hidden" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
-<label>Target Kelar</label>
+<label>Target selesai</label>
 <input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
+<label>Contact Person</label>
+<input type="text" class="form-control" id="contact_person" name="contact_person required" accept="text/plain">
+
+<label>Contact Tlp/HP</label>
+<input type="number" class="form-control" id="contact_number" name="contact_person required" accept="text/plain">
 
 </div>
 <div class="col ">
@@ -34,16 +39,14 @@
 <label  style="display: none;" id="label_nama_hukum">Nama Badan Hukum</label>
 <input type="text" name="badan_hukum" id="badan_hukum" class="form-control required"  accept="text/plain">
 </div>
-<label>Contact Person</label>
-<input type="number" class="form-control" id="contact_person" name="contact_person required" accept="text/plain">
 
 <div id="form_alamat_hukum">
-    <label style="display: none;" id="label_alamat_hukum">Alamat Badan Hukum</label>
+<label style="display: none;" id="label_alamat_hukum">Alamat Badan Hukum</label>
 <label  id="label_alamat_perorangan">Alamat Perorangan</label>
 <textarea rows="4" id="alamat_badan_hukum" class="form-control required" required="" accept="text/plain"></textarea>
 </div>
 <hr>
-<button type="submit" class="btn btn-success  mx-auto btn-block simpan_perizinan">Simpan client & Buat pekerjaan <i class="fa fa-save"></i></button>
+<button type="submit" class="btn btn-success btn-sm  mx-auto btn-block simpan_perizinan">Simpan client & Buat pekerjaan <i class="fa fa-save"></i></button>
 </form>
     
 </div>
@@ -91,6 +94,7 @@ unhighlight: function (element, errorClass) {
 $(element).closest(".form-control").removeClass("is-invalid");
 },    
 submitHandler: function(form) {
+$(".simpan_perizinan").attr("disabled", true);
     
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 formData = new FormData();
@@ -102,6 +106,7 @@ formData.append('badan_hukum',$("#badan_hukum").val()),
 formData.append('target_kelar',$("#target_kelar").val()),
 formData.append('alamat_badan_hukum',$("textarea#alamat_badan_hukum").val()),
 formData.append('contact_person',$("#contact_person").val()),
+formData.append('contact_number',$("#contact_number").val()),
 
 
 $.ajax({
@@ -112,7 +117,6 @@ type: form.method,
 data: formData,
 success:function(data){   
 var r = JSON.parse(data);
-
 const Toast = Swal.mixin({
 toast: true,
 position: 'center',

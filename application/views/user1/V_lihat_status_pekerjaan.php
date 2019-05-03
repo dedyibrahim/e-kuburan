@@ -23,13 +23,18 @@
             <td class="text-center" colspan="2"><?php echo $static['jenis_perizinan'] ?></td>   
             <td class="text-center" colspan="2"><?php echo $static['target_kelar'] ?></td>   
         </tr>
-        
+        <tr>
+            <th class="text-center" colspan="1">Nama File</th>   
+            <th class="text-center" colspan="1">Status Berkas</th>
+            <th class="text-center" colspan="1">Target Selesai</th>
+            <th class="text-center" colspan="1">Pengurus</th>
+        </tr>
         
         <?php 
         foreach ( $data->result_array() as $d){ ?>
-        <tr>
+        <tr class="text-center">
             <td><?php echo $d['nama_file'] ?></td>     
-            <td><?php echo $d['status_berkas'] ?> <button onclick="lihat_status_sekarang('<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>');"  class="btn btn-success float-right btn-sm"><span class="fa fa-eye"></span></button></td>     
+            <td><?php echo $d['status'] ?> <button onclick="lihat_status_sekarang('<?php echo $d['id_data_berkas'] ?>');"  class="btn btn-success float-right btn-sm"><span class="fa fa-eye"></span></button></td>     
             <td><?php echo $d['target_kelar_perizinan'] ?></td>     
             <td><?php echo $d['pengurus_perizinan'] ?></td>     
         </tr>
@@ -48,35 +53,25 @@
  <!-------------------modal laporan--------------------->
 
 <div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Status Perizinan</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <div class="modal-body" id="lihat_status_sekarang">
-          
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="simpan_laporan">Simpan laporan</button>
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-body" id="lihat_status_sekarang">
+
+</div>
+</div>
+</div>
 </div>
    
     
 <script type="text/javascript">
-function lihat_status_sekarang(no_berkas,no_nama_dokumen){
+function lihat_status_sekarang(id_data_berkas){
 $('#modal_laporan').modal('show');
 var token           = "<?php echo $this->security->get_csrf_hash() ?>";
     
 $.ajax({
 type:"post",
 url:"<?php echo base_url('User1/lihat_laporan') ?>",
-data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&no_berkas="+no_berkas,
+data:"token="+token+"&id_data_berkas="+id_data_berkas,
 success:function(data){
 $("#lihat_status_sekarang").html(data);
 }
