@@ -10,10 +10,12 @@
 </h4>
 </div>
 </div>
-<hr>
+    
 <div class="container">
 <div class="row">
 <div class="col">
+<h5 align="center">Lengkapi minimal persyaratan</h5>
+<hr>
 <table class="table table-sm table-bordered table-striped table-condensed">
 <tr>
 <th>Nama Persyaratan minimal</th>
@@ -23,11 +25,11 @@
 foreach ($data->result_array() as $d){ ?>
 <tr>
 <td><?php echo $d['nama_dokumen'] ?></td>    
-<td class="text-center"><button class="btn btn-success" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button></td>    
+<td class="text-center"><button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button></td>    
 </tr>    
 <?php } ?>
 <tr>
-    <th class="text-center" colspan="2">Pilih persyaratan Tambahan</th>    
+<th class="text-center" colspan="2">Pilih persyaratan Tambahan</th>    
 </tr>
 <tr>
 <td colspan="2">
@@ -41,11 +43,12 @@ foreach ($data->result_array() as $d){ ?>
 </tr>
 
 </table>
-<hr>
+</div>
+<div class="col">
 <h5 align="center">Data Persyaratan yang sudah dilampirkan</h5>
-
+<hr>
 <?php foreach ($data_berkas->result_array() as $u){  ?>
-<div class="card p-2">
+<div class="card p-2 m-1">
 <div class="row">
 <div class="col"><?php echo $u['nama_file'] ?></div> 
 <div class="col-md-3 text-right">
@@ -55,31 +58,33 @@ foreach ($data->result_array() as $d){ ?>
 </div>
 </div>
 <?php } ?>
-</div>
-</div>
-</div>
-</div>
+
 </div>
     
+</div>
+</div>
+</div>
+</div>
+
 <div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h6 class="modal-title" id="exampleModalLabel">Upload persyaratan <span class="i"><span></h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        <form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
-      <div class="modal-body form_persyaratan">
-     
-      </div>
-        </form>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h6 class="modal-title" id="exampleModalLabel">Upload persyaratan <span class="i"><span></h6>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
 </div>
-    
-    
+<form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
+<div class="modal-body form_persyaratan">
+
+</div>
+</form>
+</div>
+</div>
+</div>
+
+
 <script type="text/javascript">
 
 function persyaratan_tambahan(id_data_persyaratan,no_client,no_pekerjaan,nama_folder){
@@ -104,7 +109,7 @@ $('#modal_upload').modal('show');
 $('.i').html(nama_dokumen);
 
 }    
-    
+
 });
 
 
@@ -154,7 +159,7 @@ success    : function ( data ){
 }
 });
 }    
-    
+
 function lanjutkan_proses_perizinan(no_pekerjaan){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
@@ -183,7 +188,6 @@ window.location.href = "<?php echo base_url('User2/pekerjaan_proses/'); ?>";
 }
 });
 }
-
 
 function download(id_data_berkas){
 window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;

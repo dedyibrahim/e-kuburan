@@ -7,7 +7,7 @@
 <div class="card mx-auto mt-5  " style="width: 20rem;">
 <div class="card-header">
 
-<h4 align="center" class="text-lg-center text-success "><i class="fa fa-key fa-2x"></i><br> Input your detail login </h4>
+<h4 align="center" class="text-lg-center text-success "><i class="fa fa-lock fa-2x"></i><br> Input your detail login </h4>
 </div>
 <div class="card-body">
 <label>Username</label>
@@ -16,7 +16,7 @@
 <input type="password" class="form-control" id="password" placeholder="Password . . .">
 </div>
 <div class="card-footer">
-<button class="btn btn-success btn-sm btn-block" id="proses_login">Masuk <i class="fa fa-key"></i></button>
+<button class="btn btn-success btn-sm btn-block" id="proses_login">Sign in <i class="fa fa-key"></i></button>
 </div>
 </div>    
 </div>
@@ -26,7 +26,7 @@
 <div class=" fixed-bottom">
 <div class="row">
 <div class="mx-auto">    
-<p class="text-dark">App Management</p>
+<p class="text-white">App Management</p>
 </div>
 </div>
 </div>   

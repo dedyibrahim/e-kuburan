@@ -7,7 +7,7 @@
 <div class="container-fluid">
 <div class="row">    
 <div class="col mt-2">
-<table class="table table-hover table-striped ">
+<table class="table table-hover table-sm text-center table-striped table-bordered">
 <tr>
 <th>Nama client</th>
 <th>Jenis Pekerjaan</th>
