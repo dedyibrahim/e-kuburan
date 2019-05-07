@@ -3,13 +3,13 @@
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
+   
 <div class="container-fluid">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Proses pekerjaan<button class="btn btn-success btn-sm  float-right "  onclick="update_selesaikan_pekerjaan('<?php echo $this->uri->segment(3) ?>');">Update selesaikan pekerjaan <span class="fa fa-hourglass-end"></span></button></h4>
-</div>
-</div>
-
+<div class="card-header mt-2 mb-2 text-center">
+        Dokumen utama yang sudah diupload
+<button class="btn btn-success btn-sm  float-right "  onclick="update_selesaikan_pekerjaan('<?php echo $this->uri->segment(3) ?>');">Update selesaikan pekerjaan <span class="fa fa-hourglass-end"></span></button>
+    </div>
+    
 <ul class="nav nav-tabs">
 <li class="nav-item">
 <a class="nav-link active" data-toggle="tab" href="#utama">Dokumen Utama <i class="fas fa-file"></i></a>
@@ -23,17 +23,17 @@
 </ul>    
 
 <div class="tab-content">
-<div class="tab-pane card container active" id="utama">
+<div class="tab-pane card container-fluid active" id="utama">
  <?php $this->load->view('user2/V_dokumen_utama') ?>   
 </div>
 
 
-<div class="tab-pane card container " id="perizinan">
+<div class="tab-pane card container-fluid " id="perizinan">
 <?php $this->load->view('user2/V_dokumen_perizinan') ?>   
 </div>
     
-<div class="tab-pane card container" id="persyaratan">
-<?php $this->load->view('user2/V_dokumen_persyaratan') ?>       
+<div class="tab-pane card container-fluid" id="persyaratan">
+<?php  $this->load->view('user2/V_dokumen_persyaratan') ?>       
 </div>
     
 </div>    
@@ -45,4 +45,6 @@
 
 
 </body>
-
+<script type="text/javascript">
+  $('#myTab a:first').tab('show');
+</script>

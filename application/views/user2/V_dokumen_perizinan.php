@@ -1,15 +1,14 @@
-<?php  $static  = $data->row_array(); ?>
 <div class="row">
 <div class="col-md-5 card-header m-2 mx-auto">
 <label>Pilih jenis file perizinan</label>       
+
 <select onchange="jenis_file_perizinan();" class="form-control file_perizinan">
 <option></option>
-<?php $d = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen'=>$static['no_jenis_perizinan']));
-foreach ($d->result_array() as $n){
-?>
-<option value="<?php echo $n['no_nama_dokumen'] ?>"><?php echo $n['nama_dokumen'] ?></option>
+<?php foreach ($data_persyaratan->result_array() as $persyaratan) { ?>
+<option value="<?php echo $persyaratan['no_nama_dokumen'] ?>"><?php echo $persyaratan['nama_dokumen'] ?></option>
 <?php } ?>
 </select>
+
 </div>
 </div>
 <div class="data_form_perizinan m-2 p-2"></div>

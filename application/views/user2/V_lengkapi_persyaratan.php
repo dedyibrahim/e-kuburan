@@ -4,18 +4,16 @@
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <?php  $static = $data->row_array(); ?>
 <div class="container-fluid">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Lengkapi persyaratan  <?php echo $static['nama_client'] ?> <button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span></button>
-</h4>
+<div class="card-header mt-2 mb-2 text-center">
+Lengkapi persyaratan dokumen
+<button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span>
 </div>
-</div>
-    
+
 <div class="container">
 <div class="row">
 <div class="col">
-<h5 align="center">Lengkapi minimal persyaratan</h5>
-<hr>
+<div class="card-header text-center" >Lengkapi minimal persyaratan</div>
+
 <table class="table table-sm table-bordered table-striped table-condensed">
 <tr>
 <th>Nama Persyaratan minimal</th>
@@ -25,7 +23,10 @@
 foreach ($data->result_array() as $d){ ?>
 <tr>
 <td><?php echo $d['nama_dokumen'] ?></td>    
-<td class="text-center"><button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button></td>    
+<td class="text-center">
+<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
+<button class="btn btn-danger btn-sm" onclick="hapus_persyaratan('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_pekerjaan'] ?>')"><span class="fa fa-trash"></span></button>
+</td>    
 </tr>    
 <?php } ?>
 <tr>
@@ -33,7 +34,7 @@ foreach ($data->result_array() as $d){ ?>
 </tr>
 <tr>
 <td colspan="2">
-<select onchange="persyaratan_tambahan('<?php echo $static['id_data_persyaratan'] ?>','<?php echo $static['no_client'] ?>','<?php echo $static['no_pekerjaan'] ?>','<?php echo $static['nama_folder'] ?>');" class="form-control persyaratan_tambahan">
+<select onchange="persyaratan_tambahan('<?php echo $static['id_data_persyaratan_pekerjaan'] ?>','<?php echo $static['no_client'] ?>','<?php echo $static['no_pekerjaan'] ?>','<?php echo $static['no_jenis_dokumen'] ?>');" class="form-control persyaratan_tambahan">
 <option></option>    
 <?php foreach ($nama_dokumen->result_array() as $dok){ ?>
 <option value="<?php  echo $dok['no_nama_dokumen']?>"><?php echo $dok['nama_dokumen'] ?></option>
@@ -45,8 +46,7 @@ foreach ($data->result_array() as $d){ ?>
 </table>
 </div>
 <div class="col">
-<h5 align="center">Data Persyaratan yang sudah dilampirkan</h5>
-<hr>
+<div class="card-header text-center" >Data Persyaratan yang sudah dilampirkan</div>
 <?php foreach ($data_berkas->result_array() as $u){  ?>
 <div class="card p-2 m-1">
 <div class="row">
@@ -60,7 +60,7 @@ foreach ($data->result_array() as $d){ ?>
 <?php } ?>
 
 </div>
-    
+
 </div>
 </div>
 </div>
@@ -87,18 +87,75 @@ foreach ($data->result_array() as $d){ ?>
 
 <script type="text/javascript">
 
-function persyaratan_tambahan(id_data_persyaratan,no_client,no_pekerjaan,nama_folder){
+function hapus_persyaratan(id_data_persyaratan_pekerjaan,no_pekerjaan){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&id_data_persyaratan_pekerjaan="+id_data_persyaratan_pekerjaan+"&no_pekerjaan="+no_pekerjaan,
+url:"<?php echo base_url('User2/hapus_persyaratan_pekerjaan') ?>",
+success:function(data){
+
+console.log(data);
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+r.no_pekerjaan;
+});
+
+}        
+        
+});
+
+}
+
+function persyaratan_tambahan(id_data_persyaratan_pekerjaan,no_client,no_pekerjaan,no_jenis_dokumen){
 var no_nama_dokumen = $(".persyaratan_tambahan option:selected").val();
 var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 
-tampil_modal_upload(id_data_persyaratan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder);
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_jenis_dokumen="+no_jenis_dokumen,
+url:"<?php echo base_url('User2/tambah_persyaratan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function() {
+window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+r.no_pekerjaan;
+});
+
+}        
+        
+});
+
 
 $(".persyaratan_tambahan").val("");
 }
 
-function tampil_modal_upload(id_data_persyaratan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder){
+function tampil_modal_upload(id_data_persyaratan_pekerjaan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
-
 $.ajax({
 type:"post",
 data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_persyaratan="+nama_dokumen+"&no_pekerjaan="+no_pekerjaan+"&nama_folder="+nama_folder+"&no_client="+no_client,

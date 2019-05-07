@@ -4,6 +4,10 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
+<div class="card-header mt-2 text-center">
+Pekejaan masuk
+</div>
+
 <div class="row">    
 <div class="col mt-2">
 <table class="table table-hover table-bordered table-sm text-center table-striped ">
@@ -21,7 +25,7 @@
 <td><?php echo $data['tanggal_antrian'] ?></td>
 <td><?php echo $data['target_kelar'] ?></td>
 <td>
-    <select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
+<select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
 <option></option>
 <option value="1">Proses Persyaratan</option>
 <option value="2">Buat laporan</option>
@@ -29,32 +33,32 @@
 </td>
 </tr>
 <?php } ?>
- </table>        
+</table>        
 </div>
 </div>
 </div>    
 </div>
 </div>
-    
+
 <div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h6>Progress <span class="laporan_client"></span></h6>  
-        </div>   
-      <div class="modal-body">
-          <input class="no_pekerjaan" value="" type="hidden">
-          <input class="id_data_pekerjaan" value="" type="hidden">
-          <textarea class="form-control laporan" placeholder="laporkan progress pekerjaan"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-sm simpan_progress">Simpan</button>
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h6>Progress <span class="laporan_client"></span></h6>  
+</div>   
+<div class="modal-body">
+<input class="no_pekerjaan" value="" type="hidden">
+<input class="id_data_pekerjaan" value="" type="hidden">
+<textarea class="form-control laporan" placeholder="laporkan progress pekerjaan"></textarea>
 </div>
-    
-    
+<div class="modal-footer">
+<button type="button" class="btn btn-success btn-sm simpan_progress">Simpan</button>
+</div>
+</div>
+</div>
+</div>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
 $(".simpan_progress").click(function(){
@@ -84,13 +88,13 @@ $('#modal_laporan').modal('hide');
 $(".laporan").val("");
 }
 });
-    
+
 
 });    
-    
+
 });    
-    
-    
+
+
 function aksi_option(no_pekerjaan,id_data_pekerjaan){
 var aksi_option = $(".data_option"+id_data_pekerjaan+" option:selected").val();
 if(aksi_option == 1){
@@ -106,11 +110,11 @@ $(".id_data_pekerjaan").val(id_data_pekerjaan);
 }
 $(".data_option"+id_data_pekerjaan).val("");
 }    
-    
-    
+
+
 function tambahkan_kedalam_proses(no_pekerjaan){
 window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+no_pekerjaan;
 }
 </script>        
-    
+
 </body>

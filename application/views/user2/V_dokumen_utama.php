@@ -1,60 +1,50 @@
 
-<div class="container">    
-<div class="row m-2">
-<div class="col"><h4 align="center">Upload dokumen utama</h4>    
-</div>
-</div> 
-<div class="row m-2">
-<div class="col">
+<div class="container-fluid">    
+<div class="row ">
+<div class="col-md-4">    
+  <div class="card-header mt-2 text-center">
+       Upload dokumen utama
+    </div>
 <form action="<?php  echo base_url('User2/upload_utama')?>" method="post" enctype="multipart/form-data">
 <label>Upload file</label>
 <input type="hidden" value="<?php echo $this->uri->segment(3) ?>" name="no_pekerjaan">
 <input type="hidden" value="<?php echo $this->security->get_csrf_hash() ?>" name="token">
 <input type="file" required="" name="file" class="form-control">
-</div>
 
-<div class="col">
+
 <label>Nama file</label>
 <input type="text" required="" name="nama_file" class="form-control">
-</div>
 
-<div class="col">
 <label>Jenis Utama</label>
 <select name="jenis" class="form-control">
 <option value="Draft">Draft</option>    
 <option value="Minuta">Minuta</option>    
 <option value="Salinan">Salinan</option>    
 </select>
-</div>
 
-<div class="col">
 <label>&nbsp;</label>    
 <button type="submit" class="btn btn-block btn-sm btn-success">Upload File</button>
 </form>
-
 </div>
 
+<div class="col-md-8">    
+<div class="card-header mt-2 text-center">
+Dokumen utama yang sudah diupload
 </div>
-<hr>
-
-<div class="row">
-<div class="col-md-12">    
-<h4 align="center">Dokumen utama yang telah diupload</h4>    
-<hr>
-<table class="table table-sm table-striped table-hover">
+<table class="table table-sm table-striped table-bordered text-center table-hover">
 <tr>
-<th>Nama file</th>
-<th>Jenis</th>
-<th>Tanggal upload</th>
-<th>Aksi</th>
+<th>nama file</th>
+<th>jenis</th>
+<th>tanggal upload</th>
+<th>aksi</th>
 </tr>
-<?php foreach ($dokumen_utama->result_array() as $u){ ?>
+<?php foreach ($dokumen_utama->result_array() as $utama){ ?>
 <tr>
-<td><?php echo $u['nama_berkas'] ?></td>   
-<td><?php echo $u['jenis'] ?></td>   
-<td><?php echo $u['waktu'] ?></td>   
+<td><?php echo $utama['nama_berkas'] ?></td>   
+<td><?php echo $utama['jenis'] ?></td>   
+<td><?php echo $utama['waktu'] ?></td>   
 <td>
-<select class="form-control data_aksi<?php echo $u['id_data_dokumen_utama'] ?>"  onchange="aksi_utama('<?php echo $u['id_data_dokumen_utama'] ?>','<?php echo $u['id_data_dokumen_utama'] ?>');">
+<select class="form-control data_aksi<?php echo $utama['id_data_dokumen_utama'] ?>"  onchange="aksi_utama('<?php echo $utama['id_data_dokumen_utama'] ?>','<?php echo $utama['id_data_dokumen_utama'] ?>');">
 <option></option>   
 <option value="1">Hapus</option>   
 <option value="2">Download</option>   
@@ -64,8 +54,10 @@
 <?php } ?>
 </table>
 </div>
+    
 </div>
 </div>
+
 <script type="text/javascript">
 function aksi_utama(id_data_dokumen_utama){
 var val = $(".data_aksi"+id_data_dokumen_utama+" option:selected").val(); 

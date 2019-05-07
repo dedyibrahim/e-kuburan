@@ -4,7 +4,9 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
-<div class="container-fluid">
+ <div class="card-header mt-2 text-center">
+        Pekerjaan yang sedang diproses
+    </div>
 <div class="row">    
 <div class="col mt-2">
 <table class="table table-hover table-sm text-center table-striped table-bordered">
@@ -33,7 +35,6 @@
  </table>        
 </div>
 </div>
-</div> 
 </div>    
 </div>
 </div>

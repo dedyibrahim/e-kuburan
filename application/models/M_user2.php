@@ -110,12 +110,14 @@ $query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_berkas'=> ba
 return $query;    
 }
 public function data_pekerjaan_proses($id){
+
 $this->db->select('*');
-$this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($id));
 $this->db->from('data_pekerjaan');
+$this->db->join('data_persyaratan_pekerjaan', 'data_persyaratan_pekerjaan.no_jenis_dokumen = data_pekerjaan.no_jenis_perizinan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
-$query = $this->db->get();  
- 
+$this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($id));
+$query = $this->db->get();   
+
 return $query;
 }
 

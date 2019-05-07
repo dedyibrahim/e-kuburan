@@ -67,8 +67,10 @@ $data = $this->input->post();
 $h_berkas = $this->M_user2->hitung_pekerjaan()->num_rows()+1;
 $h_client = $this->M_user2->data_client()->num_rows()+1;
 
-$no_client= str_pad($h_client,6 ,"0",STR_PAD_LEFT);
-$no_pekerjaan= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
+$data_persyaratan = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen' => $data['id_jenis']));
+
+$no_client    = str_pad($h_client,6 ,"0",STR_PAD_LEFT);
+$no_pekerjaan = str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
 
 
 $data_client = array(
@@ -103,6 +105,17 @@ $this->db->insert('data_pekerjaan',$data_r);
 
 
 
+foreach ($data_persyaratan->result_array() as $persyaratan){
+$syarat = array('no_client'         => "C_".$no_client,    
+'no_pekerjaan'      => $no_pekerjaan,    
+'no_nama_dokumen'   => $persyaratan['no_nama_dokumen'],    
+'nama_dokumen'      => $persyaratan['nama_dokumen'],
+'no_jenis_dokumen'  => $persyaratan['no_jenis_dokumen'], 
+);
+$this->db->insert('data_persyaratan_pekerjaan',$syarat);
+}
+
+
 mkdir("berkas/"."Dok".$no_client,0777);
 
 $status = array(
@@ -119,6 +132,48 @@ redirect(404);
 }
 
 
+public function tambah_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();   
+$syarat = array(
+'no_client'         => $input['no_client'],    
+'no_pekerjaan'      => $input['no_pekerjaan'],    
+'no_nama_dokumen'   => $input['no_nama_dokumen'],    
+'nama_dokumen'      => $input['nama_dokumen'],
+'no_jenis_dokumen'  => $input['no_jenis_dokumen'], 
+);
+
+$this->db->insert('data_persyaratan_pekerjaan',$syarat);
+
+$status = array(
+"status"     => "success",
+"no_pekerjaan"  => base64_encode($input['no_pekerjaan']),
+"pesan"      => "Persyaratan berhasil ditambahkan",    
+);
+
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}   
+}
+public function hapus_persyaratan_pekerjaan(){
+if($this->input->post()){
+$input = $this->input->post();   
+$this->db->delete('data_persyaratan_pekerjaan',array('id_data_persyaratan_pekerjaan'=>$input['id_data_persyaratan_pekerjaan']));
+
+$status = array(
+"status"     => "success",
+"no_pekerjaan"  => base64_encode($input['no_pekerjaan']),
+"pesan"      => "Persyaratan berhasil ditambahkan",    
+);
+
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}   
+}
 
 public function json_data_pekerjaan_selesai(){
 echo $this->M_user2->json_data_pekerjaan_selesai();       
@@ -191,13 +246,21 @@ redirect(404);
 
 public function proses_pekerjaan(){
 if(!empty($this->uri->segment(3))){
-$data             = $this->M_user2->data_pekerjaan_proses($this->uri->segment(3));    
-$dokumen_utama    = $this->db->get_where('data_dokumen_utama',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
-$data_upload      = $this->db->get_where('data_berkas',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
-$data_berkas      = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+$data                 = $this->M_user2->data_pekerjaan_proses($this->uri->segment(3));    
+
+$static               = $data->row_array();
+
+$dokumen_utama        = $this->db->get_where('data_dokumen_utama',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+
+$nama_dokumen         = $this->db->get_where('nama_dokumen');
+
+$data_persyaratan     = $this->db->get_where('data_persyaratan_pekerjaan',array('no_jenis_dokumen'=> $static['no_jenis_perizinan'],'no_pekerjaan'=>$static['no_pekerjaan']));
+
+$data_berkas = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+
 
 $this->load->view('umum/V_header');
-$this->load->view('user2/V_proses_berkas',['data'=>$data,'dokumen_utama'=>$dokumen_utama,'data_upload'=>$data_upload,'data_berkas'=>$data_berkas]);    
+$this->load->view('user2/V_proses_berkas',['data_berkas'=>$data_berkas,'nama_dokumen'=>$nama_dokumen,'data'=>$data,'dokumen_utama'=>$dokumen_utama,'data_persyaratan'=>$data_persyaratan]);    
 
 }else{
 redirect(404);    
@@ -207,12 +270,14 @@ redirect(404);
 public function lengkapi_persyaratan(){    
 $this->db->select('*');
 $this->db->from('data_pekerjaan');
-$this->db->join('data_persyaratan', 'data_persyaratan.no_jenis_dokumen = data_pekerjaan.no_jenis_perizinan');
+$this->db->join('data_persyaratan_pekerjaan', 'data_persyaratan_pekerjaan.no_jenis_dokumen = data_pekerjaan.no_jenis_perizinan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($this->uri->segment(3)));
 $data = $this->db->get();    
 $data_berkas = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
 $nama_dokumen = $this->db->get('nama_dokumen');
+
+
 
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_lengkapi_persyaratan',['data'=>$data,'data_berkas'=>$data_berkas,'nama_dokumen'=>$nama_dokumen]);    
@@ -236,7 +301,8 @@ echo "<div class=''>"
  . "<input type='hidden'  placeholder='' value='".$input['no_pekerjaan']."'  name='no_pekerjaan' class='form-control' required='' accept='text/plain' >"
  . "<input type='hidden'  placeholder='' value='".$this->security->get_csrf_hash()."'  name='token' class='form-control' required='' accept='text/plain' >"
  . "<input type='hidden'  placeholder='' value='".$input['nama_persyaratan']."'  name='key_persyaratan' class='form-control' required='' accept='text/plain' >"
- .  "<input type='text'  placeholder='".$input['nama_persyaratan']."'  name='value_persyaratan' class='form-control' required='' accept='text/plain' >"
+ . "<input type='hidden'  name='no_nama_dokumen' value='".$input['no_nama_dokumen']."'  class='form-control' required='' accept='text/plain'>"
+        .  "<input type='text'  placeholder='".$input['nama_persyaratan']."'  name='value_persyaratan' class='form-control' required='' accept='text/plain' >"
  . "<label>Nama Dokumen</label>"
  . "<input type='text' value='".$static['nama_dokumen']."'   name='Nama_berkas' class='form-control' required='' accept='text/plain' >";
 
@@ -247,7 +313,6 @@ echo "<label>".$d['nama_meta']."</label>"
 }
 }
 echo "<label>Upload ".$static['nama_dokumen']."</label>"
-        . "<input type='hidden'  name='no_nama_dokumen' value='".$static['no_nama_dokumen']."'  class='form-control' required='' accept='text/plain'>"
         . "<input type='file' name='file_berkas' class='form-control' required >"
         . "<hr>"
         . "<button class='btn btn-success btn-block btn-sm' type='submit'>Upload & simpan <span class='fa fa-upload'></span></button>";    
@@ -262,6 +327,72 @@ echo  "<label>".$input['nama_persyaratan']."</label>"
 . "<button class='btn btn-success btn-block btn-sm' type='submit'>Simpan <span class='fa fa-upload'></span></button>";    
 
     
+}
+}else{
+redirect(404);    
+}
+}
+
+public function simpan_persyaratan2(){
+if($this->input->post()){
+$input = $this->input->post();
+
+if(empty($_FILES['file_berkas'])){
+
+    
+$data_persyaratan = array(
+'no_pekerjaan'   => $input['no_pekerjaan'],
+'key_syarat' => $input['key_persyaratan'],
+'value_syarat'=> $input['value_persyaratan'],    
+); 
+$this->db->insert('data_persyaratan',$data_persyaratan);    
+redirect(base_url('User2/lengkapi_persyaratan/'.base64_encode($input['no_pekerjaan'])));
+
+    
+}else{
+
+$config['upload_path']          = './berkas/'.$input['nama_folder'];
+$config['allowed_types']        = 'gif|jpg|png|pdf|docx|doc|xlxs|';
+$config['encrypt_name']         = TRUE;
+
+$this->upload->initialize($config);
+
+if (!$this->upload->do_upload('file_berkas')){
+$error = array('error' => $this->upload->display_errors());
+echo print_r($error);
+}else{
+$data_berkas = array(
+'no_client'         => $input['no_client'],
+'no_pekerjaan'      => $input['no_pekerjaan'],
+'no_nama_dokumen'   => $input['no_nama_dokumen'],
+'pemberi_pekerjaan' => $this->session->userdata('no_user'),
+'nama_folder'       => $input['nama_folder'],
+'nama_berkas'       => $this->upload->data('file_name'),
+'nama_file'         => $this->input->post('Nama_berkas'),    
+'status_berkas'     => 'Persyaratan',
+'Pengupload'        => $this->session->userdata('nama_lengkap'),
+'tanggal_upload'    => date('d/m/Y H:is' ),  
+);    
+$this->db->insert('data_berkas',$data_berkas);
+
+foreach ($_POST as $key => $value){
+if($value == $input['no_client'] || $value == $input['no_pekerjaan'] || $value == $input['no_nama_dokumen'] || $value == $input['nama_folder'] || $key == "key_persyaratan" || $key == "value_persyaratan" ){
+
+}else{
+$data_meta = array(
+'nama_berkas'    =>$this->upload->data('file_name'),
+'no_client'      => $input['no_client'],
+'no_pekerjaan'   => $input['no_pekerjaan'],
+'no_nama_dokumen'=> $input['no_nama_dokumen'],
+'nama_folder'    => $input['nama_folder'],
+'nama_meta'      => $key,
+'value_meta'     =>$value,    
+);
+$this->db->insert('data_meta_berkas',$data_meta);
+}
+}
+redirect(base_url('User2/proses_pekerjaan/'.base64_encode($input['no_pekerjaan'])));
+}
 }
 }else{
 redirect(404);    
@@ -310,7 +441,6 @@ $data_berkas = array(
 );    
 $this->db->insert('data_berkas',$data_berkas);
 
-
 foreach ($_POST as $key => $value){
 if($value == $input['no_client'] || $value == $input['no_pekerjaan'] || $value == $input['no_nama_dokumen'] || $value == $input['nama_folder'] || $key == "key_persyaratan" || $key == "value_persyaratan" ){
 
@@ -325,9 +455,9 @@ $data_meta = array(
 'value_meta'     =>$value,    
 );
 $this->db->insert('data_meta_berkas',$data_meta);
-
-
 }
+
+
 }
 redirect(base_url('User2/lengkapi_persyaratan/'.base64_encode($input['no_pekerjaan'])));
 
@@ -627,6 +757,29 @@ redirect(404);
 }    
 }
 
+public function hapus_data_berkas(){
+if($this->input->post()){
+$input = $this->input->post();    
+$data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->input->post('id_data_berkas')))->row_array();    
+
+unlink('./berkas/'.$data['nama_folder']."/".$data['nama_berkas']);
+
+$this->db->delete('data_berkas',array('id_data_berkas'=>$this->input->post('id_data_berkas')));    
+$status = array(
+"status"     => "success",
+"no_pekerjaan"  => base64_encode($input['no_pekerjaan']),
+"pesan"      => "Persyaratan berhasil ditambahkan",    
+);
+
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}    
+}
+
+
+
 public function buat_pekerjaan_baru(){
 
 if($this->input->post()){    
@@ -634,7 +787,9 @@ if($this->input->post()){
 $input = $this->input->post();
 $h_berkas = $this->M_user2->hitung_pekerjaan()->num_rows()+1;
 $no_pekerjaan= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
-    
+
+$data_persyaratan = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen' => $input['id_jenis']));
+   
 
 $data_r = array(
 'no_client'          => base64_decode($input['no_client']),    
@@ -650,6 +805,19 @@ $data_r = array(
 'jenis_perizinan'    => $input['jenis_akta'],
 );
 $this->db->insert('data_pekerjaan',$data_r);
+
+
+foreach ($data_persyaratan->result_array() as $persyaratan){
+$syarat = array(
+'no_client'         => base64_decode($input['no_client']),    
+'no_pekerjaan'      => $no_pekerjaan,    
+'no_nama_dokumen'   => $persyaratan['no_nama_dokumen'],    
+'nama_dokumen'      => $persyaratan['nama_dokumen'],
+'no_jenis_dokumen'  => $persyaratan['no_jenis_dokumen'], 
+);
+$this->db->insert('data_persyaratan_pekerjaan',$syarat);
+}
+
 
 $status = array(
 "status"     => "success",

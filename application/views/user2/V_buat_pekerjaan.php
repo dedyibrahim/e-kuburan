@@ -4,36 +4,32 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid ">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Tambahkan pekerjaan & client baru</h4>
+<div class="card-header mt-2 text-center ">
+<h5 align="center">Tambahkan pekerjaan & client baru</h5>
 </div>
-</div>   
 <form  id="fileForm" method="post" action="<?php echo base_url('User2/create_client') ?>">
-
- <div class="row  p-3" >
-
+<div class="row  p-3" >
 <div class="col-md-6">
-<label>Pilih Jenis client</label>
-<select name="jenis" id="pilih_jenis" class="form-control required" accept="text/plain">
-<option> </option>
-<option value="Perorangan">Perorangan</option>
-<option value="Badan Hukum">Badan Hukum</option>	
-</select>
-    
 <label>Jenis Pekerjaan</label>
 <input type="text" name="jenis_akta"  id="jenis_akta" class="form-control required"  accept="text/plain">
 <input type="hidden" name="id_jenis_akta" readonly="" id="id_jenis_akta" class="form-control required"  accept="text/plain">
 <label>Target selesai</label>
 <input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
 <label>Contact Person</label>
-<input type="text" class="form-control" id="contact_person" name="contact_person required" accept="text/plain">
+<input type="text" class="form-control required" id="contact_person" name="contact_person required" accept="text/plain">
 
-<label>Contact Tlp/HP</label>
-<input type="number" class="form-control" id="contact_number" name="contact_person required" accept="text/plain">
+<label>Contact TLP/HP</label>
+<input type="number" class="form-control required" id="contact_number" name="contact_number required" accept="text/plain">
 
 </div>
 <div class="col ">
+<label>Pilih Jenis client</label>
+<select name="jenis" id="pilih_jenis" class="form-control required" accept="text/plain">
+<option> </option>
+<option value="Perorangan">Perorangan</option>
+<option value="Badan Hukum">Badan Hukum</option>	
+</select>    
+
 <div id="form_badan_hukum">
 <label  id="label_nama_perorangan">Nama Perorangan</label>
 <label  style="display: none;" id="label_nama_hukum">Nama Badan Hukum</label>
@@ -45,11 +41,15 @@
 <label  id="label_alamat_perorangan">Alamat Perorangan</label>
 <textarea rows="4" id="alamat_badan_hukum" class="form-control required" required="" accept="text/plain"></textarea>
 </div>
-<hr>
-<button type="submit" class="btn btn-success btn-sm  mx-auto btn-block simpan_perizinan">Simpan client & Buat pekerjaan <i class="fa fa-save"></i></button>
-</form>
-    
+
 </div>
+<div class="col-md-12 mx-auto  mt-2">
+    <div class="card-footer">    
+<button  type="submit" class="btn btn-success btn-sm col-md-6 mx-auto btn-block simpan_perizinan">Simpan client dan Buat pekerjaan <i class="fa fa-save"></i></button>
+    </div>
+</form>
+
+    </div>
 </div>
 </div>    
 </div>
@@ -82,7 +82,7 @@ title: 'Silahkan pilih jenis client terlebih dahulu.'
 })
 }
 });
-    
+
 $("#fileForm").submit(function(e) {
 e.preventDefault();
 $.validator.messages.required = '';
@@ -95,7 +95,7 @@ $(element).closest(".form-control").removeClass("is-invalid");
 },    
 submitHandler: function(form) {
 $(".simpan_perizinan").attr("disabled", true);
-    
+
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 formData = new FormData();
 formData.append('token',token);
@@ -140,7 +140,7 @@ return false;
 }
 });
 
-    
+
 
 $(function () {
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       

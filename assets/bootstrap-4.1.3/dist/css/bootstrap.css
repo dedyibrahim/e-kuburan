@@ -8993,8 +8993,7 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 .bg_login{
-
-background:linear-gradient(120deg, #00e4d0, #5983e8);
+ background: linear-gradient(to bottom, #68EACC 0%, #497BE8 100%);
 }
 body {
 font-family: 'Poppins', sans-serif;
@@ -9187,5 +9186,10 @@ content:'';
 top:0.9em;
 }
 
-
+.style_login{
+    width: 20rem;
+-webkit-box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);
+-moz-box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);
+box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);    
+}
 
