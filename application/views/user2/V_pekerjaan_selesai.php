@@ -4,6 +4,9 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
+ <div class="card-header mt-2 text-center">
+        Pekerjaan yang sedang diselesaikan
+    </div>    
 <div class="row p-2">
 <div class="col ">    
 <table style="width:100%;" id="data_pekerjaan_selesai" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>

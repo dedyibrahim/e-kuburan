@@ -31,7 +31,7 @@
 </li>
 
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('Admin/pekerjaan_selesai') ?>">Dokumen Selesai <i class="fa fa-hourglass-end float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_selesai') ?>">Dokumen Selesai <i class="fa fa-hourglass-end float-right"></i></a>
 </li>
 
 </ul>

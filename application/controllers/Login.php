@@ -6,7 +6,6 @@ parent::__construct();
 $this->load->library('Session');      
 $this->load->model('M_proses_login');
 
-if($this->session->userdata('level' == "User")){
 
 if($this->session->userdata('sublevel') == 'Level 1'){
 redirect(base_url('User1'));
@@ -14,19 +13,16 @@ redirect(base_url('User1'));
 redirect(base_url('User2'));
 }elseif ($this->session->userdata('sublevel') == 'Level 3') {
 redirect(base_url('User3'));
-}
-    
 } elseif ($this->session->userdata('level') == "Super Admin") {
 redirect(base_url('Dashboard'));
-            
 } elseif ($this->session->userdata('level' == "Admin")){
 redirect(base_url('Admin'));
-    
 }
+
 
 }
 
-public function index(){
+public function index(){   
 $this->load->view('umum/V_header');    
 $this->load->view('V_login');
 }

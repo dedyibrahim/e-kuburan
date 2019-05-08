@@ -71,6 +71,7 @@ $this->datatables->select('id_data_pekerjaan,'
 $this->datatables->from('data_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->datatables->where('data_pekerjaan.no_user',$this->session->userdata('no_user'));
+$this->datatables->where('data_pekerjaan.status_pekerjaan','Selesai');
 $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); >Lihat File <i class='fa fa-eye'></i></button>",'id_perorangan');
 return $this->datatables->generate();
 }
@@ -155,6 +156,13 @@ $this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas
 $this->db->where('data_meta_berkas.no_pekerjaan',base64_decode($no_pekerjaan));
 $query = $this->db->get();  
 return $query;    
+}
+
+public function data_user_where($no_user){
+
+$query = $this->db->get_where('user',array('no_user'=>$no_user));
+
+return $query;
 }
 
 }
