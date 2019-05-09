@@ -268,19 +268,13 @@ redirect(404);
 }
 
 public function lengkapi_persyaratan(){    
-$this->db->select('*');
-$this->db->from('data_pekerjaan');
-$this->db->join('data_persyaratan_pekerjaan', 'data_persyaratan_pekerjaan.no_jenis_dokumen = data_pekerjaan.no_jenis_perizinan');
-$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
-$this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($this->uri->segment(3)));
-$data = $this->db->get();    
-$data_berkas = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
-$nama_dokumen = $this->db->get('nama_dokumen');
-
-
+$minimal_persyaratan = $this->db->get_where('data_persyaratan_pekerjaan',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+$nama_dokumen        = $this->db->get_where('nama_dokumen');
+$data_berkas         = $this->db->get_where('data_berkas',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+$data                = $this->M_user2->data_pekerjaan_persyaratan(base64_decode($this->uri->segment(3))); 
 
 $this->load->view('umum/V_header');
-$this->load->view('user2/V_lengkapi_persyaratan',['data'=>$data,'data_berkas'=>$data_berkas,'nama_dokumen'=>$nama_dokumen]);    
+$this->load->view('user2/V_lengkapi_persyaratan',['data'=>$data,'data_berkas'=>$data_berkas,'minimal_persyaratan'=>$minimal_persyaratan,'nama_dokumen'=>$nama_dokumen]);    
 }
 
 public function form_persyaratan(){

@@ -4,19 +4,17 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user3'); ?>
 <div class="container-fluid ">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang perlu diproses </h4>
+<div class="card-header mt-2 mb-2 text-center">
+Data perizinan yang perlu diproses
 </div>
-</div>
-
+    
 <div class="row p-1 m-1">
 <table class="table table-hover table-striped ">
 <tr>
 <th>Nama client</th>
 <th>Nama Tugas</th>
 <th>Dari</th>
-<th class="text-center">Target kelar perizinan</th>
+<th class="text-center">Target selesai perizinan</th>
 <th>Aksi</th>
 </tr>
 

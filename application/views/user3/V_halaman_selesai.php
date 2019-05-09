@@ -3,11 +3,9 @@
 <?php  $this->load->view('umum/V_sidebar_user3'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user3'); ?>
-<div class="container-fluid p-1 m-1">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang selesai dikerjakan</h4>
-</div>
+<div class="container-fluid">
+<div class="card-header mt-2 mb-2 text-center">
+Data perizinan yang selesai dikerjakan
 </div>
 <div class="row p-2 m-2">
     <div class="col">

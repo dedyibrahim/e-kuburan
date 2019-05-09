@@ -34,6 +34,7 @@ return $query->result();
 }
 }
 
+
 public function hitung_pekerjaan(){
        $query = $this->db->get('data_pekerjaan');
 return $query;
@@ -82,6 +83,16 @@ $this->db->from('data_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->db->where('data_pekerjaan.status_pekerjaan',$param);
 $this->db->where('data_pekerjaan.no_user',$this->session->userdata('no_user'),FALSE);
+$query = $this->db->get();
+
+return $query;
+}
+
+public function data_pekerjaan_persyaratan($param){
+$this->db->select('*');
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->where('data_pekerjaan.no_pekerjaan',$param);
 $query = $this->db->get();
 
 return $query;

@@ -33,6 +33,7 @@
 </body>
 <script type="text/javascript">
 var callback = function() {
+$("#proses_login").attr("disabled", true);
 
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 var username = $("#username").val();
@@ -46,7 +47,7 @@ success:function(data){
 var r =JSON.parse(data);
 
 if(r.status == "Berhasil"){
-
+$("#proses_login").attr("disabled",true);
 if(r.level  == "Super Admin" ){            
 const Toast = Swal.mixin({
 toast: true,
@@ -133,7 +134,7 @@ Toast.fire({
 type: 'error',
 title: 'The login is invalid.'
 })
-
+$('#proses_login').removeAttr("disabled");
 }
 
 
@@ -147,7 +148,6 @@ title: 'The login is invalid.'
 $(document).keypress(function() {
 if (event.which == 13) callback();
 });
-
 $('#proses_login').click(callback);   
 
 

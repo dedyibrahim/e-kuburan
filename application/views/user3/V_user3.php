@@ -4,14 +4,12 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user3'); ?>
 <div class="container-fluid ">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Data perizinan yang perlu dikerjakan</h4>
-</div>
+<div class="card-header mt-2 mb-2 text-center">
+Data perizinan yang perlu dikerjakan
 </div>
 
 <div class="row p-1  m-1">
-<table class="table table-hover table-striped ">
+<table class="table table-hover table-sm table-bordered text-center table-striped ">
 <tr>
 <th>Nama client</th>
 <th>Nama Tugas</th>
@@ -110,6 +108,7 @@ var id_data_berkas    = $(".id_data_berkas").val();
 var no_pekerjaan      = $(".no_pekerjaan").val();
 var nama_tugas        = $("#nama_file"+id_data_berkas).text();
 
+if(alasan_penolakan !=''){
 $.ajax({
 type:"post",
 url:"<?php echo base_url('User3/tolak_tugas') ?>",
@@ -134,6 +133,21 @@ window.location.href = "<?php echo base_url('User3/halaman_proses'); ?>";
 
 });
 
+}else{
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+Toast.fire({
+type: "warning",
+title: "Alasan penolakan belum diberikan"
+});
+
+}
 });    
     
 });
@@ -159,7 +173,7 @@ $(".data_option"+id_data_berkas).val("");
 
 function proses_perizinan(id){
 swal.fire({
-title: 'Target Kelar Perizinan <br><hr>',
+title: 'Target Selesai Perizinan <br><hr>',
 html: '<input class="form-control" readonly="" id="target_kelar">',
 showCancelButton: true,
 confirmButtonColor: '#3085d6',

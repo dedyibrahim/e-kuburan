@@ -2,17 +2,17 @@
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
-<?php  $static = $data->row_array(); ?>
+<?php $static = $data->row_array(); ?>    
 <div class="container-fluid">
 <div class="card-header mt-2 mb-2 text-center">
-Lengkapi persyaratan dokumen
+Lengkapi persyaratan dokumen <?php echo $static['nama_client'] ?>
 <button class="btn btn-success btn-sm  float-right "  onclick="lanjutkan_proses_perizinan('<?php echo $this->uri->segment(3) ?>');">Lanjutkan keproses perizinan <span class="fa fa-exchange-alt"></span>
 </div>
 
 <div class="container">
 <div class="row">
 <div class="col">
-<div class="card-header text-center" >Lengkapi minimal persyaratan</div>
+<div class="card-header text-center" >Data minimal persyaratan </div>
 
 <table class="table table-sm table-bordered table-striped table-condensed">
 <tr>
@@ -20,11 +20,11 @@ Lengkapi persyaratan dokumen
 <th class="text-center">Aksi</th>
 </tr>
 <?php
-foreach ($data->result_array() as $d){ ?>
+foreach ($minimal_persyaratan->result_array() as $d){ ?>
 <tr>
 <td><?php echo $d['nama_dokumen'] ?></td>    
 <td class="text-center">
-<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $d['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
+<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $static['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
 <button class="btn btn-danger btn-sm" onclick="hapus_persyaratan('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_pekerjaan'] ?>')"><span class="fa fa-trash"></span></button>
 </td>    
 </tr>    
@@ -34,7 +34,7 @@ foreach ($data->result_array() as $d){ ?>
 </tr>
 <tr>
 <td colspan="2">
-<select onchange="persyaratan_tambahan('<?php echo $static['id_data_persyaratan_pekerjaan'] ?>','<?php echo $static['no_client'] ?>','<?php echo $static['no_pekerjaan'] ?>','<?php echo $static['no_jenis_dokumen'] ?>');" class="form-control persyaratan_tambahan">
+<select onchange="persyaratan_tambahan('<?php echo $static['no_client'] ?>','<?php echo $static['no_pekerjaan'] ?>','<?php echo $static['no_jenis_perizinan'] ?>');" class="form-control persyaratan_tambahan">
 <option></option>    
 <?php foreach ($nama_dokumen->result_array() as $dok){ ?>
 <option value="<?php  echo $dok['no_nama_dokumen']?>"><?php echo $dok['nama_dokumen'] ?></option>
@@ -119,7 +119,7 @@ window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+
 
 }
 
-function persyaratan_tambahan(id_data_persyaratan_pekerjaan,no_client,no_pekerjaan,no_jenis_dokumen){
+function persyaratan_tambahan(no_client,no_pekerjaan,no_jenis_dokumen){
 var no_nama_dokumen = $(".persyaratan_tambahan option:selected").val();
 var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";

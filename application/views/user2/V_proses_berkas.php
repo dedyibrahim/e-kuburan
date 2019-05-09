@@ -3,10 +3,10 @@
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
-   
+<?php  $static = $data->row_array();?>  
 <div class="container-fluid">
 <div class="card-header mt-2 mb-2 text-center">
-        Dokumen utama yang sudah diupload
+        Lengkapi pekerjaan <?php echo $static['nama_client'] ?>
 <button class="btn btn-success btn-sm  float-right "  onclick="update_selesaikan_pekerjaan('<?php echo $this->uri->segment(3) ?>');">Update selesaikan pekerjaan <span class="fa fa-hourglass-end"></span></button>
     </div>
     

@@ -299,7 +299,6 @@ type: r.status,
 title: r.pesan
 });
 
-$('#tambah_syarat_jenis').modal('hide');
 $('.cari_persyaratan').val("");
 }
 }); 
