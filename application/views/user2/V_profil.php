@@ -5,58 +5,172 @@
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid ">
 <?php  $static = $data_user->row_array(); ?>
-<div class="row">
-<div class="col-md-7 mx-auto">
-
-<div class="text-center p-2 card-header rounded-bottom mt-2">   
+<div class="row mt-2">
+<div class="col">
+<div class="text-center p-2 card-header rounded-bottom ">   
 <?php if(!file_exists('./uploads/user/'.$static['foto'])){ ?>
-<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/no_profile.jpg') ?>" img="" class="img-circle" >    
-<button class="btn btn-warning btn-sm"> Change profile picture <span class="fa fa-edit"></span></button>
-<?php }else if($static['foto'] != NULL){ ?>
-<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/no_profile.jpg') ?>" img="" class="img-circle" >    
-<button class="btn btn-warning btn-sm"> Change profile picture <span class="fa fa-edit"></span></button>
+<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/no_profile.jpg') ?>" img="" class="img img-thumbnail" >    
 <?php }else{ ?>
-<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/08.JPG') ?>" img="" class="img-circle" >    
-<button class="btn btn-warning btn-sm"> Change profile picture <span class="fa fa-edit"></span></button>
+<?php if($static['foto'] != NULL){ ?>
+<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/'.$static['foto']) ?>" img="" class="img img-thumbnail" >    
+<?php }else{ ?>
+<img style="width:200px; height: 200px;" src="<?php echo base_url('uploads/user/no_profile.jpg') ?>" img="" class="img img-thumbnail" >        
+<?php } ?> 
+
 <?php } ?>
+<button class="btn btn-success btn-sm  float-right" onclick="upload_profile();"> Update Poto <span class="fa fa-edit"></span></button>
+<div id="form_upload_profile" style="display:none;">
+<hr>
+<label>Upload foto</label>
+<input type='file' id="imgInp" class="form-control" />
 </div>
-    
-<div class="card-body">
-<table class="table  table-striped">
+</div>  
+</div>
+
+<div class="col-md-7">
+<table class="table  table-striped table-bordered">
 <tr>
 <td>ID</td>
-<td> : <?php echo $static['no_user'] ?></td>
+<td> <?php echo $static['no_user'] ?></td>
 </tr>
 <tr>
 <td>Username</td>
-<td> : <?php echo $static['username'] ?></td>
+<td id="username"> <?php echo $static['username'] ?></td>
 </tr>
 <tr>
 <td>Nama lengkap</td>
-<td> : <?php echo $static['nama_lengkap'] ?></td>
+<td id="nama_lengkap"> <?php echo $static['nama_lengkap'] ?></td>
 </tr>
 <tr>
 <td>Email</td>
-<td> : <?php echo $static['email'] ?></td>
+<td id="email"> <?php echo $static['email'] ?></td>
 </tr>
 <tr>
 <td>Phone</td>
-<td> : <?php echo $static['phone'] ?></td>
+<td id="phone"> <?php echo $static['phone'] ?></td>
 </tr>
 <tr>
 <td>Level</td>
-<td> : <?php echo $static['level'] ?></td>
+<td> <?php echo $static['level'] ?></td>
 </tr>
 </table>    
-</div>
 <div class="card-footer text-center">
-<button class="btn btn-success btn-sm col-md-6">Update profil</button>  
-<button class="btn btn-warning btn-sm col-md-5">Ubah password</button>  
-</div>    
+<button style="display:none;" class="btn btn-success btn-sm col-md-6 btn_update">Perbaharui Profil</button>  
+<button class="btn btn-success btn-sm col-md-6 btn_edit">Edit Profil</button>  
+<button class="btn btn-success btn-sm col-md-5 btn_ubah_password">Rubah Password</button>  
+</div> 
+</div>
+
+</div> 
 </div>
 </div>    
 </div>
 </div>
-</div>    
+</div>
+
+<div class="modal fade" id="modal_ubah_profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Crop profile picture</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<img id="my-image" src="#" />
+</div>
+<div class="modal-footer">
+<button id="use" class="btn btn-success btn-sm btn-block btn_upload">Upload</button>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+$(".btn_edit").click(function(){
+$(".btn_edit").hide(100); 
+$(".btn_ubah_password").hide(100);
+$(".btn_update").show(100);
+var nama_lengkap = $("#nama_lengkap").text();
+
+$("#username").replaceWith('<input type="text" class="form-control m-1" value="'+$("#username").text()+'">');
+$("#nama_lengkap").replaceWith('<input type="text" class="form-control m-1" value='+nama_lengkap+'>');
+$("#email").replaceWith('<input type="text" class="form-control m-1" value='+$("#email").text()+'>');
+$("#phone").replaceWith('<input type="text" class="form-control m-1" value='+$("#phone").text()+'>');
+
+});
+});    
+
+function upload_profile(){
+$("#form_upload_profile").show();
+}
+
+
+$("#imgInp").change(function() {
+$('#modal_ubah_profile').modal('show');  
+readURL(this);
+});
+function readURL(input) {
+if (input.files && input.files[0]) {
+var reader = new FileReader();
+reader.onload = function(e) {
+$('#my-image').attr('src', e.target.result);
+var resize = new Croppie($('#my-image')[0], {
+viewport: { width: 200, height: 200 },
+//boundary: { width: 300, height: 300 },
+showZoomer: true,
+enableResize:false,
+enableOrientation: true
+});
+
+$('.btn_upload').on('click', function() {
+resize.result('base64').then(function(dataImg) {
+var data = [{ image: dataImg }, { name: 'myimgage.jpg' }];
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+formData = new FormData();
+formData.append('token',token);
+formData.append('image',dataImg);
+formData.append('name',"myimage.jpg");
+
+$.ajax({
+type:"post",
+processData: false,
+contentType: false,
+url:"<?php echo base_url('User2/simpan_profile'); ?>",
+data:formData,
+success:function(data){
+$('#modal_ubah_profile').modal('hide');  
+
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function(){
+window.location.href='<?php echo base_url('User2/profil') ?>';    
+});   
+}
+}); 
+});
+});
+},
+reader.readAsDataURL(input.files[0]);
+}
+}
+
+</script>    
+
+
 </body>
 </html>

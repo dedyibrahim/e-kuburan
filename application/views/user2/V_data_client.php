@@ -48,7 +48,6 @@
 <label>Target selesai</label>
 <input type="text" name="target_kelar" readonly="" id="target_kelar" class="form-control required"  accept="text/plain">
 <hr>
-
 <button type="submit" class="btn btn-success btn-sm  mx-auto btn-block simpan_perizinan">Simpan client & Buat pekerjaan <i class="fa fa-save"></i></button>
 </div>
 </form>

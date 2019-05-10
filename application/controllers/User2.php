@@ -833,5 +833,33 @@ $this->load->view('user2/V_profil',['data_user'=>$data_user]);
 
 }
 
+public function simpan_profile(){
+$foto_lama = $this->db->get_where('user',array('no_user'=>$this->session->userdata('no_user')))->row_array();
+if($foto_lama['foto'] != NULL){
+unlink('./uploads/user/'.$foto_lama['foto']);    
+}   
+    
+$img =  $this->input->post();
+define('UPLOAD_DIR', './uploads/user/');
+$image_parts = explode(";base64,", $img['image']);
+$image_type_aux = explode("image/", $image_parts[0]);
+$image_type = $image_type_aux[1];
+$image_base64 = base64_decode($image_parts[1]);
+$file_name = uniqid() . '.png';
+$file = UPLOAD_DIR .$file_name;
+file_put_contents($file, $image_base64);
+$data = array(
+'foto' =>$file_name,    
+);
+$this->db->update('user',$data,array('no_user'=>$this->session->userdata('no_user')));
+ 
+$status = array(
+"status"     => "success",
+"pesan"      => "Foto profil berhasil diperbaharui"    
+);
+echo json_encode($status);
+
+}
+
 }
 

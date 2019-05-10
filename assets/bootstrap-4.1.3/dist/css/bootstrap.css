@@ -9187,9 +9187,6 @@ top:0.9em;
 }
 
 .style_login{
-    width: 20rem;
--webkit-box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);
--moz-box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);
-box-shadow: -4px 17px 70px -17px rgba(255,255,255,1);    
+    width: 20rem;   
 }
 
