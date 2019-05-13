@@ -118,6 +118,9 @@ $this->db->insert('data_persyaratan_pekerjaan',$syarat);
 
 mkdir("berkas/"."Dok".$no_client,0777);
 
+$keterangan = $this->session->userdata('nama_lengkap')." Membuat client ".$data['badan_hukum']." dan pekerjaan ".$data['jenis_akta'] ;
+$this->histori($keterangan);
+
 $status = array(
 "status"     => "success",
 "no_client"  => base64_encode($no_client),
@@ -144,6 +147,10 @@ $syarat = array(
 );
 
 $this->db->insert('data_persyaratan_pekerjaan',$syarat);
+
+$keterangan = $this->session->userdata('nama_lengkap')." Menambahkan persyaratan ".$input['nama_dokumen'];  
+$this->histori($keterangan);
+
 
 $status = array(
 "status"     => "success",
@@ -369,6 +376,12 @@ $data_berkas = array(
 );    
 $this->db->insert('data_berkas',$data_berkas);
 
+$keterangan = $this->session->userdata('nama_lengkap')." upload persyaratan ".$this->input->post('Nama_berkas');  
+
+$this->histori($keterangan);
+
+
+
 foreach ($_POST as $key => $value){
 if($value == $input['no_client'] || $value == $input['no_pekerjaan'] || $value == $input['no_nama_dokumen'] || $value == $input['nama_folder'] || $key == "key_persyaratan" || $key == "value_persyaratan" ){
 
@@ -556,7 +569,8 @@ redirect(404);
 
 public function lanjutkan_proses_perizinan(){
 if($this->input->post()){
-$input = $this->input->post();
+$input  = $this->input->post();
+$histori   = $this->M_user2->data_pekerjaan_histori(base64_decode($input['no_pekerjaan']))->row_array();
 
 $data = array(
 'status_pekerjaan'=>'Proses',    
@@ -564,6 +578,9 @@ $data = array(
 );
 $this->db->update('data_pekerjaan',$data,array('no_pekerjaan'=> base64_decode($input['no_pekerjaan'])));
 
+$keterangan = $this->session->userdata('nama_lengkap')." Memproses perizinan ".$histori['jenis_perizinan']." client ". $histori['nama_client'];
+
+$this->histori($keterangan);
 
 $status = array(
 "status"     => "success",
@@ -908,6 +925,17 @@ echo json_encode($status);
 redirect(404);    
 }    
 }
+public function histori($keterangan){
+
+$data = array(
+'no_user'   => $this->session->userdata('no_user'),
+'keterangan'=>$keterangan,
+'tanggal'   =>date('Y/m/d H:i:s'),
+);
+
+$this->db->insert('data_histori_pekerjaan',$data);
+}
+
 
 }
 

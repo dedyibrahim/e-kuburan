@@ -5,7 +5,7 @@
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid ">
 <div class="card-header mt-2 text-center ">
-<h5 align="center">Tambahkan pekerjaan & client baru</h5>
+<h5 align="center">Tambahkan pekerjaan dan client baru</h5>
 </div>
 <form  id="fileForm" method="post" action="<?php echo base_url('User2/create_client') ?>">
 <div class="row  p-3" >

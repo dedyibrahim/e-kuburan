@@ -20,7 +20,7 @@
 
 <div class="tab-content">
 
-<div class="tab-pane card container active" id="jenis">
+<div class="tab-pane card container-fluid active" id="jenis">
 <div class="row p-2">
 <div class="col">
 <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#tambah_jenis_dokumen">Tambahkan Jenis Dokumen <i class="fa fa-plus"></i></button>
@@ -33,7 +33,7 @@
 </div>
 
 <!----------------------------Dokumen------------------------------>
-<div class="tab-pane card container fade" id="dokumen">
+<div class="tab-pane card container-fluid fade" id="dokumen">
 <div class="row p-2">
 <div class="col">
 <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#tambah_data_dokumen">Tambahkan Data Dokumen <i class="fa fa-plus"></i></button>
@@ -46,7 +46,7 @@
 </div>
 
 <!----------------------------Aplikasi------------------------------>
-<div class="tab-pane card container fade" id="aplikasi">
+<div class="tab-pane card container-fluid fade" id="aplikasi">
 <div class="row p-2">
 <div class="col">
 <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#modal_data_user">Tambahkan Data User <i class="fa fa-plus"></i></button>

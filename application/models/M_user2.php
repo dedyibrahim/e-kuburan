@@ -44,6 +44,8 @@ $query = $this->db->get('data_client');
 return $query;
 }
 
+
+
 function json_data_perorangan(){
     
 $this->datatables->select('id_perorangan,'
@@ -77,6 +79,15 @@ $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  o
 return $this->datatables->generate();
 }
 
+public function data_pekerjaan_histori($no_pekerjaan){
+$this->db->select('*');
+$this->db->from('data_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
+$this->db->where('data_pekerjaan.no_pekerjaan',$no_pekerjaan,FALSE);
+$query = $this->db->get();
+
+return $query;
+}
 public function data_pekerjaan($param){
 $this->db->select('*');
 $this->db->from('data_pekerjaan');
