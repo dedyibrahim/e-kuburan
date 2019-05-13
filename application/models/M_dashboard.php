@@ -333,7 +333,12 @@ return $query;
 
     
 }
+public function data_user_where($no_user){
 
+$query = $this->db->get_where('user',array('no_user'=>$no_user));
+
+return $query;
+}
 
 
 }

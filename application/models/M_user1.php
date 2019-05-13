@@ -26,6 +26,11 @@ $this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  o
 $this->datatables->where('data_pekerjaan.status_pekerjaan','Selesai');
 return $this->datatables->generate();
 }
+public function data_user_where($no_user){
 
+$query = $this->db->get_where('user',array('no_user'=>$no_user));
+
+return $query;
+}
 }
 ?>

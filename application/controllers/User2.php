@@ -827,7 +827,7 @@ redirect(404);
 
 public function profil(){
 $no_user = $this->session->userdata('no_user');
-$data_user = $this->M_user2->data_user_where($no_user);
+$data_user = $this->M_user3->data_user_where($no_user);
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_profil',['data_user'=>$data_user]);
 
@@ -891,5 +891,23 @@ redirect(404);
 }
 
 }
+public function update_password(){
+if($this->input->post()){
+$data = array(
+'password' => md5($this->input->post('password'))
+);
+$this->db->update('user',$data,array('no_user'=>$this->input->post('no_user')));
+ 
+$status = array(
+"status"     => "success",
+"pesan"      => "Password diperbaharui"    
+);
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}    
+}
+
 }
 

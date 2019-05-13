@@ -29,6 +29,11 @@ $this->datatables->where('data_berkas.status','Selesai');
 $this->datatables->where('data_berkas.no_pengurus',$this->session->userdata('no_user'));
 return $this->datatables->generate();
 }
+public function data_user_where($no_user){
 
+$query = $this->db->get_where('user',array('no_user'=>$no_user));
+
+return $query;
+}
 }
 ?>

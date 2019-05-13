@@ -115,7 +115,7 @@ var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('User2/update_user')?>",
+url:"<?php echo base_url('User1/update_user')?>",
 data:"token="+token+"&username="+username+"&nama_lengkap="+nama_lengkap+"&email="+email+"&phone="+phone+"&id_user="+id_user,
 success:function(data){
 var r = JSON.parse(data);
@@ -132,7 +132,7 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function(){
-window.location.href='<?php echo base_url('User2/profil') ?>';    
+window.location.href='<?php echo base_url('User1/profil') ?>';    
 });   
     
 }
@@ -178,7 +178,7 @@ title: "Password yang dimasukan tidak sama"
 
 $.ajax({
 type:"post",
-url:"<?php echo base_url('User2/update_password')?>",
+url:"<?php echo base_url('User1/update_password')?>",
 data:"token="+token+"&password="+new_password+"&no_user="+id_user,
 success:function(data){
 var r = JSON.parse(data);
@@ -195,7 +195,7 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function(){
-window.location.href='<?php echo base_url('User2/profil') ?>';    
+window.location.href='<?php echo base_url('User1/profil') ?>';    
 });   
     
 }
@@ -265,7 +265,7 @@ $.ajax({
 type:"post",
 processData: false,
 contentType: false,
-url:"<?php echo base_url('User2/simpan_profile'); ?>",
+url:"<?php echo base_url('User1/simpan_profile'); ?>",
 data:formData,
 success:function(data){
 $('#modal_ubah_profile').modal('hide');  
@@ -284,7 +284,7 @@ Toast.fire({
 type: r.status,
 title: r.pesan
 }).then(function(){
-window.location.href='<?php echo base_url('User2/profil') ?>';    
+window.location.href='<?php echo base_url('User1/profil') ?>';    
 });   
 }
 }); 
