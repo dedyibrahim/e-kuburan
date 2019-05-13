@@ -835,10 +835,14 @@ $this->load->view('user2/V_profil',['data_user'=>$data_user]);
 
 public function simpan_profile(){
 $foto_lama = $this->db->get_where('user',array('no_user'=>$this->session->userdata('no_user')))->row_array();
+if(!file_exists('./uploads/user/'.$foto_lama['foto'])){
+    
+}else{
 if($foto_lama['foto'] != NULL){
 unlink('./uploads/user/'.$foto_lama['foto']);    
 }   
-    
+}
+
 $img =  $this->input->post();
 define('UPLOAD_DIR', './uploads/user/');
 $image_parts = explode(";base64,", $img['image']);
@@ -861,5 +865,31 @@ echo json_encode($status);
 
 }
 
+
+public function update_user(){
+if($this->input->post()){
+$input= $this->input->post();
+
+$data =array(
+'email'         =>$input['email'],
+'username'      =>$input['username'],
+'nama_lengkap'  =>$input['nama_lengkap'],
+'phone'         =>$input['phone']    
+);
+$this->db->where('no_user',$input['id_user']);
+$this->db->update('user',$data);
+
+
+$status = array(
+"status"     => "success",
+"pesan"      => "Data profil berhasil diperbaharui"    
+);
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}
+
+}
 }
 

@@ -23,6 +23,7 @@
 <hr>
 <label>Upload foto</label>
 <input type='file' id="imgInp" class="form-control" />
+
 </div>
 </div>  
 </div>
@@ -31,7 +32,7 @@
 <table class="table  table-striped table-bordered">
 <tr>
 <td>ID</td>
-<td> <?php echo $static['no_user'] ?></td>
+<td id="id_user"><?php echo $static['no_user'] ?></td>
 </tr>
 <tr>
 <td>Username</td>
@@ -53,11 +54,21 @@
 <td>Level</td>
 <td> <?php echo $static['level'] ?></td>
 </tr>
+<tr style="display:none;" id="new_password" >
+<td>New Password</td>    
+<td><input type="text" class="form-control new_password" placeholder="New password..."></td>    
+</tr>
+
+<tr style="display:none;" id="repeat_password">
+<td>Repeat Password</td>    
+<td><input type="text" class="form-control repeat_password" placeholder="Repeat password"></td>    
+</tr>
+
 </table>    
 <div class="card-footer text-center">
 <button style="display:none;" class="btn btn-success btn-sm col-md-6 btn_update">Perbaharui Profil</button>  
 <button class="btn btn-success btn-sm col-md-6 btn_edit">Edit Profil</button>  
-<button class="btn btn-success btn-sm col-md-5 btn_ubah_password">Rubah Password</button>  
+<button class="btn btn-success btn-sm col-md-5 btn_ubah_password">Change Password</button>  
 </div> 
 </div>
 
@@ -90,16 +101,91 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+$(".btn_update").click(function(){
+var username        =$(".username").val();
+var nama_lengkap    =$(".nama_lengkap").val();
+var email           =$(".email").val();
+var phone           =$(".phone").val();
+var id_user         =$("#id_user").text();
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User2/update_user') ?>",
+data:"token="+token+"&username="+username+"&nama_lengkap="+nama_lengkap+"&email="+email+"&phone="+phone+"&id_user="+id_user,
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function(){
+window.location.href='<?php echo base_url('User2/profil') ?>';    
+});   
+    
+}
+});
+
+});
+
+
+
+$(".btn_ubah_password").click(function(){
+var new_password = $(".new_password").val();
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+var repeat_password = $(".repeat_password").val();
+
+if(new_password ==''){
+$("#new_password").show();
+$("#repeat_password").show();
+$(".btn_edit").hide(100); 
+}else{
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('User2/update_password') ?>",
+data:"token="+token+"&new_password="+new_password+"&repeat_password="+repeat_password,
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated bounceInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+}).then(function(){
+window.location.href='<?php echo base_url('User2/profil') ?>';    
+});   
+    
+}
+});    
+}
+
+});
+
+
 $(".btn_edit").click(function(){
 $(".btn_edit").hide(100); 
 $(".btn_ubah_password").hide(100);
 $(".btn_update").show(100);
-var nama_lengkap = $("#nama_lengkap").text();
-
-$("#username").replaceWith('<input type="text" class="form-control m-1" value="'+$("#username").text()+'">');
-$("#nama_lengkap").replaceWith('<input type="text" class="form-control m-1" value='+nama_lengkap+'>');
-$("#email").replaceWith('<input type="text" class="form-control m-1" value='+$("#email").text()+'>');
-$("#phone").replaceWith('<input type="text" class="form-control m-1" value='+$("#phone").text()+'>');
+$("#username").replaceWith('<input type="text" class="form-control username" value="'+$("#username").text()+'">');
+$("#nama_lengkap").replaceWith('<input type="text" class="form-control nama_lengkap" value="'+$("#nama_lengkap").text()+'">');
+$("#email").replaceWith('<input type="text" class="form-control email" value='+$("#email").text()+'>');
+$("#phone").replaceWith('<input type="text" class="form-control phone" value='+$("#phone").text()+'>');
 
 });
 });    
@@ -120,7 +206,7 @@ reader.onload = function(e) {
 $('#my-image').attr('src', e.target.result);
 var resize = new Croppie($('#my-image')[0], {
 viewport: { width: 200, height: 200 },
-//boundary: { width: 300, height: 300 },
+boundary: { width: 300, height: 300 },
 showZoomer: true,
 enableResize:false,
 enableOrientation: true
