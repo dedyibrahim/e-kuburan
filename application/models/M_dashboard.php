@@ -14,6 +14,18 @@ $query = $this->db->get_where('user',array('id_user'=>$id_user));
 return $query;
 
 }
+
+function json_data_riwayat(){
+    
+$this->datatables->select('id_data_histori_pekerjaan,'
+.'data_histori_pekerjaan.keterangan as keterangan,'
+.'data_histori_pekerjaan.tanggal as tanggal,'
+);
+$this->datatables->from('data_histori_pekerjaan');
+$this->datatables->where('no_user',$this->session->userdata('no_user'));
+return $this->datatables->generate();
+}
+
 public function update_user($data,$id_user){
 $this->db->update('user',$data,array('id_user'=>$id_user));                                                                                                                                                                                                                                                                                                                                                                             }
 

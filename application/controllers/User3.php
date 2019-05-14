@@ -326,4 +326,13 @@ redirect(404);
 }    
 }
 
+public function riwayat_pekerjaan(){
+$this->load->view('umum/V_header');
+$this->load->view('user2/V_riwayat_pekerjaan');
+}
+
+public function json_data_riwayat(){
+echo $this->M_user2->json_data_riwayat();       
+}
+
 }

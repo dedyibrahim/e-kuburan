@@ -5,7 +5,7 @@
 <div class="container ">
 <div class="row">
 <div class="card mx-auto mt-5 style_login">
-<div class="card-header bg-dark">
+<div class="card-header bg-blue">
 
 <h4 align="center" class="text-lg-center text-white "><i class="fa fa-lock fa-2x"></i><br> Input your detail login </h4>
 </div>
@@ -16,7 +16,7 @@
 <input type="password" class="form-control" id="password" placeholder="your password">
 </div>
 <div class="card-footer">
-<button class="btn btn-dark btn-sm btn-block" id="proses_login">Sign in <i class="fa fa-key"></i></button>
+<button class="btn btn-blue btn-sm btn-block" id="proses_login">Sign in <i class="fa fa-key"></i></button>
 </div>
 </div>    
 </div>

@@ -1837,9 +1837,9 @@ pre code {
 .form-control:focus {
   color: #495057;
   background-color: #fff;
-  border-color: #80bdff;
+  border-color: #0e4669;
   outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+ // box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .form-control::-webkit-input-placeholder {
@@ -2040,7 +2040,7 @@ textarea.form-control {
 .custom-select:valid:focus,
 .custom-select.is-valid:focus {
   border-color: #28a745;
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+//  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
 .was-validated .form-control:valid ~ .valid-feedback,
@@ -2573,6 +2573,11 @@ fieldset:disabled a.btn {
 .btn-dark {
   color: #fff;
   background-color: #343a40;
+  border-color: #343a40;
+}
+.btn-blue {
+  color: #fff;
+  background-color: #0e4669;
   border-color: #343a40;
 }
 
@@ -6117,6 +6122,10 @@ button.bg-light:focus {
 
 .bg-dark {
   background-color: #343a40 !important;
+}
+
+.bg-blue {
+  background-color: #0e4669 !important;
 }
 
 a.bg-dark:hover, a.bg-dark:focus,

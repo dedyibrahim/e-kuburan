@@ -46,6 +46,7 @@ $this->load->view('user2/V_data_client');
 public function json_data_client(){
 echo $this->M_user2->json_data_client();       
 }
+
 public function cari_jenis_dokumen(){
 $term = strtolower($this->input->get('term'));    
 $query = $this->M_user2->cari_jenis_dokumen($term);
@@ -936,6 +937,14 @@ $data = array(
 $this->db->insert('data_histori_pekerjaan',$data);
 }
 
+public function riwayat_pekerjaan(){
+$this->load->view('umum/V_header');
+$this->load->view('user2/V_riwayat_pekerjaan');
+}
+
+public function json_data_riwayat(){
+echo $this->M_user2->json_data_riwayat();       
+}
 
 }
 

@@ -301,6 +301,14 @@ echo json_encode($status);
 redirect(404);    
 }    
 }
+public function riwayat_pekerjaan(){
+$this->load->view('umum/V_header');
+$this->load->view('user1/V_riwayat_pekerjaan');
+}
+
+public function json_data_riwayat(){
+echo $this->M_user1->json_data_riwayat();       
+}
 
 }
 
