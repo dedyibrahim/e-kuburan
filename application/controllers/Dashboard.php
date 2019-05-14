@@ -749,7 +749,7 @@ redirect(404);
 
 public function riwayat_pekerjaan(){
 $this->load->view('umum/V_header');
-$this->load->view('Dashboard/V_riwayat_pekerjaan');
+$this->load->view('dashboard/V_riwayat_pekerjaan');
 }
 
 public function json_data_riwayat(){

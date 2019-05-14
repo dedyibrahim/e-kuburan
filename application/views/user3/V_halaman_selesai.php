@@ -7,7 +7,7 @@
 <div class="card-header mt-2 mb-2 text-center">
 Data perizinan yang selesai dikerjakan
 </div>
-<div class="row p-2 m-2">
+<div class="row">
     <div class="col">
 <table style="width:100%;" id="data_selesai" class="table table-striped table-condensed table-xs table-bordered  table-hover table-sm"><thead>
 <th align="center" aria-controls="datatable-fixed-header"  >No</th>

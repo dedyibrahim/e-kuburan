@@ -143,17 +143,19 @@ $this->db->order_by('id_syarat_dokumen',"DESC");
 $query = $this->db->get_where('data_syarat_jenis_dokumen',array('no_berkas'=> base64_decode($no_berkas)));       
 return $query;    
 }
-public function data_pekerjaan_proses($id){
+public function data_pekerjaan_proses($no_pekerjaan){
 
 $this->db->select('*');
 $this->db->from('data_pekerjaan');
-$this->db->join('data_persyaratan_pekerjaan', 'data_persyaratan_pekerjaan.no_jenis_dokumen = data_pekerjaan.no_jenis_perizinan');
+$this->db->join('data_persyaratan_pekerjaan', 'data_persyaratan_pekerjaan.no_pekerjaan_syarat = data_pekerjaan.no_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
-$this->db->where('data_pekerjaan.no_pekerjaan', base64_decode($id));
+$this->db->where('data_pekerjaan.no_pekerjaan',base64_decode($no_pekerjaan));
 $query = $this->db->get();   
 
 return $query;
 }
+
+
 
 public function data_perorangan(){
 $query = $this->db->get('data_perorangan');    

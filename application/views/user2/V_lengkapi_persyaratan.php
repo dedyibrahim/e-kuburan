@@ -24,8 +24,8 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 <tr>
 <td><?php echo $d['nama_dokumen'] ?></td>    
 <td class="text-center">
-<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $static['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
-<button class="btn btn-danger btn-sm" onclick="hapus_persyaratan('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_pekerjaan'] ?>')"><span class="fa fa-trash"></span></button>
+<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan_syarat'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $static['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
+<button class="btn btn-danger btn-sm" onclick="hapus_persyaratan('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_pekerjaan_syarat'] ?>')"><span class="fa fa-trash"></span></button>
 </td>    
 </tr>    
 <?php } ?>

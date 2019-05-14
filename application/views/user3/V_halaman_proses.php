@@ -9,7 +9,7 @@ Data perizinan yang perlu diproses
 </div>
     
 <div class="row p-1 m-1">
-<table class="table table-hover table-striped ">
+<table class="table table-hover table-striped table-sm table-bordered text-center">
 <tr>
 <th>Nama client</th>
 <th>Nama Tugas</th>

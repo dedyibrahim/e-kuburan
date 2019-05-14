@@ -1,8 +1,8 @@
 <body>
 <div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_user2'); ?>
+<?php  $this->load->view('umum/V_sidebar'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_user2'); ?>
+<?php  $this->load->view('umum/V_navbar'); ?>
 <div class="container-fluid ">
 <?php  $static = $data_user->row_array(); ?>
 <div class="row mt-2">

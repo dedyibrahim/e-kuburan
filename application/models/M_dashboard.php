@@ -22,7 +22,6 @@ $this->datatables->select('id_data_histori_pekerjaan,'
 .'data_histori_pekerjaan.tanggal as tanggal,'
 );
 $this->datatables->from('data_histori_pekerjaan');
-$this->datatables->where('no_user',$this->session->userdata('no_user'));
 return $this->datatables->generate();
 }
 

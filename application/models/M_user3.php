@@ -36,8 +36,7 @@ $query = $this->db->get_where('user',array('no_user'=>$no_user));
 return $query;
 }
 
-function json_data_riwayat(){
-    
+function json_data_riwayat(){  
 $this->datatables->select('id_data_histori_pekerjaan,'
 .'data_histori_pekerjaan.keterangan as keterangan,'
 .'data_histori_pekerjaan.tanggal as tanggal,'

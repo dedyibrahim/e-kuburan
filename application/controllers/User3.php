@@ -1,5 +1,6 @@
 <?php
-class user3 extends CI_Controller{    
+class user3 extends CI_Controller{
+    
 public function __construct() {
 parent::__construct();
 $this->load->helper('download');
@@ -24,13 +25,17 @@ redirect (base_url('Login'));
 
 public function proses_tugas(){
 if($this->input->post()){
-$data = array(
+$data1 = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->input->post('id_data_berkas')))->row_array();
+
+ $data = array(
 'tanggal_proses_tugas'   =>date('d/m/Y'),
 'target_kelar_perizinan' =>$this->input->post('target_kelar'),
 'status'                 =>'Proses'    
 );
 $this->db->update('data_berkas',$data,array('id_data_berkas'=>$this->input->post('id_data_berkas')));
 
+$keterangan  = $this->session->userdata('nama_lengkap')." Memproses tugas ".$data1['nama_file']; 
+$this->histori($keterangan);
 
 $status = array(
 'status' =>"success",
@@ -145,6 +150,10 @@ $data_berkas = array(
 );    
 $this->db->update('data_berkas',$data_berkas,array('id_data_berkas'=>$input['id_data_berkas']));
 
+$keterangan  = $this->session->userdata('nama_lengkap')." Mengupload file berkas ".$this->input->post('Nama_berkas');
+$this->histori($keterangan);
+
+
 
 foreach ($_POST as $key => $value){
 if($value == $input['id_data_berkas'] ){
@@ -224,6 +233,9 @@ $data = array(
 );
 $this->db->insert('data_progress_perizinan',$data);
   
+$keterangan  = $this->session->userdata('nama_lengkap')." Menolak tugas ".$input['nama_tugas']." dengan alasan ".$input['alasan_penolakan']; 
+
+$this->histori($keterangan);
 
 $update = array(
 'status' => 'Ditolak',    
@@ -328,11 +340,21 @@ redirect(404);
 
 public function riwayat_pekerjaan(){
 $this->load->view('umum/V_header');
-$this->load->view('user2/V_riwayat_pekerjaan');
+$this->load->view('user3/V_riwayat_pekerjaan');
 }
 
 public function json_data_riwayat(){
-echo $this->M_user2->json_data_riwayat();       
+echo $this->M_user3->json_data_riwayat();       
+}
+
+public function histori($keterangan){
+$data = array(
+'no_user'   => $this->session->userdata('no_user'),
+'keterangan'=>$keterangan,
+'tanggal'   =>date('Y/m/d H:i:s'),
+);
+
+$this->db->insert('data_histori_pekerjaan',$data);
 }
 
 }

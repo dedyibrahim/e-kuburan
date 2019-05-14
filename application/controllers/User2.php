@@ -108,7 +108,7 @@ $this->db->insert('data_pekerjaan',$data_r);
 
 foreach ($data_persyaratan->result_array() as $persyaratan){
 $syarat = array('no_client'         => "C_".$no_client,    
-'no_pekerjaan'      => $no_pekerjaan,    
+'no_pekerjaan_syarat'      => $no_pekerjaan,    
 'no_nama_dokumen'   => $persyaratan['no_nama_dokumen'],    
 'nama_dokumen'      => $persyaratan['nama_dokumen'],
 'no_jenis_dokumen'  => $persyaratan['no_jenis_dokumen'], 
@@ -141,7 +141,7 @@ if($this->input->post()){
 $input = $this->input->post();   
 $syarat = array(
 'no_client'         => $input['no_client'],    
-'no_pekerjaan'      => $input['no_pekerjaan'],    
+'no_pekerjaan_syarat'      => $input['no_pekerjaan'],    
 'no_nama_dokumen'   => $input['no_nama_dokumen'],    
 'nama_dokumen'      => $input['nama_dokumen'],
 'no_jenis_dokumen'  => $input['no_jenis_dokumen'], 
@@ -255,17 +255,11 @@ redirect(404);
 public function proses_pekerjaan(){
 if(!empty($this->uri->segment(3))){
 $data                 = $this->M_user2->data_pekerjaan_proses($this->uri->segment(3));    
-
 $static               = $data->row_array();
-
 $dokumen_utama        = $this->db->get_where('data_dokumen_utama',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
-
 $nama_dokumen         = $this->db->get_where('nama_dokumen');
-
-$data_persyaratan     = $this->db->get_where('data_persyaratan_pekerjaan',array('no_jenis_dokumen'=> $static['no_jenis_perizinan'],'no_pekerjaan'=>$static['no_pekerjaan']));
-
-$data_berkas = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
-
+$data_persyaratan     = $this->db->get_where('data_persyaratan_pekerjaan',array('no_jenis_dokumen'=> $static['no_jenis_perizinan'],'no_pekerjaan_syarat'=>$static['no_pekerjaan']));
+$data_berkas          = $this->db->get_where('data_berkas',array('status_berkas'=>'Persyaratan','no_pekerjaan'=> base64_decode($this->uri->segment(3))));
 
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_proses_berkas',['data_berkas'=>$data_berkas,'nama_dokumen'=>$nama_dokumen,'data'=>$data,'dokumen_utama'=>$dokumen_utama,'data_persyaratan'=>$data_persyaratan]);    
@@ -276,7 +270,7 @@ redirect(404);
 }
 
 public function lengkapi_persyaratan(){    
-$minimal_persyaratan = $this->db->get_where('data_persyaratan_pekerjaan',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
+$minimal_persyaratan = $this->db->get_where('data_persyaratan_pekerjaan',array('no_pekerjaan_syarat'=> base64_decode($this->uri->segment(3))));
 $nama_dokumen        = $this->db->get_where('nama_dokumen');
 $data_berkas         = $this->db->get_where('data_berkas',array('no_pekerjaan'=> base64_decode($this->uri->segment(3))));
 $data                = $this->M_user2->data_pekerjaan_persyaratan(base64_decode($this->uri->segment(3))); 
@@ -465,6 +459,10 @@ $data_meta = array(
 $this->db->insert('data_meta_berkas',$data_meta);
 }
 
+$keterangan = $this->session->userdata('nama_lengkap')." upload persyaratan ".$this->input->post('Nama_berkas');  
+
+$this->histori($keterangan);
+
 
 }
 redirect(base_url('User2/lengkapi_persyaratan/'.base64_encode($input['no_pekerjaan'])));
@@ -489,7 +487,13 @@ $data_berkas = array(
 'nama_file'         => $input['nama_dokumen'],
 );    
 $this->db->insert('data_berkas',$data_berkas);
-    
+
+$keterangan = $this->session->userdata('nama_lengkap')." Menambahkan perizinan ".$data['jenis_perizinan'];
+
+$this->histori($keterangan);
+
+
+
 }else{
 redirect(404);    
 }
@@ -554,6 +558,9 @@ redirect(404);
 public function simpan_pekerjaan_user(){
 if($this->input->post()){
 $input = $this->input->post();    
+
+$data1 = $this->db->get_where('data_berkas',array('id_data_berkas'=>$input['id_data_berkas']))->row_array();
+    
 $data = array(
     'no_pengurus'        => $input['no_user'],
     'pengurus_perizinan' => $input['nama_user'],
@@ -561,7 +568,13 @@ $data = array(
     'tanggal_tugas'      => date('d/m/Y'),
     'status'             => 'Masuk'
 );
-$this->db->update('data_berkas',$data,array('id_data_berkas'=>$input['id_data_berkas']));    
+$this->db->update('data_berkas',$data,array('id_data_berkas'=>$input['id_data_berkas']));
+
+$keterangan = $this->session->userdata('nama_lengkap')." Memberikan tugas perizinan ".$data1['nama_file']."kepada ".$input['nama_user'];
+
+$this->histori($keterangan);
+
+
 }else{
 redirect(404);    
 } 
@@ -748,6 +761,10 @@ $data = array(
 
 $this->db->insert('data_dokumen_utama',$data);    
     
+$keterangan = $this->session->userdata('nama_lengkap')." Mengupload ".$input['jenis'] ." dengan nama ".$input['nama_file'];
+$this->histori($keterangan);
+
+
 }
 
 redirect(base_url('User2/proses_pekerjaan/'.base64_encode($data_pekerjaan['no_pekerjaan'])));
@@ -763,6 +780,12 @@ $data = $this->db->get_where('data_dokumen_utama',array('id_data_dokumen_utama'=
 unlink('./berkas/'.$data['nama_folder']."/".$data['nama_file']);
 
 $this->db->delete('data_dokumen_utama',array('id_data_dokumen_utama'=>$this->input->post('id_data_dokumen_utama')));    
+
+
+$keterangan = $this->session->userdata('nama_lengkap')." Menghapus ".$data['nama_berkas'] ;
+$this->histori($keterangan);
+
+
 
 }else{
 redirect(404);    
@@ -784,6 +807,12 @@ $status = array(
 );
 
 echo json_encode($status);
+
+$keterangan = $this->session->userdata('nama_lengkap')." Menghapus File Dokumen ".$data['nama_file'];  
+
+$this->histori($keterangan);
+
+
 
 }else{
 redirect(404);    
@@ -822,13 +851,15 @@ $this->db->insert('data_pekerjaan',$data_r);
 foreach ($data_persyaratan->result_array() as $persyaratan){
 $syarat = array(
 'no_client'         => base64_decode($input['no_client']),    
-'no_pekerjaan'      => $no_pekerjaan,    
+'no_pekerjaan_syarat'      => $no_pekerjaan,    
 'no_nama_dokumen'   => $persyaratan['no_nama_dokumen'],    
 'nama_dokumen'      => $persyaratan['nama_dokumen'],
 'no_jenis_dokumen'  => $persyaratan['no_jenis_dokumen'], 
 );
 $this->db->insert('data_persyaratan_pekerjaan',$syarat);
 }
+
+
 
 
 $status = array(
@@ -926,6 +957,7 @@ echo json_encode($status);
 redirect(404);    
 }    
 }
+
 public function histori($keterangan){
 
 $data = array(
