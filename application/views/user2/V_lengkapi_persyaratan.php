@@ -24,7 +24,7 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 <tr>
 <td><?php echo $d['nama_dokumen'] ?></td>    
 <td class="text-center">
-<button class="btn btn-success btn-sm" onclick="tampil_modal_upload('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_client'] ?>','<?php echo $d['no_pekerjaan_syarat'] ?>','<?php echo $d['no_nama_dokumen'] ?>','<?php echo $d['nama_dokumen'] ?>','<?php echo $static['nama_folder'] ?>')"><span class="fa fa-upload"></span></button>
+<button class="btn btn-success m-1 btn-sm" onclick="tampil_modal_upload('<?php echo $d['no_pekerjaan_syarat'] ?>','<?php echo $d['id_data_persyaratan_pekerjaan'] ?>')"><span class="fa fa-upload"></span></button>
 <button class="btn btn-danger btn-sm" onclick="hapus_persyaratan('<?php echo $d['id_data_persyaratan_pekerjaan'] ?>','<?php echo $d['no_pekerjaan_syarat'] ?>')"><span class="fa fa-trash"></span></button>
 </td>    
 </tr>    
@@ -70,22 +70,29 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 <div class="modal-dialog" role="document">
 <div class="modal-content">
 <div class="modal-header">
-<h6 class="modal-title" id="exampleModalLabel">Upload persyaratan <span class="i"><span></h6>
+<h6 class="modal-title" id="exampleModalLabel">Upload Persyaratan <span class="i"><span></h6>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
+<!---<form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
+-->
 <div class="modal-body form_persyaratan">
 
+    
 </div>
-</form>
+<!--</form>-->
 </div>
 </div>
 </div>
 
 
 <script type="text/javascript">
+function simpan_syarat(){
+var c = $('.meta').length;
+
+}
+
 
 function hapus_persyaratan(id_data_persyaratan_pekerjaan,no_pekerjaan){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -119,14 +126,15 @@ window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+
 
 }
 
-function persyaratan_tambahan(no_client,no_pekerjaan,no_jenis_dokumen){
+function persyaratan_tambahan(no_client,no_pekerjaan){
 var no_nama_dokumen = $(".persyaratan_tambahan option:selected").val();
 var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
+    
 type:"post",
-data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_jenis_dokumen="+no_jenis_dokumen,
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client,
 url:"<?php echo base_url('User2/tambah_persyaratan') ?>",
 success:function(data){
 var r = JSON.parse(data);
@@ -138,7 +146,6 @@ timer: 2000,
 animation: false,
 customClass: 'animated zoomInDown'
 });
-
 Toast.fire({
 type: r.status,
 title: r.pesan
@@ -146,32 +153,25 @@ title: r.pesan
 window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+r.no_pekerjaan;
 });
 
-}        
-        
+}             
 });
-
-
 $(".persyaratan_tambahan").val("");
+
 }
 
-function tampil_modal_upload(id_data_persyaratan_pekerjaan,no_client,no_pekerjaan,no_nama_dokumen,nama_dokumen,nama_folder){
+function tampil_modal_upload(no_pekerjaan,id_data_persyaratan_pekerjaan){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+
 $.ajax({
 type:"post",
-data:"token="+token+"&no_nama_dokumen="+no_nama_dokumen+"&nama_persyaratan="+nama_dokumen+"&no_pekerjaan="+no_pekerjaan+"&nama_folder="+nama_folder+"&no_client="+no_client,
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_persyaratan="+id_data_persyaratan_pekerjaan,
 url:"<?php echo base_url('User2/form_persyaratan') ?>",
 success:function(data){
 $('.form_persyaratan').html(data);    
 $('#modal_upload').modal('show');
-$('.i').html(nama_dokumen);
 
 }    
-
 });
-
-
-
-
 }
 
 function simpan_persyaratan(){

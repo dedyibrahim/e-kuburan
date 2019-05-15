@@ -76,15 +76,15 @@ $no_pekerjaan = str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
 
 $data_client = array(
 'no_client'                 => "C_".$no_client,    
-'jenis_client'              => $data['jenis_client'],    
-'nama_client'               => $data['badan_hukum'],
-'alamat_client'             => $data['alamat_badan_hukum'],    
+'jenis_client'              => ucwords($data['jenis_client']),    
+'nama_client'               => ucwords($data['badan_hukum']),
+'alamat_client'             => ucwords($data['alamat_badan_hukum']),    
 'tanggal_daftar'            => date('d/m/Y H:i:s'),    
 'pembuat_client'            => $this->session->userdata('nama_lengkap'),    
 'no_user'                   => $this->session->userdata('no_user'), 
 'nama_folder'               =>"Dok".$no_client,
-'contact_person'            =>$data['contact_person'],    
-'contact_number'            =>$data['contact_number'],    
+'contact_person'            => ucwords($data['contact_person']),    
+'contact_number'            => ucwords($data['contact_number']),    
 );    
 
 $this->db->insert('data_client',$data_client);
@@ -100,7 +100,7 @@ $data_r = array(
 'count_up'           => date('M,d,Y, H:i:s'),        
 'no_user'            => $this->session->userdata('no_user'),    
 'pembuat_pekerjaan'  => $this->session->userdata('nama_lengkap'),    
-'jenis_perizinan'    => $data['jenis_akta'],
+'jenis_perizinan'    => ucwords($data['jenis_akta']),
 );
 $this->db->insert('data_pekerjaan',$data_r);
 
@@ -281,49 +281,24 @@ $this->load->view('user2/V_lengkapi_persyaratan',['data'=>$data,'data_berkas'=>$
 
 public function form_persyaratan(){
 if($this->input->post()){
-$input = $this->input->post();
-if($input['no_nama_dokumen']){    
+$input     = $this->input->post();
+$query     = $this->M_user2->data_form_persyaratan($input['no_pekerjaan'],$input['id_data_persyaratan']);
+$static    = $query->row_array();
+$data_meta = $this->M_user2->data_meta_where($static['no_nama_dokumen']);
 
-$this->db->select('*');
-$this->db->from('data_meta');
-$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta.no_nama_dokumen');
-$this->db->where('data_meta.no_nama_dokumen',$this->input->post('no_nama_dokumen'));
-$data = $this->db->get();
-$static = $data->row_array();
-echo "<div class=''>"
- . "<label>".$input['nama_persyaratan']."</label>"
- . "<input type='hidden'  placeholder='' value='".$input['no_client']."'  name='no_client' class='form-control' required='' accept='text/plain' >"
- . "<input type='hidden'  placeholder='' value='".$input['nama_folder']."'  name='nama_folder' class='form-control' required='' accept='text/plain' >"
- . "<input type='hidden'  placeholder='' value='".$input['no_pekerjaan']."'  name='no_pekerjaan' class='form-control' required='' accept='text/plain' >"
- . "<input type='hidden'  placeholder='' value='".$this->security->get_csrf_hash()."'  name='token' class='form-control' required='' accept='text/plain' >"
- . "<input type='hidden'  placeholder='' value='".$input['nama_persyaratan']."'  name='key_persyaratan' class='form-control' required='' accept='text/plain' >"
- . "<input type='hidden'  name='no_nama_dokumen' value='".$input['no_nama_dokumen']."'  class='form-control' required='' accept='text/plain'>"
-        .  "<input type='text'  placeholder='".$input['nama_persyaratan']."'  name='value_persyaratan' class='form-control' required='' accept='text/plain' >"
- . "<label>Nama Dokumen</label>"
- . "<input type='text' value='".$static['nama_dokumen']."'   name='Nama_berkas' class='form-control' required='' accept='text/plain' >";
+if(is_array($data_meta->row_array())){
+    foreach ($data_meta->result_array() as $d){
+    echo "<label>".$d['nama_meta']."</label>"
+         ."<input type='text' class='form-control meta' required='' accept='text/plain' >";       
+    }
+}
 
-if(is_array($data->result_array())){
-foreach ($data->result_array() as $d){
-echo "<label>".$d['nama_meta']."</label>"
-    . "<input type='text' placeholder='".$d['nama_meta']."' name='".$d['nama_meta']."' class='form-control' required='' accept='text/plain'>";
-}
-}
-echo "<label>Upload ".$static['nama_dokumen']."</label>"
+
+echo "<label> Upload ".$static['nama_dokumen']."</label>"
         . "<input type='file' name='file_berkas' class='form-control' required >"
         . "<hr>"
-        . "<button class='btn btn-success btn-block btn-sm' type='submit'>Upload & simpan <span class='fa fa-upload'></span></button>";    
+        . "<button class='btn btn-success btn-block btn-sm ' onclick='simpan_syarat();' type='button'>Upload dan simpan <span class='fa fa-upload'></span></button>"; 
 
-echo  "</div>";
-
-}else{
-echo  "<label>".$input['nama_persyaratan']."</label>"
- . "<input type='hidden'  placeholder='' value='".$input['nama_persyaratan']."'  name='key_persyaratan' class='form-control' required='' accept='text/plain' >"
-.  "<input type='text'  placeholder='".$input['nama_persyaratan']."'  name='value_persyaratan' class='form-control' required='' accept='text/plain' >"
-. "<hr>"
-. "<button class='btn btn-success btn-block btn-sm' type='submit'>Simpan <span class='fa fa-upload'></span></button>";    
-
-    
-}
 }else{
 redirect(404);    
 }

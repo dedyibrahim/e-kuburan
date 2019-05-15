@@ -194,10 +194,29 @@ return $query;
 }
 
 public function data_user_where($no_user){
-
 $query = $this->db->get_where('user',array('no_user'=>$no_user));
-
 return $query;
+}
+
+public function data_form_persyaratan($no_pekerjaan,$id_data_persyaratan){
+
+$this->db->select('data_persyaratan_pekerjaan.nama_dokumen,'
+        . 'data_persyaratan_pekerjaan.no_nama_dokumen,'
+        . 'data_client.nama_folder');
+$this->db->from('data_persyaratan_pekerjaan');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_persyaratan_pekerjaan.no_pekerjaan_syarat');
+$this->db->join('data_client', 'data_client.no_client = data_persyaratan_pekerjaan.no_client');
+$this->db->where('data_persyaratan_pekerjaan.id_data_persyaratan_pekerjaan',$id_data_persyaratan);
+$query = $this->db->get();  
+return $query;      
+    
+    
+}
+
+public function data_meta_where($no_nama_dokumen){
+$query       = $this->db->get_where('data_meta',array('no_nama_dokumen'=>$no_nama_dokumen));
+return $query;
+    
 }
 
 }
