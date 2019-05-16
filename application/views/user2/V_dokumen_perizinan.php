@@ -43,7 +43,8 @@ $(".file_perizinan").val("");
 }
 
 function refresh(){
-form_perizinan();  
+form_perizinan();
+persyaratan_telah_dilampirkan();
 }
 
 function form_perizinan(){

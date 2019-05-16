@@ -202,7 +202,9 @@ public function data_form_persyaratan($no_pekerjaan,$id_data_persyaratan){
 
 $this->db->select('data_persyaratan_pekerjaan.nama_dokumen,'
         . 'data_persyaratan_pekerjaan.no_nama_dokumen,'
-        . 'data_client.nama_folder');
+        . 'data_client.nama_folder,'
+        . 'data_client.no_client,'
+        . 'data_pekerjaan.no_pekerjaan');
 $this->db->from('data_persyaratan_pekerjaan');
 $this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_persyaratan_pekerjaan.no_pekerjaan_syarat');
 $this->db->join('data_client', 'data_client.no_client = data_persyaratan_pekerjaan.no_client');

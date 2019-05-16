@@ -1,3 +1,4 @@
+<body onload="refresh();"></body>
 <div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
@@ -47,20 +48,12 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 </div>
 <div class="col">
 <div class="card-header text-center" >Data Persyaratan yang sudah dilampirkan</div>
-<?php foreach ($data_berkas->result_array() as $u){  ?>
-<div class="card p-2 m-1">
-<div class="row">
-<div class="col"><?php echo $u['nama_file'] ?></div> 
-<div class="col-md-3 text-right">
-<button class="btn btn-success btn-sm" onclick="download('<?php echo $u['id_data_berkas'] ?>')"><span class="fa fa-download"></span></button>
-<a href="<?php echo base_url('User2/hapus_berkas_persyaratan/'.$u['no_pekerjaan']."/".$u['id_data_berkas']) ?>"><button class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button></a>
-</div>    
+
+<div class="syarat_telah_dilampirkan">
+    
 </div>
-</div>
-<?php } ?>
 
 </div>
-
 </div>
 </div>
 </div>
@@ -88,8 +81,99 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 
 
 <script type="text/javascript">
+
+function refresh(){
+persyaratan_telah_dilampirkan(); 
+}
+
+function hapus_berkas_persyaratan(no_pekerjaan,id_data_berkas){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_berkas="+id_data_berkas,
+url:"<?php echo base_url('User2/hapus_berkas_persyaratan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+refresh();
+
+}
+});    
+}
+
+
+function persyaratan_telah_dilampirkan(){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token,
+url:"<?php echo base_url('User2/persyaratan_telah_dilampirkan/'.$this->uri->segment(3)) ?>",
+success:function(data){
+$('.syarat_telah_dilampirkan').html(data);
+}
+});
+}
+
+    
 function simpan_syarat(){
-var c = $('.meta').length;
+var result = { };
+var jml_meta = $('.meta').length;
+for (i = 1; i <=jml_meta; i++) {
+var key   =($("#data_meta"+i).attr('name'));
+var value =($("#data_meta"+i).val());
+$.each($('form').serializeArray(), function() {
+result[key] = value;
+});
+}
+
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+var name = $("#id").attr("name");
+formdata = new FormData();
+file = $("#file_berkas").prop('files')[0];;
+formdata.append("file_berkas", file);
+formdata.append("token", token);
+formdata.append("id_data_persyaratan", $("#id_data_persyaratan").val());
+formdata.append("no_pekerjaan", $("#no_pekerjaan").val());
+formdata.append('data_meta', JSON.stringify(result));
+
+jQuery.ajax({
+url: "<?php echo base_url('User2/simpan_persyaratan') ?>",
+type: "POST",
+data: formdata,
+processData: false,
+contentType: false,
+success: function (result) {
+var r = JSON.parse(result);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+refresh();
+$('#modal_upload').modal('hide');
+}
+
+});
 
 }
 
@@ -126,7 +210,7 @@ window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+
 
 }
 
-function persyaratan_tambahan(no_client,no_pekerjaan){
+function persyaratan_tambahan(no_client,no_pekerjaan,no_jenis_perizinan){
 var no_nama_dokumen = $(".persyaratan_tambahan option:selected").val();
 var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
@@ -134,7 +218,7 @@ var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
     
 type:"post",
-data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client,
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_jenis_dokumen="+no_jenis_perizinan,
 url:"<?php echo base_url('User2/tambah_persyaratan') ?>",
 success:function(data){
 var r = JSON.parse(data);
