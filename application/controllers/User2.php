@@ -77,7 +77,7 @@ $no_pekerjaan = str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
 $data_client = array(
 'no_client'                 => "C_".$no_client,    
 'jenis_client'              => ucwords($data['jenis_client']),    
-'nama_client'               => ucwords($data['badan_hukum']),
+'nama_client'               => strtoupper($data['badan_hukum']),
 'alamat_client'             => ucwords($data['alamat_badan_hukum']),    
 'tanggal_daftar'            => date('d/m/Y H:i:s'),    
 'pembuat_client'            => $this->session->userdata('nama_lengkap'),    
@@ -117,7 +117,9 @@ $this->db->insert('data_persyaratan_pekerjaan',$syarat);
 }
 
 
+if(!file_exists("berkas/"."Dok".$no_client)){
 mkdir("berkas/"."Dok".$no_client,0777);
+}
 
 $keterangan = $this->session->userdata('nama_lengkap')." Membuat client ".$data['badan_hukum']." dan pekerjaan ".$data['jenis_akta'] ;
 $this->histori($keterangan);
@@ -387,7 +389,7 @@ echo'<div class="card p-2 m-1">
 </div>';
 }
 }else{
-echo "<h5 class='text-center mt-5'>Belum terdafat file yang dilampirkan.<br>"
+echo "<h5 class='text-center mt-5'>Belum terdapat syarat yang dilampirkan.<br>"
     . "<span class='fa fa-3x fa-folder-open'></span>"
     . "</h5>";    
 }
@@ -915,6 +917,18 @@ $this->load->view('user2/V_riwayat_pekerjaan');
 
 public function json_data_riwayat(){
 echo $this->M_user2->json_data_riwayat();       
+}
+
+public function json_data_berkas_client($no_client){
+echo $this->M_user2->json_data_berkas_client($no_client);       
+}
+
+public function lihat_berkas_client(){    
+    
+$data_client = $this->M_user2->data_client_where($this->uri->segment(3));    
+    
+$this->load->view('umum/V_header');
+$this->load->view('user2/V_lihat_berkas_client',['data_client'=>$data_client]);   
 }
 
 }

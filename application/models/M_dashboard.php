@@ -14,6 +14,25 @@ $query = $this->db->get_where('user',array('id_user'=>$id_user));
 return $query;
 
 }
+public function data_client_where($no_client){
+$query = $this->db->get_where('data_client',array('no_client'=> base64_decode($no_client)));
+return $query;
+}
+
+function json_data_berkas_client($no_client){
+    
+$this->datatables->select('id_data_berkas,'
+.'data_berkas.no_client as no_client,'
+.'data_berkas.nama_file as nama_file,'
+.'data_berkas.status_berkas as status_berkas,'
+.'data_berkas.pengupload as pengupload,'
+);
+$this->datatables->from('data_berkas');
+$this->datatables->where('no_client', base64_decode($no_client));
+$this->datatables->where('pengupload !=',NULL );
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_berkas('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_data_berkas');
+return $this->datatables->generate();
+}
 
 function json_data_riwayat(){
     
@@ -199,10 +218,12 @@ $this->datatables->select('id_data_pekerjaan,'
 .'data_pekerjaan.pembuat_pekerjaan as pembuat_pekerjaan,'
 .'data_pekerjaan.tanggal_dibuat as tanggal_dibuat,'
 .'data_client.nama_client as nama_client,'
+.'data_client.no_client as no_client,'
 );
 $this->datatables->from('data_pekerjaan');
 $this->datatables->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
-$this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Berkas</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
+$this->datatables->where('data_pekerjaan.status_pekerjaan','Proses');
+$this->datatables->add_column('view','<a href ="'.base_url('Dashboard/lihat_berkas_client/$1').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Berkas</button></a>', 'base64_encode(no_client)');
 return $this->datatables->generate();
 }
 

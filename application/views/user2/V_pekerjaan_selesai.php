@@ -4,18 +4,17 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
 <div class="container-fluid">
- <div class="card-header mt-2 text-center">
-        Pekerjaan yang sedang diselesaikan
-    </div>    
+<div class="card-header mt-2 text-center">
+Daftar pekerjaan yang sudah anda kerjakan
+</div>    
 <div class="row p-2">
 <div class="col ">    
-<table style="width:100%;" id="data_pekerjaan_selesai" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
+<table style="width:100%;" id="data_pekerjaan_selesai" class="table text-center table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
 <tr role="row">
 <th  align="center" aria-controls="datatable-fixed-header"  >No</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >no pekerjaan</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >nama client</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >jenis pekerjaan</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >pembuat Pekerjaan</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >tanggal selesai</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >aksi</th>
 </thead>
@@ -28,6 +27,20 @@
 </div>  
 </div>
 <script type="text/javascript">
+
+function opsi_menu(id_data_pekerjaan,no_client){
+var menu = $(".opsi_menu"+id_data_pekerjaan +" option:selected").val();
+if(menu == 1){
+window.location.href="<?php echo base_url('User2/lihat_berkas_client/') ?>"+no_client;
+}else if(menu == 2){
+proses_ulang();    
+}
+    
+}
+
+
+    
+    
 $(document).ready(function() {
 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
 {
@@ -72,7 +85,6 @@ columns: [
 {"data": "no_pekerjaan"},
 {"data": "nama_client"},
 {"data": "jenis_perizinan"},
-{"data": "pembuat_pekerjaan"},
 {"data": "tanggal_selesai"},
 {"data": "view"}
 

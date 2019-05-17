@@ -647,12 +647,15 @@ $this->load->view('dashboard/V_data_berkas');
 }
 
 
+public function json_data_berkas_client($no_client){
+echo $this->M_dashboard->json_data_berkas_client($no_client);       
+}
+
 public function lihat_berkas_client(){
-$no_client  = base64_decode($this->uri->segment(3));
-$query = $this->db->get_where('data_berkas',array('no_client'=>$no_client));
+$data_client = $this->M_dashboard->data_client_where($this->uri->segment(3));    
 
 $this->load->view('umum/V_header');
-$this->load->view('dashboard/V_lihat_berkas_client',['query'=>$query]);
+$this->load->view('dashboard/V_lihat_berkas_client',['data_client'=>$data_client]);
 
 }
 

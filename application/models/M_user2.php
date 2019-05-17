@@ -43,8 +43,25 @@ public function data_client(){
 $query = $this->db->get('data_client');  
 return $query;
 }
+public function data_client_where($no_client){
+$query = $this->db->get_where('data_client',array('no_client'=> base64_decode($no_client)));
+return $query;
+}
 
-
+function json_data_berkas_client($no_client){
+    
+$this->datatables->select('id_data_berkas,'
+.'data_berkas.no_client as no_client,'
+.'data_berkas.nama_file as nama_file,'
+.'data_berkas.status_berkas as status_berkas,'
+.'data_berkas.pengupload as pengupload,'
+);
+$this->datatables->from('data_berkas');
+$this->datatables->where('no_client', base64_decode($no_client));
+$this->datatables->where('pengupload !=',NULL );
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_berkas('$1'); > Download lampiran <i class='fa fa-download'></i></button>",'id_data_berkas');
+return $this->datatables->generate();
+}
 
 function json_data_perorangan(){
     
@@ -78,17 +95,27 @@ $this->datatables->select('id_data_pekerjaan,'
 .'data_pekerjaan.id_data_pekerjaan as id_data_pekerjaan,'
 .'data_pekerjaan.no_pekerjaan as no_pekerjaan,'
 .'data_pekerjaan.jenis_perizinan as jenis_perizinan,'
-.'data_pekerjaan.pembuat_pekerjaan as pembuat_pekerjaan,'
 .'data_client.nama_client as nama_client,'
+.'data_client.no_client as no_client,'
 .'data_pekerjaan.tanggal_selesai as tanggal_selesai,'
 );
+
 $this->datatables->from('data_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->datatables->where('data_pekerjaan.no_user',$this->session->userdata('no_user'));
 $this->datatables->where('data_pekerjaan.status_pekerjaan','Selesai');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success '  onclick=download_lampiran('$1'); >Lihat File <i class='fa fa-eye'></i></button>",'id_perorangan');
+$this->datatables->add_column('view',""
+        . "<select onchange=opsi_menu('$1','$2') class='form-control opsi_menu$1'>"
+        . "<option></option>"
+        . "<option value='1'>Lihat berkas client</option>"
+        . "<option value='2'>proses ulang</option>"
+        . "</select>"
+        . "",'id_data_pekerjaan, base64_encode(no_client)');
+
 return $this->datatables->generate();
 }
+
+
 
 public function data_pekerjaan_histori($no_pekerjaan){
 $this->db->select('*');
