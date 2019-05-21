@@ -162,7 +162,7 @@ if($this->input->post()){
 $input = $this->input->post();
 
 $data = $this->db->get_where('data_progress_pekerjaan',array('no_pekerjaan'=> base64_decode($input['no_pekerjaan'])));
-echo "<table class='table table-striped table-hover table-sm'>"
+echo "<table class='table table-striped table-bordered text-center table-hover table-sm'>"
 . "<tr>"
 . "<th>Tanggal </th>"
 . "<th>laporan</th>"

@@ -11,7 +11,7 @@
 <a class="nav-link active" data-toggle="tab" href="#jenis">Pengaturan Jenis Pekerjaan <i class="fas fa-cogs"></i></a>
 </li>
 <li class="nav-item ml-1">
-<a class="nav-link " data-toggle="tab" href="#dokumen">Pengaturan Nama Dokumen <i class="fas fa-cogs"></i></a>
+<a class="nav-link " data-toggle="tab" href="#dokumen">Pengaturan Nama Persyaratan <i class="fas fa-cogs"></i></a>
 </li>
 <li class="nav-item ml-1">
 <a class="nav-link" data-toggle="tab" href="#aplikasi">Pengaturan User <i class="fas fa-cogs"></i></a>

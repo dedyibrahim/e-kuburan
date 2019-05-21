@@ -4,15 +4,14 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user1'); ?>
 <div class="container-fluid ">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Daftar pekerjaan proses</h4>
-</div>
+<div class="card-header mt-2 text-center ">
+<h5 align="center">Data pekerjaan diproses
+</h5>
 </div>
 
-<div class="row ">
+<div class="row mt-2">
 <div class="col">    
-<table class="table table-sm table-striped table-hover">
+<table class="table table-sm table-bordered table-striped table-hover">
 <tr>
 <th>Nama Client</th>
 <th>Pembuat Client</th>

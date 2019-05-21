@@ -4,12 +4,12 @@
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user1'); ?>
 <div class="container-fluid">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
-<h4 align="center">Daftar pekerjaan yang telah diselesaikan</h4>
+<div class="card-header mt-2 text-center ">
+<h5 align="center">Data pekerjaan selesai dikerjakan
+</h5>
 </div>
-</div>
-<div class="row ">
+    
+<div class="row mt-2 ">
     <div class="col">
 <table style="width:100%;" id="data_selesai" class="table table-striped table-condensed table-xs table-bordered  table-hover table-sm"><thead>
 <th align="center" aria-controls="datatable-fixed-header"  >No</th>

@@ -3,18 +3,17 @@
 <?php  $this->load->view('umum/V_sidebar_user1'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user1'); ?>
-<?php $static = $data->row_array(); ?>
+
 <div class="container-fluid ">
-<div class="row  p-1 m-1">
-<div class="col rounded-top p-3" style="background-color: #dcdcdc; ">
+<div class="card-header mt-2 text-center ">
     <h4 align="center">Status Pekerjaan <?php echo $static['nama_client'] ?></h4>
-</div>
-</div>
-<div class="row p-1 m-1">
+</div>  
+
+    <div class="row p-1 m-1">
 <div class="container-fluid">
 <div class="row">
 <div class="col">
-    <table class="table table-condensed table-striped ">
+    <table class="table table-sm table-bordered table-condensed table-striped ">
         <tr>
             <th class="text-center" colspan="2">Jenis Pekerjaan</th>   
             <th class="text-center" colspan="2">Target selesai</th>   
