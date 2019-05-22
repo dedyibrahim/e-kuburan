@@ -23,7 +23,7 @@
 </tr>
 <?php foreach ($data->result_array() as $d) { ?>
 <tr>
-<td><a href="<?php echo base_url('User1/lihat_status_pekerjaan/'. base64_encode($d['no_pekerjaan'])) ?>"><span class="badge p-2 badge-primary"><?php echo $d['jenis_perizinan']  ?></span></a></td>
+<td><?php echo $d['jenis_perizinan']  ?></td>
 <td><?php echo $d['nama_client']  ?></td>
 <td>
  <select disabled="" onchange="alihkan_tugas('<?php echo base64_encode($d['no_pekerjaan']) ?>','<?php echo $d['id_data_pekerjaan'] ?>');" class="form-control pekerjaan<?php echo $d['id_data_pekerjaan'] ?>">    
@@ -41,6 +41,7 @@ echo "<option value=".$user['no_user'].">".$user['nama_lengkap']."</option>";
 <option></option>
 <option value="1">Lihat Laporan</option>
 <option value="2">Alihkan Pekerjaan</option>
+<option value="3">Lihat berkas </option>
 </select>    
 </td>
 
@@ -79,6 +80,8 @@ lihat_laporan_pekerjaan(no_pekerjaan);
 $('.pekerjaan'+id_data_pekerjaan).attr("disabled",true);
 }else if (val == 2){
 $('.pekerjaan'+id_data_pekerjaan).removeAttr("disabled");
+}else if(val == 3){
+window.location.href ="<?php echo base_url('User1/berkas_dikerjakan/') ?>"+no_pekerjaan;    
 }
 $(".data_option"+id_data_pekerjaan).val("");
 

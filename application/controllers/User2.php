@@ -595,7 +595,7 @@ if($this->input->post()){
 $input = $this->input->post();
 
 $data = $this->db->get_where('data_progress_perizinan',array('id_data_berkas'=>$input['id_data_berkas']));
-echo "<table class='table table-striped table-hover table-sm'>"
+echo "<table class='table table-bordered table-striped table-hover table-sm'>"
 . "<tr>"
 . "<th>Tanggal </th>"
 . "<th>laporan</th>"
