@@ -10,6 +10,12 @@ Pekejaan masuk
 
 <div class="row">    
 <div class="col mt-2">
+<?php if($query->num_rows() == 0){ ?>    
+    <h5 class="text-center">Pekerjaan yang baru masuk belum tersedia<br>
+        <span class="fa fa-folder-open fa-3x"></span>
+    </h5>
+    
+<?php } else { ?>
 <table class="table table-hover table-bordered table-sm text-center table-striped ">
 <tr>
 <th>Nama client</th>
@@ -17,7 +23,9 @@ Pekejaan masuk
 <th class="text-center">Target Selesai</th>
 <th>Aksi</th>
 </tr>
-<?php foreach ($query->result_array() as $data){ ?> 
+<?php foreach ($query->result_array() as $data){ ?>
+
+
 <tr>
 <td id='nama_client<?php echo $data['id_data_pekerjaan'] ?>'><?php echo $data['nama_client'] ?></td>
 <td><?php echo $data['jenis_perizinan'] ?></td>
@@ -31,7 +39,8 @@ Pekejaan masuk
 </td>
 </tr>
 <?php } ?>
-</table>        
+</table>
+<?php } ?>    
 </div>
 </div>
 </div>    

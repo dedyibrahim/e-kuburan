@@ -90,7 +90,7 @@ Data berkas <br>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">total data berkas<div class="float-right">
     <?php 
-$query3 = $this->db->get('data_berkas')->num_rows();
+$query3 = $this->db->get_where('data_berkas',array('pengupload !='=>NULL))->num_rows();
 
 echo $query3;
 ?>

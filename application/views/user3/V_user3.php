@@ -9,6 +9,12 @@ Data perizinan yang perlu dikerjakan
 </div>
 
 <div class="row p-1  m-1">
+    <div class="col">    
+<?php if($data_tugas->num_rows() == 0){ ?>
+    <h5 class="text-center">Data perizinan yang perlu dikerjakan belum tersedia <br>
+        <span class="fa fa-sticky-note fa-3x"></span>
+    </h5>
+ <?php } else{ ?> 
 <table class="table table-hover table-sm table-bordered text-center table-striped ">
 <tr>
 <th>Nama client</th>
@@ -37,8 +43,11 @@ Data perizinan yang perlu dikerjakan
 
 <?php } ?>
 </table>
+<?php } ?>
+    
 </div>
 
+</div>
 
 <!-------------modal--------------------->
 <div class="modal fade" id="modal_proses" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">

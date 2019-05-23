@@ -13,7 +13,7 @@ Lengkapi persyaratan dokumen <?php echo $static['nama_client'] ?>
 <div class="container">
 <div class="row">
 <div class="col">
-<div class="card-header text-center" >Data minimal persyaratan </div>
+    <div class="card-header text-center" > Minimal persyaratan <br> <?php echo $static['jenis_perizinan'] ?> </div>
 
 <table class="table table-sm table-bordered table-striped table-condensed">
 <tr>

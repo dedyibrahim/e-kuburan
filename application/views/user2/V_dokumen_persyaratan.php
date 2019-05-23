@@ -2,8 +2,8 @@
 <div class="row">
 <div class="col mt-2">
 <?php  $static = $data->row_array(); ?>
-<div class="card-header text-center" >Data minimal persyaratan </div>
-<table class="table table-sm table-bordered table-striped table-condensed">
+    <div class="card-header text-center" >Minimal persyaratan <br> <?php echo $static['jenis_perizinan'] ?></div>
+<table class="table table-sm mt-2 table-bordered table-striped table-condensed">
 <tr>
 <th>Nama Persyaratan minimal</th>
 <th class="text-center">Aksi</th>

@@ -9,6 +9,13 @@
     </div>
 <div class="row">    
 <div class="col mt-2">
+<?php if($query->num_rows() == 0){ ?>    
+    <h5 class="text-center">Pekerjaan yang sedang diproses belum tersedia<br>
+        <span class="fa fa-folder-open fa-3x"></span>
+    </h5>
+    
+<?php } else { ?>    
+    
 <table class="table table-hover table-sm text-center table-striped table-bordered">
 <tr>
 <th>Nama client</th>
@@ -33,6 +40,7 @@
 </tr>
 <?php } ?>
  </table>        
+<?php } ?>
 </div>
 </div>
 </div>    

@@ -33,13 +33,48 @@ var menu = $(".opsi_menu"+id_data_pekerjaan +" option:selected").val();
 if(menu == 1){
 window.location.href="<?php echo base_url('User2/lihat_berkas_client/') ?>"+no_client;
 }else if(menu == 2){
-proses_ulang();    
+proses_ulang(id_data_pekerjaan);    
 }
     
 }
 
 
-    
+function proses_ulang(id_data_pekerjaan){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&id_data_pekerjaan="+id_data_pekerjaan,
+url:"<?php echo base_url('User2/proses_ulang') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+}
+});
+refresh_table();
+
+}
+
+
+function refresh_table(){
+var table = $('#data_pekerjaan_selesai').DataTable();
+table.ajax.reload( function ( json ) {
+$('#data_pekerjaan_selesai').val( json.lastInput );
+});
+
+}
+
     
 $(document).ready(function() {
 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
