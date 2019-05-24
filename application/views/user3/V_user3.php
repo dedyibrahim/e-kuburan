@@ -8,7 +8,7 @@
 Data perizinan yang perlu dikerjakan
 </div>
 
-<div class="row p-1  m-1">
+<div class="row ">
     <div class="col">    
 <?php if($data_tugas->num_rows() == 0){ ?>
     <h5 class="text-center">Data perizinan yang perlu dikerjakan belum tersedia <br>
