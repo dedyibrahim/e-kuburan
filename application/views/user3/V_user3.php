@@ -7,14 +7,13 @@
 <div class="card-header mt-2 mb-2 text-center">
 Data perizinan yang perlu dikerjakan
 </div>
-
 <div class="row ">
-    <div class="col">    
+<div class="col">    
 <?php if($data_tugas->num_rows() == 0){ ?>
-    <h5 class="text-center">Data perizinan yang perlu dikerjakan belum tersedia <br>
-        <span class="fa fa-sticky-note fa-3x"></span>
-    </h5>
- <?php } else{ ?> 
+<h5 class="text-center">Data perizinan yang perlu dikerjakan belum tersedia <br>
+<span class="fa fa-sticky-note fa-3x"></span>
+</h5>
+<?php } else{ ?> 
 <table class="table table-hover table-sm table-bordered text-center table-striped ">
 <tr>
 <th>Nama client</th>
@@ -44,7 +43,7 @@ Data perizinan yang perlu dikerjakan
 <?php } ?>
 </table>
 <?php } ?>
-    
+
 </div>
 
 </div>
@@ -85,7 +84,7 @@ Data perizinan yang perlu dikerjakan
 <div class="modal-dialog modal-md" role="document">
 <div class="modal-content ">
 <div class="modal-header">
-    <h6>Penolakan tugas <span class="nama_tugas"></span></h6>
+<h6>Penolakan tugas <span class="nama_tugas"></span></h6>
 </div>
 <div class="modal-body ">
 <input type="hidden" class="id_data_berkas">    
@@ -95,6 +94,7 @@ Data perizinan yang perlu dikerjakan
 <div class="modal-footer">
 <button class="btn btn-sm btn-success simpan_penolakan">Simpan Penolakan</button>
 </div>    
+</div>
 </div>
 </div>
 </div>
@@ -158,7 +158,7 @@ title: "Alasan penolakan belum diberikan"
 
 }
 });    
-    
+
 });
 
 
@@ -259,11 +259,12 @@ function download(id_data_berkas){
 window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
 }
 
-
 </script>    
 <script>
 $(function() {
 $("input[name='target_kelar']").datepicker({ minDate:0});
 });
 </script>
+
+
 </html>

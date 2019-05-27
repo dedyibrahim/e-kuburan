@@ -357,4 +357,28 @@ $data = array(
 $this->db->insert('data_histori_pekerjaan',$data);
 }
 
+public function data_pekerjaan_baru(){
+         $this->db->select('data_berkas.nama_file,'
+                 . 'data_berkas.id_data_berkas');
+$query = $this->db->get_where('data_berkas',array('status'=>'Masuk','no_pengurus'=>$this->session->userdata('no_user'),'status_lihat'=>NULL))->result();
+echo json_encode($query);
+    
+}
+public function dilihat(){
+if($this->input->post()){
+$input = $this->input->post();
+    
+$data = array(
+'status_lihat'=>'Dilihat'
+);
+
+$this->db->update('data_berkas',$data,array('id_data_berkas'=>$input['id_data_berkas']));
+
+}else{
+redirect(404);    
+}
+
+}
+
+
 }

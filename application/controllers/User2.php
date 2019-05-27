@@ -296,8 +296,19 @@ echo "<input type='hidden' id='no_pekerjaan' class='form-control' value=".$input
 if(is_array($data_meta->row_array())){
     $h=1;
     foreach ($data_meta->result_array() as $d){
-    echo "<label>".$d['nama_meta']."</label>"
+    
+      
+      if($d['nama_meta'] == 'Informasi'){
+      
+          
+      echo "<label>".$d['nama_meta']."</label>"
+         ."<textarea id='informasi' class='form-control informasi'></textarea>";
+      }else{
+      echo "<label>".$d['nama_meta']."</label>"
          ."<input type='text' id='data_meta".$h++."' name='".$d['nama_meta']."' class='form-control meta' required='' accept='text/plain' >";       
+     
+      }
+      
     }
 }
 

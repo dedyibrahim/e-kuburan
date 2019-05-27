@@ -127,41 +127,62 @@ Out <br>
 </div></a>	
 </div>	
 </div>
-<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
-  <!-- Position it -->
-  <div style="position: absolute; top: 0; right: 0;">
-
-    <!-- Then put toasts within -->
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="mr-auto">Bootstrap</strong>
-        <small class="text-muted">just now</small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-        See? Just like this.
-      </div>
-    </div>
-
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="mr-auto">Bootstrap</strong>
-        <small class="text-muted">2 seconds ago</small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-        Heads up, toasts will stack automatically
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<script type="text/javascript">  
+
+
+<body onload="data_pekerjaan();"></body>
+
+<script type="text/javascript">
+
+function data_pekerjaan(){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token,
+url:"<?php echo base_url('User3/data_pekerjaan_baru') ?>",
+success:function(data){
+
+var z = JSON.parse(data);
+
+for(i=0; i<z.length; i++){
+toastr.success(z[i].nama_file+("<br><button class='btn btn-sm  btn-block btn-warning' onclick='dilihat("+z[i].id_data_berkas+");'>Ok saya mengetahui</button>"), 'Pekerjaan baru', {
+ "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "preventDuplicates": false,
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "timeOut": "0",
+  "extendedTimeOut": "0",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+  });    
+}    
+
+
+}    
+});
+}
+function dilihat(id_data_berkas){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&id_data_berkas="+id_data_berkas,
+url:"<?php echo base_url('User3/dilihat') ?>",
+success:function(data){
+
+}
+});
+
+}
+
+$('.toast').toast('show')   
 $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");

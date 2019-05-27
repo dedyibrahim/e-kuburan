@@ -60,25 +60,22 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 </div>
 
 <div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content ">
 <div class="modal-header">
 <h6 class="modal-title" id="exampleModalLabel">Upload Persyaratan <span class="i"><span></h6>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
 </div>
-<!---<form action="<?php echo base_url('User2/simpan_persyaratan') ?>" method="post" enctype="multipart/form-data" >  
--->
+
 <div class="modal-body form_persyaratan">
 
     
 </div>
-<!--</form>-->
 </div>
 </div>
 </div>
-
 
 <script type="text/javascript">
 
@@ -253,6 +250,38 @@ url:"<?php echo base_url('User2/form_persyaratan') ?>",
 success:function(data){
 $('.form_persyaratan').html(data);    
 $('#modal_upload').modal('show');
+
+ if ($('#informasi').is(':empty')){
+ CKEDITOR.replace('informasi', {
+      toolbarGroups: [{
+          "name": "basicstyles",
+          "groups": ["basicstyles"]
+        },
+        {
+          "name": "links",
+          "groups": ["links"]
+        },
+        {
+          "name": "paragraph",
+          "groups": ["list", "blocks"]
+        },
+        {
+          "name": "document",
+          "groups": ["mode"]
+        },
+        {
+          "name": "insert",
+          "groups": ["insert"]
+        },
+        {
+          "name": "styles",
+          "groups": ["styles"]
+        }
+        
+      ],
+      removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+    });
+}
 
 }    
 });
