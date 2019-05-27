@@ -81,7 +81,7 @@ Pilihan
 <div class="row">
     
     
-<div class="col-md-4 "><a href="<?php echo base_url('User2/pekerjaan_antrian') ?>">
+<div class="col-md-4 "><a   style="text-decoration:none;" href="<?php echo base_url('User2/pekerjaan_antrian') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="	fa fa-hourglass-start float-right fa-3x sticky-top"></span>
@@ -96,7 +96,7 @@ In <br>
 </div>	
 
 
-<div class="col-md-4  "><a href="<?php echo base_url('User2/pekerjaan_proses') ?>">
+<div class="col-md-4  "><a  style="text-decoration:none;" href="<?php echo base_url('User2/pekerjaan_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-hourglass-half float-right fa-3x sticky-top"></span>
@@ -112,7 +112,7 @@ Proses <br>
 </div>	</a>
 </div>
 
-<div class="col-md-4 "><a href="<?php echo base_url('User2/pekerjaan_selesai') ?>">
+<div class="col-md-4 "><a  style="text-decoration:none;" href="<?php echo base_url('User2/pekerjaan_selesai') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-hourglass-end float-right fa-3x sticky-top"></span>

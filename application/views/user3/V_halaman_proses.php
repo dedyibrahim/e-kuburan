@@ -8,7 +8,8 @@
 Data perizinan yang perlu diproses
 </div>
     
-<div class="row p-1 m-1">
+<div class="row">
+    <div class="col">    
 <table class="table table-hover table-striped table-sm table-bordered text-center">
 <tr>
 <th>Nama client</th>
@@ -37,6 +38,7 @@ Data perizinan yang perlu diproses
 
 <?php } ?>
 </table>
+</div>
 </div>
 </div>
 

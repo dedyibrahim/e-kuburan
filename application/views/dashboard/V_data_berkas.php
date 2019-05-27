@@ -85,6 +85,9 @@ $('td:eq(0)', row).html(index);
 }
 });
 });
+function download(id_data_berkas){
+window.location.href="<?php echo base_url('Dashboard/download_berkas/') ?>"+id_data_berkas
+}
 
 
 </script>

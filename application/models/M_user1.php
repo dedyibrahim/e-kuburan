@@ -11,6 +11,18 @@ $query = $this->db->get();
 return $query;
 }
 
+
+function data_persyaratan_pekerjaan_where($no_pekerjaan){
+$this->db->select('*');
+$this->db->from('data_persyaratan_pekerjaan');
+$this->db->join('data_client', 'data_client.no_client = data_persyaratan_pekerjaan.no_client');
+$this->db->where('data_persyaratan_pekerjaan.no_pekerjaan_syarat',$no_pekerjaan);
+$query = $this->db->get();    
+
+return $query;
+}
+
+
 function json_data_pekerjaan_selesai(){
     
 $this->datatables->select('id_data_pekerjaan,'

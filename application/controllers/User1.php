@@ -23,6 +23,17 @@ $this->load->view('umum/V_header');
 $this->load->view('user1/V_user1',['data_tugas'=>$data_tugas,'data_user'=>$data_user]);
     
 }
+
+public function download_lampiran($id_data_berkas){
+$data_berkas = $this->db->get_where('data_berkas',array('id_data_berkas'=> base64_decode($id_data_berkas)));
+
+foreach ($data_berkas->result_array() as $data){
+$file_path = "./berkas/".$data['nama_folder']."/".$data['nama_file']; 
+$info = new SplFileInfo($data['nama_file']);
+force_download($data['nama_berkas'].".".$info->getExtension(), file_get_contents($file_path));
+}
+
+}
  
 public function keluar(){
 $this->session->sess_destroy();
@@ -92,6 +103,42 @@ $this->load->view('umum/V_header');
 $this->load->view('user1/V_lihat_karyawan',['karyawan'=>$karyawan]);    
 }
 
+public function  data_lampiran_persyaratan(){
+if($this->input->post()){
+$input = $this->input->post();
+         $this->db->select('data_berkas.nama_file,'
+                 . 'data_berkas.no_nama_dokumen,'
+                 . 'data_berkas.id_data_berkas,'
+                 . 'data_berkas.no_pekerjaan');
+$query = $this->db->get_where('data_berkas',array('no_pekerjaan'=> base64_decode($input['no_pekerjaan']),'no_nama_dokumen'=> base64_decode($input['no_nama_dokumen'])));
+if($query->num_rows() == 0){
+
+echo "<h5 class='text-center'>Belum terdapat lampiran untuk jenis dokumen tersebut <br>"
+    . ""
+        . "<span class='fa fa-folder-open fa-3x'></span>"
+        . "<h5>"
+    . "";
+    
+}else{
+echo "<table class='table mt-2 table-sm table-hover text-center table-striped table-bordered'>"
+. "<tr>"
+        . "<th>Nama dokumen</th>"
+        . "<th>Aksi</th>"       
+        . "</tr>";
+foreach ($query->result_array() as $d){
+echo"<tr>"
+    . "<td>".$d['nama_file']."</td>"
+    . "<td><button onclick=download('".base64_encode($d['id_data_berkas'])."'); class='btn btn-success btn-sm'><span class='fa fa-download'></span></button></td>"
+    . "</tr>";    
+}
+echo "</table>";
+}
+
+}else{
+redirect(404);    
+}    
+}
+
 public function lihat_pekerjaan(){
 $no_user = base64_decode($this->uri->segment(3));
 $proses  = base64_decode($this->uri->segment(4));
@@ -124,37 +171,12 @@ $this->load->view('user1/V_lihat_pekerjaan_level3',['data'=>$data]);
 redirect(404);    
 }
 }
-public function lihat_status_pekerjaan(){
-$this->db->select('*');
-$this->db->from('data_pekerjaan');
-$this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
-$this->db->join('data_berkas', 'data_berkas.no_pekerjaan = data_pekerjaan.no_pekerjaan');
-$this->db->where(array('data_berkas.no_pekerjaan'=> base64_decode($this->uri->segment(3)),'data_berkas.status_berkas'=> 'Perizinan'));
-$data = $this->db->get();
-    
+public function berkas_dikerjakan(){
+$no_pekerjaan               = base64_decode($this->uri->segment(3));
+$data_persyaratan_pekerjaan = $this->M_user1->data_persyaratan_pekerjaan_where($no_pekerjaan);
+        
 $this->load->view('umum/V_header');
-$this->load->view('user1/V_lihat_status_pekerjaan',['data'=>$data]);        
-}
-public function lihat_laporan(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$data = $this->db->get_where('data_progress_perizinan',array('id_data_berkas'=>$input['id_data_berkas']));
-echo "<table class='table table-striped table-hover table-sm'>"
-. "<tr>"
-. "<th>Tanggal </th>"
-. "<th>laporan</th>"
-. "</tr>";
-foreach ($data->result_array() as $d){
-echo "<tr>"
-    . "<td>".$d['waktu']."</td>"
-    . "<td>".$d['laporan']."</td>"
-    . "</tr>";    
-}
-echo "</table>";    
-}else{
-redirect(404);    
-}    
+$this->load->view('user1/V_lihat_berkas_dikerjakan',['data_persyaratan_pekerjaan'=>$data_persyaratan_pekerjaan]);        
 }
 
 public function lihat_laporan_pekerjaan(){
@@ -162,7 +184,7 @@ if($this->input->post()){
 $input = $this->input->post();
 
 $data = $this->db->get_where('data_progress_pekerjaan',array('no_pekerjaan'=> base64_decode($input['no_pekerjaan'])));
-echo "<table class='table table-striped table-hover table-sm'>"
+echo "<table class='table table-striped table-bordered text-center table-hover table-sm'>"
 . "<tr>"
 . "<th>Tanggal </th>"
 . "<th>laporan</th>"
@@ -308,6 +330,35 @@ $this->load->view('user1/V_riwayat_pekerjaan');
 
 public function json_data_riwayat(){
 echo $this->M_user1->json_data_riwayat();       
+}
+
+
+public function lihat_laporan(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data = $this->db->get_where('data_progress_perizinan',array('id_data_berkas'=>$input['id_data_berkas']));
+if($data->num_rows() == 0){
+echo "<h5 class='text-center'>Belum ada laporan yang dimasukan<br>"
+    . "<span class='fa fa-list-alt fa-3x'></span></h5>";
+    
+}else{echo "<table class='table table-bordered table-striped table-hover table-sm'>"
+. "<tr>"
+. "<th>Tanggal </th>"
+. "<th>laporan</th>"
+. "</tr>";
+foreach ($data->result_array() as $d){
+echo "<tr>"
+    . "<td>".$d['waktu']."</td>"
+    . "<td>".$d['laporan']."</td>"
+    . "</tr>";    
+}
+echo "</table>";    
+
+}
+}else{
+redirect(404);    
+}    
 }
 
 }

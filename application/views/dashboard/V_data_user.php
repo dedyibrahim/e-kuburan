@@ -17,7 +17,7 @@ Seluruh data user
 <th  align="center" aria-controls="datatable-fixed-header"  >username</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >nama lengkap</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >email</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >tanggal dibuat</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >No HP</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >level</th>
 </thead>
 <tbody align="center">

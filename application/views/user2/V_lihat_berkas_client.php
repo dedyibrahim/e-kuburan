@@ -6,9 +6,9 @@
 <?php $static = $data_client->row_array(); ?>   
 <div class="container-fluid mt-2"></div>
 <div class="col">
-<div class="card-header text-center" >Data seluruh berkas <?php echo $static['nama_client'] ?></div>
+<div class="card-header  text-center" >Data seluruh berkas <?php echo $static['nama_client'] ?></div>
 
-<table style="width:100%;" id="data_berkas" class="table text-center table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
+<table style="width:100%;" id="data_berkas" class="table  text-center   table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
 <tr role="row">
 <th  align="center" aria-controls="datatable-fixed-header"  >No</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >no client</th>

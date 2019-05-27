@@ -81,7 +81,7 @@ Pilihan
 
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-3"><a href="<?php echo base_url('Dashboard/data_berkas') ?>">
+<div class="col-md-3"><a   style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_berkas') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-file-word float-right fa-3x sticky-top"></span>
@@ -90,14 +90,14 @@ Data berkas <br>
 </div>
 <div class="footer p-2" style="background-color:	#1ecee7;">total data berkas<div class="float-right">
     <?php 
-$query3 = $this->db->get('data_berkas')->num_rows();
+$query3 = $this->db->get_where('data_berkas',array('pengupload !='=>NULL))->num_rows();
 
 echo $query3;
 ?>
 </div></div>
 </div></a>	
 </div>	
-<div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_client') ?>">
+<div class="col-md-3 "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_client') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-user-tie float-right fa-3x sticky-top"></span>
@@ -115,7 +115,7 @@ echo $query1;
 </div>	
 
 
-<div class="col-md-3  "><a href="<?php echo base_url('Dashboard/pekerjaan_proses') ?>">
+<div class="col-md-3  "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/pekerjaan_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-exchange-alt float-right fa-3x sticky-top"></span>
@@ -133,7 +133,7 @@ echo $query;
 </div>	</a>
 </div>
 
-<div class="col-md-3 "><a href="<?php echo base_url('Dashboard/data_user') ?>">
+<div class="col-md-3 "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_user') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-users float-right fa-3x sticky-top"></span>

@@ -296,8 +296,19 @@ echo "<input type='hidden' id='no_pekerjaan' class='form-control' value=".$input
 if(is_array($data_meta->row_array())){
     $h=1;
     foreach ($data_meta->result_array() as $d){
-    echo "<label>".$d['nama_meta']."</label>"
+    
+      
+      if($d['nama_meta'] == 'Informasi'){
+      
+          
+      echo "<label>".$d['nama_meta']."</label>"
+         ."<textarea id='informasi' class='form-control informasi'></textarea>";
+      }else{
+      echo "<label>".$d['nama_meta']."</label>"
          ."<input type='text' id='data_meta".$h++."' name='".$d['nama_meta']."' class='form-control meta' required='' accept='text/plain' >";       
+     
+      }
+      
     }
 }
 
@@ -428,13 +439,13 @@ if($this->input->post()){
 $data      = $this->db->get_where('data_berkas',array('no_pekerjaan'=> base64_decode($this->input->post('no_pekerjaan')),'status_berkas'=>'Perizinan'));
 $data_user = $this->M_user2->data_user(); 
 echo "<div class='row'>"
-."<table class='table table-hover table-striped'>"
+."<table class='table table-bordered table-sm  table-hover table-striped'>"
 ."<tr>"
-."<td>Nama file</td>"
-."<td>Status file</td>"
-."<td>Target selesai</td>"
-."<td>Pengurus file </td>"
-."<td>Aksi </td>"
+."<th class='text-center'>Nama berkas persyaratan</th>"
+."<th class='text-center'>Status file</th>"
+."<th class='text-center'>Target selesai</th>"
+."<th class='text-center'>Pengurus file </th>"
+."<th class='text-center'>Aksi </th>"
 ."</tr>";
 foreach ($data->result_array() as $form){
 echo "<tr>";
@@ -444,7 +455,7 @@ echo  "<td>".$form['nama_file']." <button onclick=download_berkas('".$form['id_d
 echo  "<td>".$form['nama_file']."</td>";
 }
 
-echo "<td>".$form['status']." <button onclick=lihat_progress_perizinan('".$form['id_data_berkas']."') class='btn btn-success btn-sm float-right'><span class='fa fa-eye'></span></button></td>"
+echo "<td class='text-center'>".$form['status']." <button onclick=lihat_progress_perizinan('".$form['id_data_berkas']."') class='btn btn-success btn-sm '><span class='fa fa-eye'></span></button></td>"
 . "<td>".$form['target_kelar_perizinan']."</td>"
 . "<td>"
 ."<select onchange='tentukan_pengurus(".$form['id_data_berkas'].");' disabled class='form-control tentukan_pengurus".$form['id_data_berkas']."'>"
@@ -595,7 +606,11 @@ if($this->input->post()){
 $input = $this->input->post();
 
 $data = $this->db->get_where('data_progress_perizinan',array('id_data_berkas'=>$input['id_data_berkas']));
-echo "<table class='table table-striped table-hover table-sm'>"
+if($data->num_rows() == 0){
+echo "<h5 class='text-center'>Belum ada laporan yang dimasukan<br>"
+    . "<span class='fa fa-list-alt fa-3x'></span></h5>";
+    
+}else{echo "<table class='table table-bordered table-striped table-hover table-sm'>"
 . "<tr>"
 . "<th>Tanggal </th>"
 . "<th>laporan</th>"
@@ -607,6 +622,8 @@ echo "<tr>"
     . "</tr>";    
 }
 echo "</table>";    
+
+}
 }else{
 redirect(404);    
 }    
@@ -696,7 +713,7 @@ $data = array(
 'no_pekerjaan' =>$data_pekerjaan['no_pekerjaan'],
 'nama_folder'  =>$data_pekerjaan['nama_folder'],
 'no_client'    =>$data_pekerjaan['no_client'],
-'waktu'        =>date('Y/m/d  H:i:s'),
+'waktu'        =>date('Y/m/d'),
 'jenis'        =>$input['jenis'],    
 );
 
@@ -817,7 +834,7 @@ redirect(404);
 
 public function profil(){
 $no_user = $this->session->userdata('no_user');
-$data_user = $this->M_user3->data_user_where($no_user);
+$data_user = $this->M_user2->data_user_where($no_user);
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_profil',['data_user'=>$data_user]);
 
@@ -929,6 +946,29 @@ $data_client = $this->M_user2->data_client_where($this->uri->segment(3));
     
 $this->load->view('umum/V_header');
 $this->load->view('user2/V_lihat_berkas_client',['data_client'=>$data_client]);   
+}
+
+public function proses_ulang(){
+if($this->input->post()){
+$data = array(
+'status_pekerjaan' =>'Proses'    
+);
+$this->db->update('data_pekerjaan',$data,array('id_data_pekerjaan'=>$this->input->post('id_data_pekerjaan')));
+
+$status = array(
+"status"     => "success",
+"pesan"      => "Pekerjaan berhasil dimasukan kedalam tahap proses"    
+);
+echo json_encode($status);
+
+$d = $this->db->get_where('data_pekerjaan',array('id_data_pekerjaan'=>$this->input->post('id_data_pekerjaan')))->row_array();
+
+$keterangan = $this->session->userdata('nama_lengkap')." Memproses ulang pekerjaan ".$d['jenis_perizinan']  ;
+$this->histori($keterangan);
+
+}else{
+redirect(404);    
+}    
 }
 
 }

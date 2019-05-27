@@ -207,7 +207,8 @@ $this->datatables->select('id_data_berkas,'
 );
 $this->datatables->from('data_berkas');
 $this->datatables->join('data_client', 'data_client.no_client = data_berkas.no_client');
-$this->datatables->add_column('view','<a href ="'.base_url('Dashboard/proses_berkas/$2').'"><button class="btn btn-success btn-sm"><i class="fa fa-eye"></i>  Lihat Proses</button></a>', 'id_data_berkas,base64_encode(no_berkas)');
+$this->datatables->where('data_berkas.pengupload !=',NULL);
+$this->datatables->add_column('view','<button onclick="download($1)" class="btn btn-sm btn-success"><span class="fa fa-download"></span></button>', 'id_data_berkas,base64_encode(no_berkas)');
 return $this->datatables->generate();
 }
 function json_data_pekerjaan(){
