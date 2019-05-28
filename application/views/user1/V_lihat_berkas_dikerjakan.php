@@ -3,47 +3,87 @@
 <?php  $this->load->view('umum/V_sidebar_user1'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user1'); ?>
-<?php $static = $data_persyaratan_pekerjaan->row_array(); ?>
 <div class="container-fluid ">
 <div class="card-header mt-2 text-center ">
-<h5 align="center">Daftar Berkas <?php echo $static['nama_client'] ?> </h5>
+<h5 align="center">Berkas yang dilampirkan</h5>
 </div>
 <table class="table mt-2 table-sm table-hover table-striped table-bordered">
 <tr>
 <th>Nama persyaratan</th>
-<th class="text-center">Jumlah lampiran</th>
 <th class="text-center">Aksi</th>
 </tr>
 <?php 
-foreach ($data_persyaratan_pekerjaan->result_array() as $persyaratan){
+foreach ($data_berkas->result_array() as $berkas){
+$data_meta = $this->db->get_where('data_meta_berkas',array('nama_berkas'=>$berkas['nama_berkas']));    
 ?>
 <tr>
-<td ><?php echo $persyaratan['nama_dokumen'] ?></td>    
-<td class="text-center"><?php echo $this->db->get_where('data_berkas',array('no_pekerjaan'=>$persyaratan['no_pekerjaan_syarat'],'no_nama_dokumen'=>$persyaratan['no_nama_dokumen']))->num_rows();?></td>    
-<td>
-<select onchange="aksi_opsi('<?php echo $persyaratan['id_data_persyaratan_pekerjaan'] ?>','<?php echo base64_encode($persyaratan['no_pekerjaan_syarat']) ?>','<?php echo base64_encode($persyaratan['no_nama_dokumen']) ?>')" class="form-control aksi<?php echo $persyaratan['id_data_persyaratan_pekerjaan'] ?>">
-<option></option>
-<option value="1">Tampilkan lampiran</option>   
-</select>    
+<td ><?php echo $berkas['nama_file'] ?></td>    
+<td class="text-center">
+    <button class="btn btn-sm btn-success" onclick="download_berkas('<?php  echo $berkas['id_data_berkas']?>');"><span class="fa fa-download"></span></button>    
+<button class="btn btn-sm btn-success" data-toggle="popover" title="Data informasi" data-content="
+<?php 
+foreach ($data_meta->result_array() as $meta){
+echo $meta['nama_meta']." : ".$meta['value_meta'],"<br>";    
+}
+?>        
+        "><span class="fa fa-eye"></span></button>     
 </td>
 </tr>
 <?php }?>    
 </table>
+    
+<div class="card-header mt-2 text-center ">
+<h5 align="center">Informasi yang diberikan</h5>
+</div>
+<table class="table mt-2 table-sm table-hover table-striped table-bordered">
+<tr>
+<th>Nama Informasi</th>
+<th class="text-center">Aksi</th>
+</tr>
+<?php 
+foreach ($data_informasi->result_array() as $informasi){
+?>
+<tr>
+<td ><?php echo $informasi['nama_informasi'] ?></td>    
+<td class="text-center">
+<?php if($informasi['lampiran'] !=''){ ?>    
+<button class="btn btn-sm btn-success" onclick="download_berkas_informasi('<?php  echo $informasi['id_data_informasi_pekerjaan']?>');"><span class="fa fa-download"></span></button>    
+<?php } ?>
+<button class="btn btn-sm btn-success" data-toggle="popover" title="Data informasi" data-content="<?php echo $informasi['data_informasi'] ?>"><span class="fa fa-eye"></span></button>     
+    
+</td>
+</tr>
+<?php }?>    
+</table>    
+    
+    
+<div class="card-header mt-2 text-center ">
+<h5 align="center">Dokumen utama yang dikerjakan</h5>
+</div>    
+<table class="table mt-2 table-sm table-hover table-striped table-bordered">
+<tr>
+<th>Nama persyaratan</th>
+<th class="text-center">Aksi</th>
+</tr>
+<?php 
+foreach ($dokumen_utama->result_array() as $utama){
+?>
+<tr>
+<td ><?php echo $utama['nama_berkas'] ?></td>    
+<td class="text-center">
+    <button class="btn btn-sm btn-success"  onclick="download_utama('<?php echo $utama['id_data_dokumen_utama'] ?>');"><span class="fa fa-download"></span></button>    
+    
+</td>
+</tr>
+<?php }?>    
+</table>    
+    
+    
 </div>
 </div>
 </div>
 
-<!-------------------modal laporan--------------------->
 
-<div class="modal fade" id="modal_laporan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-<div class="modal-body" id="lihat_status_sekarang">
-
-</div>
-</div>
-</div>
-</div>
 
 <!-------------------modal laporan--------------------->
 
@@ -59,8 +99,15 @@ foreach ($data_persyaratan_pekerjaan->result_array() as $persyaratan){
 
 
 <script type="text/javascript">
-    
-    
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    container: 'body',
+    html :true
+  });
+$('.btn').on('click', function (e) {
+$('.btn').not(this).popover('hide');
+});
+}); 
     
 function aksi_opsi(id_data_persyaratan_pekerjaan,no_pekerjaan,no_nama_dokumen){
 var val =  $(".aksi"+id_data_persyaratan_pekerjaan+" option:selected").val();   
@@ -87,8 +134,14 @@ $("#lihat_data_lampiran").html(data);
         
 }
 
-function download(id_data_berkas){
-window.location.href="<?php  echo base_url('User1/download_lampiran/')?>"+id_data_berkas;
+function download_berkas(id_data_berkas){
+window.location.href="<?php  echo base_url('User1/download_berkas/')?>"+id_data_berkas;
+}
+function download_berkas_informasi(id_data_berkas){
+window.location.href="<?php  echo base_url('User1/download_berkas_informasi/')?>"+id_data_berkas;
+}
+function download_utama(id_data_berkas){
+window.location.href="<?php  echo base_url('User1/download_utama/')?>"+id_data_berkas;
 }
 
     

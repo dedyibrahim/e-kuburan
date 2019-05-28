@@ -1,4 +1,5 @@
 <body onload="refresh();"></body>
+
 <div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
@@ -13,7 +14,7 @@ Lengkapi persyaratan dokumen <?php echo $static['nama_client'] ?>
 <div class="container">
 <div class="row">
 <div class="col">
-    <div class="card-header text-center" > Minimal persyaratan <br> <?php echo $static['jenis_perizinan'] ?> </div>
+<div class="card-header text-center" > Minimal persyaratan <br> <?php echo $static['jenis_perizinan'] ?> </div>
 
 <table class="table table-sm table-bordered table-striped table-condensed">
 <tr>
@@ -47,10 +48,9 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 </table>
 </div>
 <div class="col">
-<div class="card-header text-center" >Data Persyaratan yang sudah dilampirkan</div>
 
 <div class="syarat_telah_dilampirkan">
-    
+
 </div>
 
 </div>
@@ -63,7 +63,7 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 <div class="modal-dialog modal-lg" role="document">
 <div class="modal-content ">
 <div class="modal-header">
-<h6 class="modal-title" id="exampleModalLabel">Upload Persyaratan <span class="i"><span></h6>
+<h6 class="modal-title" id="exampleModalLabel text-center">Data persyaratan yang dibutuhkan <span class="i"><span></h6>
 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 <span aria-hidden="true">&times;</span>
 </button>
@@ -71,7 +71,7 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 
 <div class="modal-body form_persyaratan">
 
-    
+
 </div>
 </div>
 </div>
@@ -79,8 +79,14 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 
 <script type="text/javascript">
 
+
+
+
 function refresh(){
-persyaratan_telah_dilampirkan(); 
+
+
+persyaratan_telah_dilampirkan();
+
 }
 
 function hapus_berkas_persyaratan(no_pekerjaan,id_data_berkas){
@@ -89,6 +95,33 @@ $.ajax({
 type:"post",
 data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_berkas="+id_data_berkas,
 url:"<?php echo base_url('User2/hapus_berkas_persyaratan') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+refresh();
+
+}
+});    
+}
+
+function hapus_berkas_informasi(no_pekerjaan,id_data_informasi){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_informasi_pekerjaan="+id_data_informasi,
+url:"<?php echo base_url('User2/hapus_berkas_informasi') ?>",
 success:function(data){
 var r = JSON.parse(data);
 const Toast = Swal.mixin({
@@ -119,11 +152,20 @@ data:"token="+token,
 url:"<?php echo base_url('User2/persyaratan_telah_dilampirkan/'.$this->uri->segment(3)) ?>",
 success:function(data){
 $('.syarat_telah_dilampirkan').html(data);
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    container: 'body',
+    html :true
+  });
+$('.btn').on('click', function (e) {
+$('.btn').not(this).popover('hide');
+});
+});
 }
 });
 }
 
-    
+
 function simpan_syarat(){
 var result = { };
 var jml_meta = $('.meta').length;
@@ -143,7 +185,12 @@ formdata.append("file_berkas", file);
 formdata.append("token", token);
 formdata.append("id_data_persyaratan", $("#id_data_persyaratan").val());
 formdata.append("no_pekerjaan", $("#no_pekerjaan").val());
+if ($('#informasi').is(':empty')){
+var data_informasi = CKEDITOR.instances['informasi'].getData();    
+formdata.append('data_informasi',data_informasi);
+}else{
 formdata.append('data_meta', JSON.stringify(result));
+}
 
 jQuery.ajax({
 url: "<?php echo base_url('User2/simpan_persyaratan') ?>",
@@ -202,7 +249,7 @@ window.location.href = "<?php echo base_url('User2/lengkapi_persyaratan/'); ?>"+
 });
 
 }        
-        
+
 });
 
 }
@@ -213,7 +260,7 @@ var nama_dokumen    = $(".persyaratan_tambahan option:selected").text();
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 
 $.ajax({
-    
+
 type:"post",
 data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&no_client="+no_client+"&no_nama_dokumen="+no_nama_dokumen+"&nama_dokumen="+nama_dokumen+"&no_jenis_dokumen="+no_jenis_perizinan,
 url:"<?php echo base_url('User2/tambah_persyaratan') ?>",
@@ -251,36 +298,36 @@ success:function(data){
 $('.form_persyaratan').html(data);    
 $('#modal_upload').modal('show');
 
- if ($('#informasi').is(':empty')){
- CKEDITOR.replace('informasi', {
-      toolbarGroups: [{
-          "name": "basicstyles",
-          "groups": ["basicstyles"]
-        },
-        {
-          "name": "links",
-          "groups": ["links"]
-        },
-        {
-          "name": "paragraph",
-          "groups": ["list", "blocks"]
-        },
-        {
-          "name": "document",
-          "groups": ["mode"]
-        },
-        {
-          "name": "insert",
-          "groups": ["insert"]
-        },
-        {
-          "name": "styles",
-          "groups": ["styles"]
-        }
-        
-      ],
-      removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
-    });
+if ($('#informasi').is(':empty')){
+CKEDITOR.replace('informasi', {
+toolbarGroups: [{
+"name": "basicstyles",
+"groups": ["basicstyles"]
+},
+{
+"name": "links",
+"groups": ["links"]
+},
+{
+"name": "paragraph",
+"groups": ["list", "blocks"]
+},
+{
+"name": "document",
+"groups": ["mode"]
+},
+{
+"name": "insert",
+"groups": ["insert"]
+},
+{
+"name": "styles",
+"groups": ["styles"]
+}
+
+],
+removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+});
 }
 
 }    
@@ -360,7 +407,10 @@ window.location.href = "<?php echo base_url('User2/pekerjaan_proses/'); ?>";
 }
 
 function download(id_data_berkas){
-window.location.href="<?php echo base_url('User3/download_berkas/') ?>"+id_data_berkas;
+window.location.href="<?php echo base_url('User2/download_berkas/') ?>"+id_data_berkas;
+}
+function download_berkas_informasi(id_data_berkas){
+window.location.href="<?php echo base_url('User2/download_berkas_informasi/') ?>"+id_data_berkas;
 }
 </script>
 </body>

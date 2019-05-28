@@ -47,7 +47,7 @@ foreach ($minimal_persyaratan->result_array() as $d){ ?>
 </div>
 </div>
 <div class="modal fade" id="modal_upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
+<div class="modal-dialog modal-lg" role="document">
 <div class="modal-content">
 <div class="modal-header">
 <h6 class="modal-title" id="exampleModalLabel">Upload Persyaratan <span class="i"><span></h6>
@@ -151,8 +151,12 @@ formdata.append("file_berkas", file);
 formdata.append("token", token);
 formdata.append("id_data_persyaratan", $("#id_data_persyaratan").val());
 formdata.append("no_pekerjaan", $("#no_pekerjaan").val());
+if ($('#informasi').is(':empty')){
+var data_informasi = CKEDITOR.instances['informasi'].getData();    
+formdata.append('data_informasi',data_informasi);
+}else{
 formdata.append('data_meta', JSON.stringify(result));
-
+}
 jQuery.ajax({
 url: "<?php echo base_url('User2/simpan_persyaratan') ?>",
 type: "POST",
@@ -192,7 +196,37 @@ url:"<?php echo base_url('User2/form_persyaratan') ?>",
 success:function(data){
 $('.form_persyaratan').html(data);    
 $('#modal_upload').modal('show');
+if ($('#informasi').is(':empty')){
+CKEDITOR.replace('informasi', {
+toolbarGroups: [{
+"name": "basicstyles",
+"groups": ["basicstyles"]
+},
+{
+"name": "links",
+"groups": ["links"]
+},
+{
+"name": "paragraph",
+"groups": ["list", "blocks"]
+},
+{
+"name": "document",
+"groups": ["mode"]
+},
+{
+"name": "insert",
+"groups": ["insert"]
+},
+{
+"name": "styles",
+"groups": ["styles"]
+}
 
+],
+removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+});
+}
 }    
 });
 }
@@ -207,10 +241,49 @@ data:"token="+token,
 url:"<?php echo base_url('User2/persyaratan_telah_dilampirkan/'.$this->uri->segment(3)) ?>",
 success:function(data){
 $('.syarat_telah_dilampirkan').html(data);
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    container: 'body',
+    html :true
+  });
+$('.btn').on('click', function (e) {
+$('.btn').not(this).popover('hide');
+});
+});
 }
 });
 }  
 
+function download_berkas_informasi(id_data_berkas){
+window.location.href="<?php echo base_url('User2/download_berkas_informasi/') ?>"+id_data_berkas;
+}
+
+function hapus_berkas_informasi(no_pekerjaan,id_data_informasi){
+var token             = "<?php echo $this->security->get_csrf_hash() ?>";
+$.ajax({
+type:"post",
+data:"token="+token+"&no_pekerjaan="+no_pekerjaan+"&id_data_informasi_pekerjaan="+id_data_informasi,
+url:"<?php echo base_url('User2/hapus_berkas_informasi') ?>",
+success:function(data){
+var r = JSON.parse(data);
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 2000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+refresh();
+
+}
+});    
+}
 function hapus_berkas_persyaratan(no_pekerjaan,id_data_berkas){
 var token             = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
