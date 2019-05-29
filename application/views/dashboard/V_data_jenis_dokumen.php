@@ -365,7 +365,7 @@ tampilkan_data_persyaratan(no_jenis_dokumen);
 edit_jenis_pekerjaan(id_jenis_dokumen);
 }
 
-$(".opsi_pekerjaan"+id_jenis_dokumen).val("");
+$(".opsi_pekerjaan"+id_jenis_dokumen).val("-- Klik untuk melihat menu --");
 }
 
 function edit_jenis_pekerjaan(id_jenis_dokumen){

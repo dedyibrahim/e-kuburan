@@ -35,15 +35,15 @@ if($this->input->post()){
 $input = $this->input->post();
 $data = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen'=>$input['no_jenis_dokumen']));
 
-echo "<table class='table table-sm table-striped table-hover'>"
+echo "<table class='table table-sm table-bordered table-striped table-hover'>"
 . "<tr>"
 ."<th>Nama File</th>"
-."<th>Aksi</th>"
+."<th class='text-center'>Aksi</th>"
 . "</tr>";
 foreach ($data->result_array() as $d){
 echo  "<tr class='hapus_syarat".$d['id_data_persyaratan']."'>"
 ."<td >".$d['nama_dokumen']."</td>"
-."<td><button onclick=hapus_syarat(".$d['id_data_persyaratan']."); class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>"
+."<td  class='text-center'><button onclick=hapus_syarat(".$d['id_data_persyaratan']."); class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>"
 . "</tr>";    
 }
 
@@ -624,17 +624,12 @@ redirect(404);
 public function cari_file(){
 if($this->input->post()){
 $input = $this->input->post();
-$this->db->select('*');
-$this->db->from('data_meta_berkas');
-$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
-$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
-$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
-$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
-$this->db->like($array);
+$dalam_bentuk_lampiran  = $this->M_dashboard->cari_lampiran($input);
+$dalam_bentuk_informasi = $this->M_dashboard->cari_informasi($input);
 
-$query = $this->db->get();
 $this->load->view('umum/V_header');
-$this->load->view('dashboard/V_pencarian',['query'=>$query]);
+$this->load->view('dashboard/V_pencarian',['dalam_bentuk_lampiran'=>$dalam_bentuk_lampiran,'dalam_bentuk_informasi'=>$dalam_bentuk_informasi]);
+
 
 }else{
 redirect(404);    
@@ -658,7 +653,12 @@ $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_lihat_berkas_client',['data_client'=>$data_client]);
 
 }
-
+public function download_berkas_informasi(){
+$data = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$this->uri->segment(3)))->row_array();    
+$file_path = "./berkas/".$data['nama_folder']."/".$data['lampiran']; 
+$info = new SplFileInfo($data['lampiran']);
+force_download($data['nama_informasi'].".".$info->getExtension(), file_get_contents($file_path));
+}
 public function download_berkas(){
 $data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->uri->segment(3)))->row_array();    
 $file_path = "./berkas/".$data['nama_folder']."/".$data['nama_berkas']; 
@@ -674,6 +674,18 @@ $this->load->view('dashboard/V_profil',['data_user'=>$data_user]);
 
 }
 
+public function lihat_informasi(){
+if($this->input->post()){
+$input = $this->input->post();    
+$query = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$input['id_data_informasi_pekerjaan']))->row_array();
+
+echo $query['data_informasi'];
+
+
+}else{
+redirect(404);    
+}
+}
 public function simpan_profile(){
 $foto_lama = $this->db->get_where('user',array('no_user'=>$this->session->userdata('no_user')))->row_array();
 if(!file_exists('./uploads/user/'.$foto_lama['foto'])){

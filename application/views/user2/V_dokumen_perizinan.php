@@ -3,7 +3,7 @@
 <label>Pilih jenis file perizinan</label>       
 
 <select onchange="jenis_file_perizinan();" class="form-control file_perizinan">
-<option></option>
+<option>-- Klik untuk lihat jenis perizinan --</option>
 <?php foreach ($data_persyaratan->result_array() as $persyaratan) { ?>
 <option value="<?php echo $persyaratan['no_nama_dokumen'] ?>"><?php echo $persyaratan['nama_dokumen'] ?></option>
 <?php } ?>

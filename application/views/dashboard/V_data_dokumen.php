@@ -167,7 +167,7 @@ tambah_meta(no_nama_dokumen);
 }else if(val == 3){
 edit_nama_dokumen(id_nama_dokumen);
 }
-$(".opsi_nama_dokumen"+id_nama_dokumen).val("");
+$(".opsi_nama_dokumen"+id_nama_dokumen).val("-- Klik untuk melihat menu --");
 }
 
 function edit_nama_dokumen(id_nama_dokumen){

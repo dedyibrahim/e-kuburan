@@ -99,7 +99,7 @@ window.location.href= "<?php echo base_url('Dashboard/lihat_berkas_client/') ?>"
 }else if(val == 2){
 window.location.href= "<?php echo base_url('Dashboard/lihat_pekerjaan_client/') ?>"+no_client;    
 }
-$(".opsi_pekerjaan"+id_data_client).val("")
+$(".opsi_pekerjaan"+id_data_client).val("-- Klik untuk melihat menu --")
 }        
 </script>    
 

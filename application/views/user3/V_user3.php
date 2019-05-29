@@ -32,7 +32,7 @@ Data perizinan yang perlu dikerjakan
 <td><?php echo $data['tanggal_tugas'] ?></td>
 <td>
 <select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option<?php echo $data['id_data_berkas'] ?>">
-<option></option>
+<option>-- Klik untuk lihat menu --</option>
 <option value="1">Terima Tugas</option>
 <option value="2">Tolak Tugas</option>
 <option value="3">Lihat Persyaratan</option>
@@ -177,7 +177,7 @@ $(".no_pekerjaan").val(no_pekerjaan);
 }else if(aksi_option == 3){
 lihat_persyaratan(no_pekerjaan);    
 }
-$(".data_option"+id_data_berkas).val("");
+$(".data_option"+id_data_berkas).val("-- Klik untuk lihat menu --");
 }
 
 function proses_perizinan(id){

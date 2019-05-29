@@ -23,15 +23,15 @@
 <i class="fa fa-briefcase"></i> Pekerjaan</a>
 <ul class="list-unstyled collapse show" id="homeSubmenu">
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_antrian') ?>">Dokumen antrian <i class="fa fa-hourglass-start float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_antrian') ?>">Pekerjaan Masuk <i class="fa fa-hourglass-start float-right"></i></a>
 </li>
 
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_proses') ?>">Dokumen dikerjakan<i class="fa fa-hourglass-half float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_proses') ?>">Pekerjaan dikerjakan<i class="fa fa-hourglass-half float-right"></i></a>
 </li>
 
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_selesai') ?>">Dokumen Selesai <i class="fa fa-hourglass-end float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_selesai') ?>">Pekerjaan  Selesai <i class="fa fa-hourglass-end float-right"></i></a>
 </li>
 
 </ul>

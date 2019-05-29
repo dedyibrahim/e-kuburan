@@ -28,7 +28,7 @@ Data perizinan yang perlu diproses
 <td class="text-center"><?php echo $data['target_kelar_perizinan'] ?></td>
 <td>
 <select onchange="aksi_option('<?php echo $data['no_pekerjaan'] ?>','<?php echo $data['id_data_berkas'] ?>');" class="form-control data_option<?php echo $data['id_data_berkas'] ?>">
-<option value="1"></option>
+<option value="1">-- Klik untuk lihat menu --</option>
 <option value="2">Buat Laporan</option>
 <option value="3">Lihat Persyaratan</option>
 <option value="4">Upload Berkas</option>
@@ -90,6 +90,7 @@ Data perizinan yang perlu diproses
 function aksi_option(no_pekerjaan,id_data_berkas){
 var aksi_option = $(".data_option"+id_data_berkas+" option:selected").val();
 if(aksi_option == 1){
+$(".data_option"+id_data_berkas).val("-- Klik untuk lihat menu --");
 }else if(aksi_option == 2){
 $('#modal_laporan').modal('show');
 $("#no_pekerjaan").val(no_pekerjaan);
@@ -99,7 +100,7 @@ form_lihat_persyaratan(no_pekerjaan);
 }else if(aksi_option == 4){
 form_upload_berkas(no_pekerjaan,id_data_berkas);
 }
-$(".data_option"+id_data_berkas).val("");
+$(".data_option"+id_data_berkas).val("-- Klik untuk lihat menu --");
 }
 
 

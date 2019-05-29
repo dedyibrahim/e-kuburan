@@ -133,7 +133,7 @@ window.location.href= "<?php echo base_url('User2/lihat_berkas_client/')?>"+no_c
 $('#modal_tambah_pekerjaan').modal('show');    
 $('#no_client').val(no_client);
 }
-$('.opsi_pekerjaan'+id_data_client).val("")
+$('.opsi_pekerjaan'+id_data_client).val("-- Klik untuk melihat menu --")
 }
 
 $("#fileForm").submit(function(e) {

@@ -45,7 +45,7 @@ Dokumen utama yang sudah diupload
 <td><?php echo $utama['waktu'] ?></td>   
 <td>
 <select class="form-control data_aksi<?php echo $utama['id_data_dokumen_utama'] ?>"  onchange="aksi_utama('<?php echo $utama['id_data_dokumen_utama'] ?>','<?php echo $utama['id_data_dokumen_utama'] ?>');">
-<option></option>   
+<option>-- Klik untuk lihat menu --</option>   
 <option value="1">Hapus</option>   
 <option value="2">Download</option>   
 </select>    
@@ -66,7 +66,7 @@ hapus_utama(id_data_dokumen_utama);
 }else if(val == 2){
 window.location.href="<?php echo base_url('User2/download_utama/') ?>"+id_data_dokumen_utama;
 }
-$(".data_aksi"+id_data_dokumen_utama).val("");       
+$(".data_aksi"+id_data_dokumen_utama).val("-- Klik untuk lihat menu --");       
 }    
 
 

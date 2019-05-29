@@ -25,7 +25,7 @@
 <div class="col ">
 <label>Pilih Jenis client</label>
 <select name="jenis" id="pilih_jenis" class="form-control required" accept="text/plain">
-<option> </option>
+<option>-- Klik untuk melihat plihan --</option>
 <option value="Perorangan">Perorangan</option>
 <option value="Badan Hukum">Badan Hukum</option>	
 </select>    

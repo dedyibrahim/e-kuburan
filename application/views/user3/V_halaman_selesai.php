@@ -14,7 +14,6 @@ Data perizinan yang selesai dikerjakan
 <th align="center" aria-controls="datatable-fixed-header"  >Nama client</th>
 <th align="center" aria-controls="datatable-fixed-header"  >Jenis tugas</th>
 <th align="center" aria-controls="datatable-fixed-header"  >Dokumen</th>
-<th align="center" aria-controls="datatable-fixed-header"  >Aksi</th>
 </thead>
 <tbody align="center">
 </table> 
@@ -68,7 +67,6 @@ columns: [
 {"data": "nama_client"},
 {"data": "jenis_perizinan"},
 {"data": "nama_file"},
-{"data": "view"}
 
 
 ],

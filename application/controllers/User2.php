@@ -10,8 +10,7 @@ $this->load->library('upload');
 $this->load->model('M_user2');
 if($this->session->userdata('User') != 'User' && $this->session->userdata('sublevel') != 'Level 2'){
 redirect(base_url('Login'));    
-}  
-       
+}        
 }
 
 public function index(){
@@ -24,8 +23,7 @@ $this->session->sess_destroy();
 redirect (base_url('Login'));
 }
 
-public function asisten(){
-    
+public function asisten(){  
 $this->db->from('data_berkas');
 $this->db->join('user', 'user.no_user = data_berkas.no_pengurus');
 $this->db->group_by('user.no_user');
@@ -426,7 +424,7 @@ echo'<div class="card p-2 m-1">
 <button onclick="hapus_berkas_persyaratan('.$u['no_pekerjaan'].",".$u['id_data_berkas'].')" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button>
 <button type="button" class="btn btn-sm btn-warning" data-toggle="popover" title="Informasi" data-content="';
 foreach($data_meta->result_array() as $m){
-echo $m['nama_meta']." = ".$m['value_meta']."<br>";    
+echo $m['nama_meta']." : ".$m['value_meta']."<br>";    
 }
 echo '"><span class="fa fa-eye"></span> </button>
 </div>    
@@ -530,7 +528,7 @@ echo "<select></td>";
 
 echo "<td>"
 ."<select onchange='option_aksi(".$form['id_data_berkas'].")' class='form-control option_aksi".$form['id_data_berkas']." '>"
-."<option></option>"
+."<option>-- Klik untuk lihat menu --</option>"
 ."<option value='1'>Hapus Syarat</option>"
 ."<option value='2'>Alihkan Tugas</option>"
 ."<select></td>"
@@ -726,17 +724,11 @@ redirect(404);
 public function cari_file(){
 if($this->input->post()){
 $input = $this->input->post();
-$this->db->select('*');
-$this->db->from('data_meta_berkas');
-$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
-$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
-$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
-$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
-$this->db->like($array);
+$dalam_bentuk_lampiran  = $this->M_user2->cari_lampiran($input);
+$dalam_bentuk_informasi = $this->M_user2->cari_informasi($input);
 
-$query = $this->db->get();
 $this->load->view('umum/V_header');
-$this->load->view('user2/V_pencarian',['query'=>$query]);
+$this->load->view('user2/V_pencarian',['dalam_bentuk_lampiran'=>$dalam_bentuk_lampiran,'dalam_bentuk_informasi'=>$dalam_bentuk_informasi]);
 
 }else{
 redirect(404);    
@@ -1064,6 +1056,17 @@ $this->histori($keterangan);
 redirect(404);    
 }    
 }
+public function lihat_informasi(){
+if($this->input->post()){
+$input = $this->input->post();    
+$query = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$input['id_data_informasi_pekerjaan']))->row_array();
 
+echo $query['data_informasi'];
+
+
+}else{
+redirect(404);    
+}
+}
 }
 

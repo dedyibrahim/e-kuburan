@@ -46,5 +46,28 @@ $this->datatables->where('no_user',$this->session->userdata('no_user'));
 return $this->datatables->generate();
 }
 
+
+public function cari_lampiran($input){
+$this->db->select('*');
+$this->db->from('data_meta_berkas');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
+$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
+$this->db->like($array);
+
+$query = $this->db->get();
+return $query;
+}
+public function cari_informasi($input){
+$this->db->select('*');
+$this->db->from('data_informasi_pekerjaan');
+$array = array('data_informasi_pekerjaan.data_informasi' => $input['cari_dokumen']);
+$this->db->like($array);
+
+$query = $this->db->get();
+return $query;
+}
+
 }
 ?>

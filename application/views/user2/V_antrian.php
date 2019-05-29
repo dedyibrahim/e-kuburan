@@ -32,7 +32,7 @@ Pekejaan masuk
 <td><?php echo $data['target_kelar'] ?></td>
 <td>
 <select onchange="aksi_option('<?php echo base64_encode($data['no_pekerjaan']) ?>','<?php echo $data['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $data['id_data_pekerjaan'] ?>">
-<option></option>
+<option>-- Klik untuk lihat menu --</option>
 <option value="1">Proses Persyaratan</option>
 <option value="2">Buat laporan</option>
 </select>    
@@ -115,7 +115,7 @@ $(".id_data_pekerjaan").val(id_data_pekerjaan);
 
 
 }
-$(".data_option"+id_data_pekerjaan).val("");
+$(".data_option"+id_data_pekerjaan).val("-- Klik untuk lihat menu --");
 }    
 
 
