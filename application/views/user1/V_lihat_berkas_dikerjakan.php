@@ -62,7 +62,7 @@ foreach ($data_informasi->result_array() as $informasi){
 </div>    
 <table class="table mt-2 table-sm table-hover table-striped table-bordered">
 <tr>
-<th>Nama persyaratan</th>
+<th>Nama Dokumen utama</th>
 <th class="text-center">Aksi</th>
 </tr>
 <?php 

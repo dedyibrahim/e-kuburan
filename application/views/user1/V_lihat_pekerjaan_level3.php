@@ -27,7 +27,7 @@
 <td><?php echo $d['target_kelar_perizinan']  ?></td>
 <td>
 <select onchange="opsi('<?php echo $d['id_data_berkas'] ?>')" class="form-control aksi<?php echo $d['id_data_berkas'] ?>">
-    <option ></option>
+    <option >-- Klik untuk melihat menu --</option>
     <option value="1">Lihat laporan</option>
 </select>
 </td>
@@ -57,7 +57,7 @@ var val = $(".aksi"+id_data_berkas+" option:selected").val();
 if(val == 1){
 lihat_laporan(id_data_berkas);    
 }
-$(".aksi"+id_data_berkas+"").val("");        
+$(".aksi"+id_data_berkas+"").val("-- Klik untuk melihat menu --");        
 }
 
 function lihat_laporan(id_data_berkas){

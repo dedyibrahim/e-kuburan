@@ -38,7 +38,7 @@ echo "<option value=".$user['no_user'].">".$user['nama_lengkap']."</option>";
 <td><?php echo $d['target_kelar']  ?></td>
 <td>
 <select onchange="aksi_option('<?php echo base64_encode($d['no_pekerjaan']) ?>','<?php echo $d['id_data_pekerjaan'] ?>');" class="form-control data_option<?php echo $d['id_data_pekerjaan'] ?>">
-<option></option>
+<option>-- Klik untuk melihat menu --</option>
 <option value="1">Lihat Laporan</option>
 <option value="2">Alihkan Pekerjaan</option>
 <option value="3">Lihat berkas </option>
@@ -83,7 +83,7 @@ $('.pekerjaan'+id_data_pekerjaan).removeAttr("disabled");
 }else if(val == 3){
 window.location.href ="<?php echo base_url('User1/berkas_dikerjakan/') ?>"+no_pekerjaan;    
 }
-$(".data_option"+id_data_pekerjaan).val("");
+$(".data_option"+id_data_pekerjaan).val("-- Klik untuk melihat menu --");
 
 }
 function alihkan_tugas(no_pekerjaan,id_data_pekerjaan){

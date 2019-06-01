@@ -140,8 +140,8 @@ $this->datatables->select('id_jenis_dokumen,'
 
 $this->datatables->from('data_jenis_dokumen');
 $this->datatables->add_column('view',""
-        . "<select onchange=opsi_jenis_pekerjaan('$1','$2') class='form-control opsi_pekerjaan$1'>"
-        . "<option></option>"
+        . "<select onchange=opsi_jenis_pekerjaan('$1','$2') class='form-control text-center opsi_pekerjaan$1'>"
+        . "<option>-- Klik untuk melihat menu --</option>"
         . "<option value='1'>Tambah Persyaratan</option>"
         . "<option value='2'>Lihat persyaratan</option>"
         . "<option value='3'>Edit Pekerjaan</option>"
@@ -185,7 +185,7 @@ $this->datatables->select('id_nama_dokumen,'
 $this->datatables->from('nama_dokumen');
 $this->datatables->add_column('view',""
         . "<select onchange=opsi_nama_dokumen('$1','$2') class='form-control opsi_nama_dokumen$1'>"
-        . "<option></option>"
+        . "<option>-- Klik untuk melihat menu --</option>"
         . "<option value='1'>Lihat Meta</option>"
         . "<option value='2'>Tambah Meta</option>"
         . "<option value='3'>Edit nama dokumen</option>"
@@ -239,7 +239,7 @@ $this->datatables->select('id_data_client,'
 $this->datatables->from('data_client');
 $this->datatables->add_column('view',""
         . "<select onchange=opsi_client('$1','$2') class='form-control opsi_pekerjaan$1'>"
-        . "<option></option>"
+        . "<option>-- Klik untuk melihat menu --</option>"
         . "<option value='1'>Lihat berkas</option>"
         . "</select>"
         . "",'id_data_client , base64_encode(no_client)');
@@ -374,5 +374,26 @@ return $query;
 }
 
 
+public function cari_lampiran($input){
+$this->db->select('*');
+$this->db->from('data_meta_berkas');
+$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
+$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
+$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
+$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
+$this->db->like($array);
+
+$query = $this->db->get();
+return $query;
+}
+public function cari_informasi($input){
+$this->db->select('*');
+$this->db->from('data_informasi_pekerjaan');
+$array = array('data_informasi_pekerjaan.data_informasi' => $input['cari_dokumen']);
+$this->db->like($array);
+
+$query = $this->db->get();
+return $query;
+}
 }
 ?>

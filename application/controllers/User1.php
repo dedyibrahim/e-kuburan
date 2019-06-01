@@ -20,8 +20,7 @@ public function index(){
 $data_user  = $this->db->get_where('user',array ('sublevel'=>'Level 2'));   
 $data_tugas = $this->M_user1->data_tugas('Masuk');    
 $this->load->view('umum/V_header');
-$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas,'data_user'=>$data_user]);
-    
+$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas,'data_user'=>$data_user]); 
 }
 
 public function download_berkas(){
@@ -145,7 +144,7 @@ redirect(404);
 }
 public function berkas_dikerjakan(){
 $no_pekerjaan               = base64_decode($this->uri->segment(3));
-$data_berkas              = $this->db->get_where('data_berkas',array('no_pekerjaan'=>$no_pekerjaan));
+$data_berkas                = $this->db->get_where('data_berkas',array('no_pekerjaan'=>$no_pekerjaan));
 $data_informasi             = $this->db->get_where('data_informasi_pekerjaan',array('no_pekerjaan'=>$no_pekerjaan));
 $dokumen_utama              = $this->db->get_where('data_dokumen_utama',array('no_pekerjaan'=>$no_pekerjaan));     
 $this->load->view('umum/V_header');
@@ -178,21 +177,27 @@ redirect(404);
 public function cari_file(){
 if($this->input->post()){
 $input = $this->input->post();
-$this->db->select('*');
-$this->db->from('data_meta_berkas');
-$this->db->join('data_pekerjaan', 'data_pekerjaan.no_pekerjaan = data_meta_berkas.no_pekerjaan');
-$this->db->join('data_berkas', 'data_berkas.nama_berkas = data_meta_berkas.nama_berkas');
-$this->db->join('nama_dokumen', 'nama_dokumen.no_nama_dokumen = data_meta_berkas.no_nama_dokumen');
-$array = array('data_meta_berkas.value_meta' => $input['cari_dokumen']);
-$this->db->like($array);
+$dalam_bentuk_lampiran  = $this->M_user1->cari_lampiran($input);
+$dalam_bentuk_informasi = $this->M_user1->cari_informasi($input);
 
-$query = $this->db->get();
 $this->load->view('umum/V_header');
-$this->load->view('user1/V_pencarian',['query'=>$query]);
+$this->load->view('user1/V_pencarian',['dalam_bentuk_lampiran'=>$dalam_bentuk_lampiran,'dalam_bentuk_informasi'=>$dalam_bentuk_informasi]);
 
 }else{
 redirect(404);    
 }    
+}
+public function lihat_informasi(){
+if($this->input->post()){
+$input = $this->input->post();    
+$query = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$input['id_data_informasi_pekerjaan']))->row_array();
+
+echo $query['data_informasi'];
+
+
+}else{
+redirect(404);    
+}
 }
 
 public function alihkan_pekerjaan(){
