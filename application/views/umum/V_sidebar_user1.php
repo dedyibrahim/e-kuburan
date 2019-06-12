@@ -13,13 +13,13 @@
 <i class="fa fa-briefcase"></i> Pekerjaan</a>
 <ul class="list-unstyled collapse show" id="homeSubmenu">
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/') ?>">Antrian Pekerjaan<i class="fa fa-suitcase	 float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/') ?>">Pekerjaan masuk<i class="fa fa-suitcase	 float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/halaman_proses') ?>">Sedang dikerjakan <i class="fa fa-suitcase float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/halaman_proses') ?>">Pekerjaan diproses<i class="fa fa-suitcase float-right"></i></a>
 </li>
 <li>
-<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/halaman_selesai') ?>">Selesai dikerjakan<i class="fa fa-suitcase float-right"></i></a>
+<a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User1/halaman_selesai') ?>">Pekerjaan diselesaikan<i class="fa fa-suitcase float-right"></i></a>
 </li>
 </ul>
 

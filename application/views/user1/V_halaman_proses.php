@@ -23,7 +23,10 @@
 <td><?php echo $data['nama_client'] ?></td>
 <td><?php echo $data['pembuat_client'] ?></td>   
 <td><?php echo $data['tanggal_dibuat'] ?></td>
-<td><?php echo $data['target_kelar'] ?></td>
+<td><?php 
+$d = new DateTime($data['target_kelar']);
+echo $d->diff(new DateTime())->format('%a');
+ ?> Hari lagi </td>
 
 </tr>
 <?php } ?>

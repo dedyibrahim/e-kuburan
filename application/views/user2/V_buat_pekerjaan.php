@@ -157,7 +157,7 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 });
 
 $(function() {
-$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'dd/mm/yy'
+$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'yy-mm-dd'
 });
 });
 </script>

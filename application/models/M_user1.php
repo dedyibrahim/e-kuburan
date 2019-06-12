@@ -3,6 +3,7 @@ class M_user1 extends CI_Model{
 public function data_tugas($status){
 
 $this->db->select('*');
+$this->db->order_by('data_pekerjaan.target_kelar','ASC');
 $this->db->from('data_pekerjaan');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->db->where('data_pekerjaan.status_pekerjaan',$status);

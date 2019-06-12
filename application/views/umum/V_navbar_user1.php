@@ -104,7 +104,7 @@ In <br>
  <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan di Proses 
+<div class="footer p-2" style="background-color:	#1ecee7;">Pekerjaan diproses 
 <div class="float-right">
 <?php echo $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>'Proses'))->num_rows(); ?>   
     

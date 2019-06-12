@@ -1,6 +1,5 @@
 <?php
 class User1 extends CI_Controller{
-    
 public function __construct() {
 parent::__construct();
 $this->load->helper('download');
@@ -29,13 +28,15 @@ $file_path = "./berkas/".$data['nama_folder']."/".$data['nama_berkas'];
 $info = new SplFileInfo($data['nama_berkas']);
 force_download($data['nama_file'].".".$info->getExtension(), file_get_contents($file_path));
 }
+
 public function download_berkas_informasi(){
 $data = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$this->uri->segment(3)))->row_array();    
 $file_path = "./berkas/".$data['nama_folder']."/".$data['lampiran']; 
 $info = new SplFileInfo($data['lampiran']);
 force_download($data['nama_informasi'].".".$info->getExtension(), file_get_contents($file_path));
 }
- public function download_utama(){
+
+public function download_utama(){
 $data = $this->db->get_where('data_dokumen_utama',array('id_data_dokumen_utama'=>$this->uri->segment(3)))->row_array();    
 $file_path = "./berkas/".$data['nama_folder']."/".$data['nama_file']; 
 $info = new SplFileInfo($data['nama_file']);
