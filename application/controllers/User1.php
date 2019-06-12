@@ -341,6 +341,18 @@ echo "</table>";
 redirect(404);    
 }    
 }
+public function set_toggled(){
+if(!$this->session->userdata('toggled')){
+$array = array(
+'toggled' => 'Aktif',    
+);
+$this->session->set_userdata($array);    
+}else{
+unset($_SESSION['toggled']);   
+}
+echo print_r($this->session->userdata()); 
+}
+
 
 }
 

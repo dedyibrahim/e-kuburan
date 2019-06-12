@@ -1,11 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <button class="btn btn-success" id="menu-toggle"><span id="z" class="fa fa-chevron-left"> </span> Menu</button>
+<button class="btn btn-success" id="menu-toggle"><span id="z" class="fa fa-chevron-left"> </span> Menu</button>
 
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
-    
-    
+
+
 <form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('User1/cari_file') ?>" method="post" >        
 <input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
 <input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
@@ -131,17 +131,32 @@ Out <br>
 </div>
 
 <script type="text/javascript">
-
 $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 var cek_icon = $(".fa-chevron-left").html();
 if(cek_icon != undefined){
 $("#z").addClass("fa-chevron-right");
+set_toggled();
 }else{
 $("#z").addClass("fa-chevron-left");
+set_toggled();
 }
 
 
-});    
+
+});
+function set_toggled(){
+var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>";      
+    
+$.ajax({
+type:"post",
+url:'<?php echo base_url('User1/set_toggled') ?>',
+data:"token="+token,
+success:function(data){
+console.log(data);    
+}    
+});
+        
+}
 </script>    

@@ -181,16 +181,36 @@ success:function(data){
 });
 
 }
-
 $('.toast').toast('show')   
+</script>
+
+<script type="text/javascript">
 $("#menu-toggle").click(function(e) {
 e.preventDefault();
 $("#wrapper").toggleClass("toggled");
 var cek_icon = $(".fa-chevron-left").html();
 if(cek_icon != undefined){
 $("#z").addClass("fa-chevron-right");
+set_toggled();
 }else{
 $("#z").addClass("fa-chevron-left");
+set_toggled();
 }
-});    
-</script>    
+
+
+
+});
+function set_toggled(){
+var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>";      
+    
+$.ajax({
+type:"post",
+url:'<?php echo base_url('User3/set_toggled') ?>',
+data:"token="+token,
+success:function(data){
+console.log(data);    
+}    
+});
+        
+}
+</script>

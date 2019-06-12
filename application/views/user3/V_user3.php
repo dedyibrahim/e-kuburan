@@ -1,8 +1,7 @@
 <body >
-<div class="d-flex" id="wrapper">
-<?php  $this->load->view('umum/V_sidebar_user3'); ?>
+<?php $this->load->view('umum/V_sidebar_user3'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_user3'); ?>
+<?php $this->load->view('umum/V_navbar_user3'); ?>
 <div class="container-fluid ">
 <div class="card-header mt-2 mb-2 text-center">
 Data perizinan yang perlu dikerjakan
@@ -94,6 +93,8 @@ Data perizinan yang perlu dikerjakan
 <div class="modal-footer">
 <button class="btn btn-sm btn-success simpan_penolakan">Simpan Penolakan</button>
 </div>    
+</div>
+</div>
 </div>
 </div>
 </div>

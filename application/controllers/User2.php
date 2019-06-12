@@ -77,7 +77,7 @@ $data_client = array(
 'jenis_client'              => ucwords($data['jenis_client']),    
 'nama_client'               => strtoupper($data['badan_hukum']),
 'alamat_client'             => ucwords($data['alamat_badan_hukum']),    
-'tanggal_daftar'            => date('d/m/Y H:i:s'),    
+'tanggal_daftar'            => date('Y/m/d H:i:s'),    
 'pembuat_client'            => $this->session->userdata('nama_lengkap'),    
 'no_user'                   => $this->session->userdata('no_user'), 
 'nama_folder'               =>"Dok".$no_client,
@@ -91,11 +91,11 @@ $data_r = array(
 'no_client'          => "C_".$no_client,    
 'status_pekerjaan'      => "Masuk",
 'no_pekerjaan'       => $no_pekerjaan,    
-'tanggal_dibuat'     => date('d/m/Y H:i:s'),
+'tanggal_dibuat'     => date('Y/m/d H:i:s'),
 'no_jenis_perizinan' => $data['id_jenis'],   
-'tanggal_antrian'    => date('d/m/Y H:i:s'),
+'tanggal_antrian'    => date('Y/m/d H:i:s'),
 'target_kelar'       => $data['target_kelar'],
-'count_up'           => date('M,d,Y, H:i:s'),        
+'count_up'           => date('Y,m,d H:i:s'),        
 'no_user'            => $this->session->userdata('no_user'),    
 'pembuat_pekerjaan'  => $this->session->userdata('nama_lengkap'),    
 'jenis_perizinan'    => ucwords($data['jenis_akta']),
@@ -1068,5 +1068,17 @@ echo $query['data_informasi'];
 redirect(404);    
 }
 }
+public function set_toggled(){
+if(!$this->session->userdata('toggled')){
+$array = array(
+'toggled' => 'Aktif',    
+);
+$this->session->set_userdata($array);    
+}else{
+unset($_SESSION['toggled']);   
+}
+echo print_r($this->session->userdata()); 
+}
+
 }
 

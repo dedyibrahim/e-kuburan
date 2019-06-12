@@ -1,7 +1,7 @@
+<div class="d-flex <?php if($this->session->userdata('toggled') == 'Aktif'){ echo "toggled"; } ?>" id="wrapper">
 <div class="bg-light border-right" id="sidebar-wrapper">
 <div class="sidebar-heading">App Management </div>
-<div class="list-group list-group-flush">
-      
+<div class="list-group list-group-flush">   
 <ul class="list-unstyled components">
 
 <li class="active">
@@ -29,7 +29,6 @@
 <li>
 <a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_proses') ?>">Pekerjaan dikerjakan<i class="fa fa-hourglass-half float-right"></i></a>
 </li>
-
 <li>
 <a class="list-group-item list-group-item-action bg-light" href="<?php echo base_url('User2/pekerjaan_selesai') ?>">Pekerjaan  Selesai <i class="fa fa-hourglass-end float-right"></i></a>
 </li>
@@ -44,6 +43,7 @@
 </ul>
 </div>
 </div>
+    
 <script type="text/javascript">
 $(document).ready(function () {
 $('#sidebarCollapse').on('click', function () {

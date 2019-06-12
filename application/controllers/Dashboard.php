@@ -771,6 +771,18 @@ public function json_data_riwayat(){
 echo $this->M_dashboard->json_data_riwayat();       
 }
 
+public function set_toggled(){
+if(!$this->session->userdata('toggled')){
+$array = array(
+'toggled' => 'Aktif',    
+);
+$this->session->set_userdata($array);    
+}else{
+unset($_SESSION['toggled']);   
+}
+echo print_r($this->session->userdata());
+}
+
 }
 
 

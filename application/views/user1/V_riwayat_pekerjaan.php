@@ -1,5 +1,4 @@
 <body>
-<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user1'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user1'); ?>
@@ -24,8 +23,7 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
-{
+$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings){
 return {
 "iStart": oSettings._iDisplayStart,
 "iEnd": oSettings.fnDisplayEnd(),

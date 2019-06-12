@@ -1,5 +1,4 @@
 <body>
-<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>
@@ -140,9 +139,7 @@ return false;
 }
 });
 
-
-
-$(function () {
+$(function(){
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>"       
 $("#jenis_akta,#jenis_akta_perorangan").autocomplete({
 minLength:0,
@@ -157,8 +154,9 @@ $("#id_jenis_akta,#id_jenis_akta_perorangan").val(ui.item.no_jenis_dokumen);
 });
 
 $(function() {
-$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'yy-mm-dd'
+$("input[name='target_kelar']").datepicker({ minDate:0,dateFormat: 'yy/mm/dd'
 });
+
 });
 </script>
 </div>

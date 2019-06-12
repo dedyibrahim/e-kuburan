@@ -1,6 +1,5 @@
 <body onload="refresh();"></body>
 
-<div class="d-flex" id="wrapper">
 <?php  $this->load->view('umum/V_sidebar_user2'); ?>
 <div id="page-content-wrapper">
 <?php  $this->load->view('umum/V_navbar_user2'); ?>

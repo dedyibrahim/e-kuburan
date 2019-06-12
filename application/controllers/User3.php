@@ -12,7 +12,8 @@ $this->load->library('upload');
 }
 
 public function index(){
-$data_tugas = $this->M_user3->data_tugas('Masuk');    
+$data_tugas = $this->M_user3->data_tugas('Masuk');
+
 $this->load->view('umum/V_header');
 $this->load->view('user3/V_user3',['data_tugas'=>$data_tugas]);
 }
@@ -392,4 +393,17 @@ echo $query['data_informasi'];
 redirect(404);    
 }
 }
+
+public function set_toggled(){
+if(!$this->session->userdata('toggled')){
+$array = array(
+'toggled' => 'Aktif',    
+);
+$this->session->set_userdata($array);    
+}else{
+unset($_SESSION['toggled']);   
+}
+echo print_r($this->session->userdata()); 
+}
+
 }
