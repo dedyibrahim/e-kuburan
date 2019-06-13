@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<nav class="navbar navbar-expand-lg navbar-light bg-theme border-bottom">
     <button class="btn btn-success" id="menu-toggle"><span id="z" class="fa fa-chevron-left"> </span> Menu</button>
 
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +9,7 @@
 <input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
 <input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
 <div class="btn-group" role="group">
-<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-dark"><span class="fa fa-search" aria-hidden="true"></span></button>
+<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span></button>
 </div>
 
 </form>
@@ -88,7 +88,7 @@ Pilihan
 Data berkas <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">total data berkas<div class="float-right">
+<div class="footer p-2 bg_data_bawah">total data berkas<div class="float-right">
     <?php 
 $query3 = $this->db->get_where('data_berkas',array('pengupload !='=>NULL))->num_rows();
 
@@ -104,7 +104,7 @@ echo $query3;
 Data client <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data client  <div class="float-right">
+<div class="footer p-2 bg_data_bawah">Total data client  <div class="float-right">
     <?php 
 $query1 = $this->db->get('data_client')->num_rows();
 
@@ -122,7 +122,7 @@ echo $query1;
 Pekerjaan diproses<br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total pekerjaan diproses 
+<div class="footer p-2 bg_data_bawah">Total pekerjaan diproses 
 <div class="float-right"><?php 
 $query = $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>"Proses"))->num_rows();
 
@@ -140,7 +140,7 @@ echo $query;
 Data user <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2" style="background-color:	#1ecee7;">Total data user <div class="float-right">
+<div class="footer p-2 bg_data_bawah" >Total data user <div class="float-right">
 <?php 
 $query2 = $this->db->get('user')->num_rows();
 echo $query2;

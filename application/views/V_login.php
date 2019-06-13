@@ -3,32 +3,35 @@
 <br>
 <br>
 <div class="container ">
-<div class="row">
-<div class="col-md-10 mx-auto">    
 
 <div class="row">    
-    <div class="col-md-4 mx-auto">
-<h4 align="center" class="text-lg-center text-white "><i class="fa fa-lock fa-2x"></i><br> Input your detail login </h4>
-<hr>    
-<label>Username</label>
-<input type="text" class="form-control" id="username" placeholder="your username">
-<label>Password</label>
-<input type="password" class="form-control" id="password" placeholder="your password">
-<hr>
-<button class="btn btn-white btn-sm btn-block" id="proses_login">Sign in <i class="fa fa-key"></i></button>
-</div>    
+   
+<div class="col-md-4 mx-auto" >
+    <div class="card" style="box-shadow: 0 0 10px 0 rgba(0,0,0,.1)!important;">    
+    <div class="card-header">    
+<h4 align="center" class="text-lg-center  "><i class="fa fa-lock fa-2x"></i><br>Login to your account</h4>
     </div>
-    
-</div>        
+        
+        <div class="card-body">        
+<label>Username</label>
+<input type="text" class="form-control" id="username" placeholder="username . . .">
+<label>Password</label>
+<input type="password" class="form-control" id="password" placeholder="password . . .">
+        </div>
+    <div class="card-footer">        
+<button class="btn btn-md btn-success btn-block" id="proses_login">Sign in <i class="fa fa-key"></i></button>
+</div>    
+</div>    
+
 </div>
 </div>
 
+</div>
 
-
-<div class="fixed-bottom mt-5 pt-5">
+<div class="mt-5 pt-5">
 <div class="row">
 <div class="mx-auto">    
-    <p class="text-white text-center">App Management <br> V.1.0.1</p>
+    <p class="text-center">App Management <br> V.1.0.1</p>
 </div>
 </div>
 </div>   
@@ -151,9 +154,6 @@ $(document).keypress(function() {
 if (event.which == 13) callback();
 });
 $('#proses_login').click(callback);   
-
-
-
 </script>
 
 <html>

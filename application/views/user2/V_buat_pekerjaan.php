@@ -44,7 +44,7 @@
 </div>
 <div class="col-md-12 mx-auto  mt-2">
     <div class="card-footer">    
-<button  type="submit" class="btn btn-success btn-sm col-md-6 mx-auto btn-block simpan_perizinan">Simpan client dan Buat pekerjaan <i class="fa fa-save"></i></button>
+<button  type="submit" class="btn btn-success col-md-6 mx-auto btn-block simpan_perizinan">Simpan client dan Buat pekerjaan <i class="fa fa-save"></i></button>
     </div>
 </form>
 
