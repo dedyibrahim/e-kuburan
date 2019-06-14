@@ -6,7 +6,7 @@
 </button>
 
 
-<form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('User1/cari_file') ?>" method="post" >        
+<form class="input-group col-md-9 mx-auto" id="adv-search" action="<?php echo base_url('User1/cari_file') ?>" method="post" >        
 <input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
 <input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
 <div class="btn-group" role="group">

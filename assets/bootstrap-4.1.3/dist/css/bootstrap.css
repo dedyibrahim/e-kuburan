@@ -1863,7 +1863,7 @@ pre code {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+ // border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -1879,9 +1879,9 @@ pre code {
 }
 
 .form-control:focus {
-  color: #495057;
+  color: #2f4f4f;
   background-color: #fff;
-  border-color: #DAA520;
+  border-color:#2f4f4f;
   outline: 0;
 }
 
@@ -4102,7 +4102,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs .nav-link {
-  background-color: #ccc;
+  background-color: #2f4f4f;
   border: 1px solid transparent;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
@@ -4121,7 +4121,7 @@ input[type="button"].btn-block {
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
   color: #fff;
-  background-color: #9E7B1D !important;
+  background-color:#FF8C00 !important;
   border-color: #dee2e6 #dee2e6 #fff;
 }
 
@@ -4584,7 +4584,7 @@ z-index: 9999;
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  //border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
 }
 
@@ -4897,7 +4897,7 @@ z-index: 9999;
   margin-left: -1px;
   line-height: 1.25;
   color: #007bff;
-  background-color: #fff;
+  background-color: #2F4F4F;
   border: 1px solid #dee2e6;
 }
 
@@ -4905,8 +4905,8 @@ z-index: 9999;
   z-index: 2;
   color: #0056b3;
   text-decoration: none;
-  background-color: #e9ecef;
-  border-color: #dee2e6;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
 }
 
 .page-link:focus {
@@ -4933,16 +4933,16 @@ z-index: 9999;
 .page-item.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #FF8C00;
+  border-color:#FF8C00;
 }
 
 .page-item.disabled .page-link {
   color: #6c757d;
   pointer-events: none;
   cursor: auto;
-  background-color: #fff;
-  border-color: #dee2e6;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
 }
 
 .pagination-lg .page-link {
@@ -9923,11 +9923,10 @@ color:#ccc;
     position:absolute;
     z-index:1000;
     cursor:default;
-    padding:10px;
     margin-top:2px;
     color:#fff;
     list-style:none;
-    background-color:#058085;
+    background-color:#2F4F4F !important;
     border:1px solid #ccc;
     -webkit-border-radius:5px;
     -moz-border-radius:5px;

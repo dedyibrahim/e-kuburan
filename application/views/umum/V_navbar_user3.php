@@ -5,7 +5,7 @@
 <span class="navbar-toggler-icon"></span>
 </button>
     
-<form class="input-group col-md-6 mx-auto" id="adv-search" action="<?php echo base_url('User3/cari_file') ?>" method="post" >        
+<form class="input-group col-md-9  mx-auto" id="adv-search" action="<?php echo base_url('User3/cari_file') ?>" method="post" >        
 <input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
 <input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
 <div class="btn-group" role="group">
@@ -99,7 +99,7 @@ In <br>
     <div class="col-md-4  " ><a   style="text-decoration:none;"  href="<?php echo base_url('User3/halaman_proses') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-star-half-alt float-right fa-3x sticky-top"></span>
+<span class="fa fa-suitcase float-right fa-3x sticky-top"></span>
 Proses <br>
 <h4>&nbsp;</h4>
 </div>
@@ -115,7 +115,7 @@ Proses <br>
 <div class="col-md-4 "><a  style="text-decoration:none;" href="<?php echo base_url('User3/halaman_selesai') ?>">
         <div class="bg_data rounded-top" style="text-decoration:none;">
 <div class="p-2">
-<span class="fa fa-star float-right fa-3x sticky-top"></span>
+<span class="fa fa-suitcase float-right fa-3x sticky-top"></span>
 Out <br>
 <h4>&nbsp;</h4>
 </div>

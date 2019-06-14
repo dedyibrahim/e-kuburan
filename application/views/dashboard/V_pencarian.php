@@ -1,8 +1,8 @@
 <body>
 
-    <?php  $this->load->view('umum/V_sidebar_user2'); ?>
+    <?php  $this->load->view('umum/V_sidebar'); ?>
 <div id="page-content-wrapper">
-<?php  $this->load->view('umum/V_navbar_user2'); ?>
+<?php  $this->load->view('umum/V_navbar'); ?>
 <div class="container-fluid mt-2">
 		
 <ul id="clothing-nav" class="nav nav-tabs" role="tablist">
