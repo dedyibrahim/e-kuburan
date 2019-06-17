@@ -5,10 +5,9 @@
 <div class="container-fluid ">
 <div class="card-header mt-2 mb-2 text-center">
 Data perizinan yang perlu diproses
-</div>
-    
+</div>    
 <div class="row">
-    <div class="col">    
+<div class="col">    
 <table class="table table-hover table-striped table-sm table-bordered text-center">
 <tr>
 <th>Nama client</th>
@@ -17,7 +16,6 @@ Data perizinan yang perlu diproses
 <th class="text-center">Target selesai perizinan</th>
 <th>Aksi</th>
 </tr>
-
 
 <?php foreach ($data_tugas->result_array() as    $data){  ?>
 <tr>
@@ -68,7 +66,7 @@ Data perizinan yang perlu diproses
 
 <!-------------modal--------------------->
 <div class="modal fade" id="modal_data" tabindex="-1" role="dialog" aria-labelledby="modal_dinamis" aria-hidden="true">
-<div class="modal-dialog modal-md" role="document">
+<div class="modal-dialog modal-lg" role="document">
 <div class="modal-content ">
 <div class="modal-body tampilkan_data">
 

@@ -114,12 +114,12 @@ $data = array(
 'username'     => $input['username'],  
 'nama_lengkap' => $input['nama_lengkap'],
 'level'        => $input['level'],
-'sublevel'     => $input['sublevel'],
 'status'       => $input['status'],
 'email'        => $input['email'],
 'phone'        => $input['phone'],
 'password'     => md5($input['password'])
 );
+
 $this->M_dashboard->simpan_user($data);
 
 $status = array(
@@ -149,7 +149,6 @@ $data = array(
 'username'      => $input['username'],
 'nama_lengkap'  => $input['nama_lengkap'],
 'level'         => $input['level'],
-'sublevel'      => $input['sublevel'],
 'status'        => $input['status'],        
 'email'         => $input['email'],        
 'phone'         => $input['phone'],        

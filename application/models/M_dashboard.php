@@ -173,7 +173,7 @@ $this->datatables->select('id_user,'
 );
 
 $this->datatables->from('user');
-$this->datatables->add_column('view',"<button class='btn btn-sm btn-success'  onclick=getUser('$1'); data-toggle='modal' data-target='#exampleModal'> Edit <i class='fa fa-plus'></i></button>",'id_user');
+$this->datatables->add_column('view',"<button class='btn btn-sm btn-success'  onclick=getUser('$1'); data-toggle='modal' data-target='#exampleModal'> Edit <i class='fa fa-plus'></i></button> <button class='btn btn-sm btn-success'  onclick=tambah_sublevel('$1','$2'); data-toggle='modal' data-target='#modal_sublevel'> Sublevel <i class='fa fa-plus'></i></button>",'id_user,no_user');
 return $this->datatables->generate();
 }
 function json_data_nama_dokumen(){

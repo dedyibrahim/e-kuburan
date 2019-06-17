@@ -38,8 +38,8 @@ refresh();
 }
 
 });
+$(".file_perizinan").prop('selectedIndex',0);
 
-$(".file_perizinan").val("");
 }
 
 function refresh(){
@@ -64,11 +64,15 @@ $(".data_form_perizinan").html(data);
 
 function option_aksi(id_data_berkas){
 var val = $(".option_aksi"+id_data_berkas).val();
+
 if(val == 1){
 hapus_syarat(id_data_berkas);    
 }else if(val == 2){
 $('.tentukan_pengurus'+id_data_berkas).removeAttr("disabled");
+}else if(val == 3){
+lihat_progress_perizinan(id_data_berkas);
 }
+$(".option_aksi"+id_data_berkas).prop('selectedIndex',0);
 }
 
 function tentukan_pengurus(id_data_berkas){

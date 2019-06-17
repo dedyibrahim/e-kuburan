@@ -515,7 +515,7 @@ echo  "<td>".$form['nama_file']." <button onclick=download_berkas('".$form['id_d
 echo  "<td>".$form['nama_file']."</td>";
 }
 
-echo "<td class='text-center'>".$form['status']." <button onclick=lihat_progress_perizinan('".$form['id_data_berkas']."') class='btn btn-success btn-sm '><span class='fa fa-eye'></span></button></td>"
+echo "<td class='text-center'>".$form['status']." </td>"
 . "<td>".$form['target_kelar_perizinan']."</td>"
 . "<td>"
 ."<select onchange='tentukan_pengurus(".$form['id_data_berkas'].");' disabled class='form-control tentukan_pengurus".$form['id_data_berkas']."'>"
@@ -531,6 +531,7 @@ echo "<td>"
 ."<option>-- Klik untuk lihat menu --</option>"
 ."<option value='1'>Hapus Syarat</option>"
 ."<option value='2'>Alihkan Tugas</option>"
+."<option value='3'>Lihat laporan</option>"
 ."<select></td>"
 
 . "<tr>";

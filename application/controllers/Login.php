@@ -8,15 +8,15 @@ $this->load->model('M_proses_login');
 
 
 if($this->session->userdata('sublevel') == 'Level 1'){
-redirect(base_url('User1'));
+redirect(base_url('Menu'));
 }elseif ($this->session->userdata('sublevel') == 'Level 2') {
-redirect(base_url('User2'));
+redirect(base_url('Menu'));
 }elseif ($this->session->userdata('sublevel') == 'Level 3') {
-redirect(base_url('User3'));
+redirect(base_url('Menu'));
 } elseif ($this->session->userdata('level') == "Super Admin") {
-redirect(base_url('Dashboard'));
+redirect(base_url('Menu'));
 } elseif ($this->session->userdata('level' == "Admin")){
-redirect(base_url('Admin'));
+redirect(base_url('Menu'));
 }
 
 
@@ -41,7 +41,6 @@ $set_sesi = array(
 'username'      => $data_sesi['username'],
 'nama_lengkap'  => $data_sesi['nama_lengkap'],
 'level'         => $data_sesi['level'],
-'sublevel'      => $data_sesi['sublevel'],
 'status'        => $data_sesi['status'],
 );
 $this->session->set_userdata($set_sesi);
@@ -49,7 +48,6 @@ $this->session->set_userdata($set_sesi);
 $status = array(
 "status"   => "Berhasil",
 "level"    => $data_sesi['level'],    
-'sublevel' => $data_sesi['sublevel'],
 );
 echo json_encode($status);
 

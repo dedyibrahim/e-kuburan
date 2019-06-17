@@ -1,6 +1,6 @@
 <div class="d-flex <?php if($this->session->userdata('toggled') == 'Aktif'){ echo "toggled"; } ?>" id="wrapper">
-<div class="bg-theme border-right" id="sidebar-wrapper">
-<div class="sidebar-heading">App Management </div>
+<div class="bg-theme2 " id="sidebar-wrapper">
+<div class="sidebar-heading text-center">App Management </div>
 <div class="list-group list-group-flush">
       
 <ul class="list-unstyled components">

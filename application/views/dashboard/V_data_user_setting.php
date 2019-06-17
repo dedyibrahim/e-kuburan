@@ -34,20 +34,14 @@
 <input type="text" class="form-control" id="phone_edit" placeholder="Nomor Handphone . . .">
 
 <label>Level</label>
-<select onchange="subleveledit();" class="form-control" id="level_edit">
+<select class="form-control" id="level_edit">
 <option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>
 
-<div class="sublevel_edit">
-<label>Level</label>
-<select class="form-control" id="sublevel_edit">
-<option value="Level 1">Level 1</option>
-<option value="Level 2">Level 2</option>
-<option Value="Level 3">Level 3</option>
-</select>
-</div>
+
+
 
 <label>Status</label>
 <select class="form-control" id="status_edit">
@@ -59,6 +53,34 @@
 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 <button type="button" class="btn btn-success" id="update_user">Update User <i class="fa fa-save"></i></button>
 </div>
+</div>
+</div>
+</div>
+
+<!------------- Modal sublevel---------------->
+<div class="modal fade" id="modal_sublevel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="modal_sublevel">Tambahkan sublevel user</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+    <input type="hidden" value="" class="no_user">    
+    <input type="hidden" value="" class="id_user">    
+<label>Pilih Sublevel</label>    
+<select class="form-control sublevel">
+    <option>Level 1</option>    
+    <option>Level 2</option>    
+    <option>Level 3</option>    
+</select>
+<hr>
+<button class="btn btn-block btn-success simpan_sublevel">Simpan Sublevel</button>
+
+</div>
+    
 </div>
 </div>
 </div>
@@ -87,20 +109,13 @@
 <input type="text" class="form-control" id="phone" placeholder="Phone . . .">
 
 <label>Level</label>
-<select onchange="sublevel();" class="form-control" id="level">
+<select class="form-control" id="level">
 <option value="User">User</option>
 <option value="Admin">Admin</option>
 <option Value="Super Admin">Super Admin</option>
 </select>
 
-<div class="sublevel">
-<label>Level</label>
-<select  class="form-control" id="sublevel">
-<option value="Level 1">Level 1</option>
-<option value="Level 2">Level 2</option>
-<option Value="Level 3">Level 3</option>
-</select>
-</div>
+
 
 <label>Status</label>
 <select class="form-control" id="status">
@@ -123,6 +138,20 @@
 </div>
 
 <script type="text/javascript">
+$(document).ready(function(){
+ $(".simpan_sublevel").click(function(){
+     
+  alert("asd");   
+ });   
+    
+});    
+    
+function tambah_sublevel(id_user,no_user){
+$(".id_user").val(id_user);    
+$(".no_user").val(no_user);    
+}    
+    
+    
 $(document).ready(function() {
 $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
 {
@@ -186,27 +215,6 @@ $('td:eq(0)', row).html(index);
 });
 
 
-function sublevel(){
-var ket_level = $("#level option:selected").text();
-
-if(ket_level != 'User'){
-$(".sublevel").hide();    
-}else{
-$(".sublevel").show();        
-}
-}
-function subleveledit(){
-var ket_level = $("#level_edit option:selected").text();
-
-if(ket_level != 'User'){
-$(".sublevel_edit").hide();    
-}else{
-$(".sublevel_edit").show();        
-}
-}
-
-
-
 function getUser(id_user){
 var token    = "<?php echo $this->security->get_csrf_hash() ?>";
 $.ajax({
@@ -234,7 +242,6 @@ var email           = $("#email").val();
 var phone           = $("#phone").val();
 var nama_lengkap    = $("#nama_lengkap").val();
 var level           = $("#level option:selected" ).text();
-var sublevel        = $("#sublevel option:selected" ).text();
 var status          = $("#status option:selected" ).text();
 var password        = $("#password").val();
 var ulangi_password = $("#ulangi_password").val();
@@ -259,7 +266,7 @@ title: 'Password yang anda masukan tidaklah sesuai.'
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/simpan_user')?>",
-data:"token="+token+"&username="+username+"&password="+password+"&level="+level+"&nama_lengkap="+nama_lengkap+"&status="+status+"&email="+email+"&phone="+phone+"&sublevel="+sublevel,
+data:"token="+token+"&username="+username+"&password="+password+"&level="+level+"&nama_lengkap="+nama_lengkap+"&status="+status+"&email="+email+"&phone="+phone,
 success:function(data){
 var r = JSON.parse(data);
 if(r.status =="Berhasil"){

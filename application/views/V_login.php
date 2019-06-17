@@ -52,8 +52,6 @@ success:function(data){
 var r =JSON.parse(data);
 
 if(r.status == "Berhasil"){
-$("#proses_login").attr("disabled",true);
-if(r.level  == "Super Admin" ){            
 const Toast = Swal.mixin({
 toast: true,
 position: 'top',
@@ -67,63 +65,8 @@ Toast.fire({
 type: 'success',
 title: 'Signed in successfully'
 }).then(function() {
-window.location.href = "<?php echo base_url('Dashboard'); ?>";
-});
-}else if(r.level == "User"){
-
-const Toast = Swal.mixin({
-toast: true,
-position: 'top',
-showConfirmButton: false,
-timer: 1000,
-animation: false,
-customClass: 'animated fadeInDown'
-});
-
-if(r.sublevel == 'Level 1'){
-Toast.fire({
-type: 'success',
-title: 'Signed in successfully'
-}).then(function() {
-window.location.href = "<?php echo base_url('User1'); ?>";
-});
-    
-}else if (r.sublevel == 'Level 2'){
-Toast.fire({
-type: 'success',
-title: 'Signed in successfully'
-}).then(function() {
-window.location.href = "<?php echo base_url('User2'); ?>";
-});
-    
-}else if(r.sublevel == 'Level 3'){
-Toast.fire({
-type: 'success',
-title: 'Signed in successfully'
-}).then(function() {
-window.location.href = "<?php echo base_url('User3'); ?>";
-});
-
-}
-
-}else if(r.level  == "Admin" ){
-const Toast = Swal.mixin({
-toast: true,
-position: 'top',
-showConfirmButton: false,
-timer: 1000,
-animation: false,
-customClass: 'animated fadeInDown'
-});
-
-Toast.fire({
-type: 'success',
-title: 'Signed in successfully'
-}).then(function() {
-window.location.href = "<?php echo base_url('Admin'); ?>";
-})
-
-}
+window.location.href = "<?php echo base_url('Menu'); ?>";
+});    
 
 }else{
 const Toast = Swal.mixin({

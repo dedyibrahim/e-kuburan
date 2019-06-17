@@ -193,7 +193,7 @@ customClass: 'swal2-overflow',
 onOpen: function() {
 $('#target_kelar').datepicker(
 { minDate:0,
-dateFormat: 'dd/mm/yy'
+dateFormat: 'yy/mm/dd'
 }
 );
 }
