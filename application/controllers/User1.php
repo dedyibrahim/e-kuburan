@@ -8,11 +8,7 @@ $this->load->model('M_user1');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
-if($this->session->userdata('username') == NULL && $this->session->userdata('status') == NULL  && $this->session->userdata('level') == NULL && $this->session->userdata('nama_lengkap') == NULL && $this->session->userdata('username') == NULL){
-redirect(base_url('Login'));
-}else if($this->session->userdata('status') != 'Aktif' &&  $this->session->userdata('level') != 'User'){
-redirect(base_url('Login'));
-}        
+
 }
 
 public function index(){

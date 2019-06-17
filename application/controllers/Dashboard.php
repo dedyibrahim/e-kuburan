@@ -782,6 +782,86 @@ unset($_SESSION['toggled']);
 echo print_r($this->session->userdata());
 }
 
+public function simpan_sublevel(){
+if($this->input->post()){
+$input = $this->input->post();
+
+$data = array(
+'no_user'	=>$input['no_user'],
+'sublevel'	=>$input['sublevel'],
+);
+
+$query = $this->db->get_where('sublevel_user',$data);
+
+if($query->num_rows() == 0){
+$status = array(
+"status"     => "success",
+"pesan"      => "Sublevel berhasil disimpan"    
+);
+$this->db->insert('sublevel_user',$data);
+
+}else{
+
+$status = array(
+"status"     => "warning",
+"pesan"      => "Sublevel ".$input['sublevel']." Sudah dimasukan"    
+);
+
+}
+
+echo json_encode($status);
+
+
+}else{
+redirect(404);	
+}
+
+}
+public function data_sublevel(){
+if($this->input->post()){
+
+$data = $this->db->get_where('sublevel_user',array('no_user'=>$this->input->post('no_user')));
+
+echo "<table class='table table-striped table-hover table-sm'><tr>
+<td>Sublevel</td>
+<td class='text-center'>Aksi</td>
+</tr>";
+foreach ($data->result_array() as $d){
+
+echo "<tr><td>".$d['sublevel']."</td>
+<td class='text-center'><button onclick=hapus_sublevel('".$d['id_sublevel_user']."') class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>
+</tr>";
+}
+echo "</table>";
+
+
+}else{
+redirect(404);	
+}
+
+}
+
+public function hapus_sublevel(){
+if($this->input->post()){
+$this->db->delete('sublevel_user',array('id_sublevel_user'=>$this->input->post('id_sublevel_user')));
+
+$status = array(
+"status"     => "success",
+"pesan"      => "Sublevel terhapus",    
+);
+
+
+echo json_encode($status);
+
+
+
+}else{
+redirect(404);	
+}
+
+}
+
+
 }
 
 

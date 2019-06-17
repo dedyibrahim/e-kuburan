@@ -36,25 +36,25 @@ Pilihan
     <br><br>
     <div class="row text-center mt-5 " >
         <div class="col-md-3">
-            <a class="menu_utama" onclick="check_akses('User2');"> 
+            <a class="menu_utama" onclick="check_akses('Level 2','User2');"> 
             <span class="fa fa-folder fa-5x"></span><br>Dokumen Utama
         </a>
         </div>
         
         <div class="col-md-3" >
-        <a  class="menu_utama" onclick="check_akses('User3');"> 
+        <a  class="menu_utama" onclick="check_akses('Level 3','User3');"> 
             <span class="fa fa-folder-plus fa-5x"></span><br>Dokumen Perizinan
         </a>
         </div>   
         
         <div class="col-md-3">
-        <a class="menu_utama" onclick="check_akses('User1');"> 
+        <a class="menu_utama" onclick="check_akses('Level 1','User1');"> 
             <span class="fa fa-user-cog fa-5x"></span><br>Admin
          </a>    
        </div>
         
         <div class="col">
-        <a  class="menu_utama" onclick="check_akses('Dashboard');"> 
+        <a  class="menu_utama" onclick="check_akses('Admin');"> 
             <span class="fa fa-cogs fa-5x"></span><br>Setting
         </a>    
         </div>
@@ -62,16 +62,37 @@ Pilihan
  </div>
 
 <script type="text/javascript">
-function check_akses(model){
+function check_akses(model,model2){
 var <?php echo $this->security->get_csrf_token_name();?>  = "<?php echo $this->security->get_csrf_hash(); ?>";      
     
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Menu/check_akses') ?>",
-data:"token="+token,
-success:function(){
-    
-}    
+data:"token="+token+"&model="+model,
+success:function(data){
+var r = JSON.parse(data);
+
+if(r.status == 'error'){
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan,
+});
+
+}else{
+window.location.href="<?php  echo base_url()?>"+model2
+}
+
+}
+
 });
 
 

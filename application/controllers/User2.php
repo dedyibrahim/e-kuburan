@@ -8,9 +8,7 @@ $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
 $this->load->model('M_user2');
-if($this->session->userdata('User') != 'User' && $this->session->userdata('sublevel') != 'Level 2'){
-redirect(base_url('Login'));    
-}        
+
 }
 
 public function index(){

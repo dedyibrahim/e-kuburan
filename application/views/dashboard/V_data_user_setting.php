@@ -77,6 +77,8 @@
     <option>Level 3</option>    
 </select>
 <hr>
+<div class="_sublevel"></div>
+
 <button class="btn btn-block btn-success simpan_sublevel">Simpan Sublevel</button>
 
 </div>
@@ -140,15 +142,90 @@
 <script type="text/javascript">
 $(document).ready(function(){
  $(".simpan_sublevel").click(function(){
-     
-  alert("asd");   
- });   
+ 
+var no_user  = $(".no_user").val();
+var id_user  = $(".id_user").val();
+var sublevel = $(".sublevel option:selected").text();
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/simpan_sublevel') ?>",
+data:"token="+token+"&no_user="+no_user+"&id_user="+id_user+"&sublevel="+sublevel,
+success:function(data){
+var r = JSON.parse(data);
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan,
+});
+
+
+$('#modal_sublevel').modal('hide');
+}
+});
+
+
+});   
     
-});    
+});
+
+function hapus_sublevel(id_sublevel_user){
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/hapus_sublevel') ?>",
+data:"token="+token+"&id_sublevel_user="+id_sublevel_user,
+success:function(data){
+var r = JSON.parse(data);
+$('#modal_sublevel').modal('hide');
+
+const Toast = Swal.mixin({
+toast: true,
+position: 'center',
+showConfirmButton: false,
+timer: 3000,
+animation: false,
+customClass: 'animated zoomInDown'
+});
+
+Toast.fire({
+type: r.status,
+title: r.pesan
+});
+
+}
+});
+
+}    
     
 function tambah_sublevel(id_user,no_user){
-$(".id_user").val(id_user);    
-$(".no_user").val(no_user);    
+$(".no_user").val(no_user);
+$(".id_user").val(id_user);
+
+var token    = "<?php echo $this->security->get_csrf_hash() ?>";
+
+$.ajax({
+type:"post",
+url:"<?php echo base_url('Dashboard/data_sublevel') ?>",
+data:"token="+token+"&no_user="+no_user,
+success:function(data){
+$('#modal_sublevel').modal('show');
+$("._sublevel").html(data)
+}
+});   
+
+
 }    
     
     
