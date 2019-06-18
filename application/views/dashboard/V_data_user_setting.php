@@ -75,6 +75,7 @@
     <option>Level 1</option>    
     <option>Level 2</option>    
     <option>Level 3</option>    
+    <option>Level 4</option>    
 </select>
 <hr>
 <div class="_sublevel"></div>
@@ -276,7 +277,7 @@ columns: [
 {"data": "email"},
 {"data": "phone"},
 {"data": "level"},
-{"data": "view"}
+{"data": "view"},
 
 
 ],

@@ -9,6 +9,11 @@ $this->load->model('M_user3');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
+
+if($this->session->userdata('sublevel')  != 'Level 3' ){
+redirect(base_url('Menu'));
+}
+
 }
 
 public function index(){

@@ -58,8 +58,38 @@ CREATE TABLE `data_berkas` (
 
 LOCK TABLES `data_berkas` WRITE;
 /*!40000 ALTER TABLE `data_berkas` DISABLE KEYS */;
-INSERT INTO `data_berkas` VALUES (2,'C_000003','000001','N_0009','0007','Dok000003','e9e8a17671e2405332360def66db190a.png','Anggaran Dasar beserta SK','Perizinan','Selesai','Dilihat','MK Fadzri Patriajaya','MK Fadzri Patriajaya','0012','17/06/2019','17/06/2019','30/06/2019','17/06/2019 10:2842'),(7,'C_000003','000001','N_0002','0007',NULL,NULL,'Nomor pokok wajib pajak (NPWP)','Perizinan','Proses','Dilihat',NULL,'MK Fadzri Patriajaya','0012','17/06/2019','17/06/2019','29/06/2019',NULL),(8,'C_000003','000001','N_0006','0007',NULL,NULL,'KTP (Kartu Tanda Penduduk)','Perizinan','Proses','Dilihat',NULL,'MK Fadzri Patriajaya','0012','17/06/2019','17/06/2019','29/06/2019',NULL),(9,'C_000003','000001','N_0030','0007',NULL,NULL,'Izin khusus lainnya (apabila ada)','Perizinan','Proses',NULL,NULL,'MK Fadzri Patriajaya','0012','17/06/2019','17/06/2019','2019/06/20',NULL),(10,'C_000003','000001','N_0014','0007',NULL,NULL,'No. HP dan alamat email pmg saham dan pengurus','Perizinan','Proses','Dilihat',NULL,'MK Fadzri Patriajaya','0012','17/06/2019','17/06/2019','29/06/2019',NULL);
 /*!40000 ALTER TABLE `data_berkas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_buku_tamu`
+--
+
+DROP TABLE IF EXISTS `data_buku_tamu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_buku_tamu` (
+  `id_data_buku_tamu` int(11) NOT NULL AUTO_INCREMENT,
+  `tanggal` varchar(255) NOT NULL,
+  `penginput` varchar(255) NOT NULL,
+  `no_user_penginput` varchar(255) NOT NULL,
+  `keperluan_dengan` varchar(255) NOT NULL,
+  `nomor_telepon` varchar(255) NOT NULL,
+  `nama_klien` varchar(255) NOT NULL,
+  `alasan_keperluan` text NOT NULL,
+  PRIMARY KEY (`id_data_buku_tamu`),
+  KEY `no_user_penginput` (`no_user_penginput`),
+  CONSTRAINT `data_buku_tamu_ibfk_1` FOREIGN KEY (`no_user_penginput`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_buku_tamu`
+--
+
+LOCK TABLES `data_buku_tamu` WRITE;
+/*!40000 ALTER TABLE `data_buku_tamu` DISABLE KEYS */;
+/*!40000 ALTER TABLE `data_buku_tamu` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -94,7 +124,6 @@ CREATE TABLE `data_client` (
 
 LOCK TABLES `data_client` WRITE;
 /*!40000 ALTER TABLE `data_client` DISABLE KEYS */;
-INSERT INTO `data_client` VALUES (118,'C_000001','PT AZURA TECHNINDO','Badan Hukum','JL.Muara Karang Blok L9 T No.9 Penjaringan Jakarta Utara','12/06/2019 08:37:23','Yus Suwandari','0007','Dok000001','Bapak Lukman','081289903664'),(119,'C_000002','PT AZURA TECHNINDO','Badan Hukum','Jl.Muara Karang Blok L9 T N0.9','2019/06/12 08:52:26','Esthi Herlina','0008','Dok000002','Bapak Lukman','081289903664'),(120,'C_000003','PT JAYA TECHNINDO','Badan Hukum','Jl.Muara Karang Blok L9 T  No.8','2019/06/12 09:21:42','Yus Suwandari','0007','Dok000003','Bapak Fullah','081289903664'),(121,'C_000004','ASDASD','Badan Hukum','Asdasd','2019/06/13 11:18:18','Yus Suwandari','0007','Dok000004','Dsd','081289903664'),(122,'C_000005','CV MOTOR RAJAWALI','Badan Hukum','JL.MUARA KARANG BLOK L9 T NO.8 PENJARINGAN JAKARATA UTARA','2019/06/14 14:43:15','Yus Suwandari','0007','Dok000005','Bapak Sukuci','081289903664'),(123,'C_000006','CV MOTOR RAJAWALI','Badan Hukum','JL.MUARA KARANG BLOK L9 T NO.8','2019/06/14 14:47:08','Esthi Herlina','0008','Dok000006','Bapak Zainudin','081289903664');
 /*!40000 ALTER TABLE `data_client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +211,6 @@ CREATE TABLE `data_informasi_pekerjaan` (
 
 LOCK TABLES `data_informasi_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_informasi_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_informasi_pekerjaan` VALUES (1,'C_000002','000002','susunan permodalan (MD, MT, MS)','<p>asd</p>\n','14dd4f3a90a0492ce693fef8899e431b.png','Dok000002');
 /*!40000 ALTER TABLE `data_informasi_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,8 +298,38 @@ CREATE TABLE `data_meta_berkas` (
 
 LOCK TABLES `data_meta_berkas` WRITE;
 /*!40000 ALTER TABLE `data_meta_berkas` DISABLE KEYS */;
-INSERT INTO `data_meta_berkas` VALUES (1,'e9e8a17671e2405332360def66db190a.png','C_000003','000001','N_0009','Nama_berkas','Anggaran Dasar beserta SK','Dok000003'),(2,'e9e8a17671e2405332360def66db190a.png','C_000003','000001','N_0009','Keterangan','-','Dok000003'),(3,'e9e8a17671e2405332360def66db190a.png','C_000003','000001','N_0009','Anggara_Dasar','Anggaran dasar ','Dok000003');
 /*!40000 ALTER TABLE `data_meta_berkas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_notaris_rekanan`
+--
+
+DROP TABLE IF EXISTS `data_notaris_rekanan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_notaris_rekanan` (
+  `id_notaris_rekanan` int(11) NOT NULL AUTO_INCREMENT,
+  `no_telpon` varchar(255) NOT NULL,
+  `nama_notaris` varchar(255) NOT NULL,
+  `alamat` text NOT NULL,
+  `penginput` varchar(255) NOT NULL,
+  `no_user_penginput` varchar(255) NOT NULL,
+  `tanggal_input` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_notaris_rekanan`),
+  KEY `no_user_penginput` (`no_user_penginput`),
+  CONSTRAINT `data_notaris_rekanan_ibfk_1` FOREIGN KEY (`no_user_penginput`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_notaris_rekanan`
+--
+
+LOCK TABLES `data_notaris_rekanan` WRITE;
+/*!40000 ALTER TABLE `data_notaris_rekanan` DISABLE KEYS */;
+INSERT INTO `data_notaris_rekanan` VALUES (1,'asd','asd','asd','Admin','0001','2019/06/18 16:43:57'),(2,'081289903664','Rifk SH,MKn','JL.RAWA LUMBU PENJARINGN JAKARTA BARAT','Admin','0001','2019/06/18 16:45:09'),(3,'asd','asd','asd','Admin','0001','2019/06/18 16:54:19'),(4,'asd','asd','asd','Admin','0001','2019/06/18 16:54:51'),(5,'asd','asd','asd','Admin','0001','2019/06/18 16:56:26'),(6,'asd','asd','asd','Admin','0001','2019/06/18 16:56:30'),(7,'rtyrt','rtty','yrtyry','Admin','0001','2019/06/18 16:56:34'),(8,'a','asd','asd','Siti Rizki Dianti','0003','2019/06/18 16:56:57');
+/*!40000 ALTER TABLE `data_notaris_rekanan` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -310,7 +368,6 @@ CREATE TABLE `data_pekerjaan` (
 
 LOCK TABLES `data_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_pekerjaan` VALUES (130,'C_000003','000001','Proses','2019/06/12 09:21:42','2019,06,12 09:21:42',NULL,'0007','Yus Suwandari','Akta Perubahan Perseroan Terbatas ( PT )','J_0002','2019/06/12 09:21:42','14/06/2019','2019/06/14'),(131,'C_000004','000002','Masuk','2019/06/13 11:18:18','2019,06,13 11:18:18',NULL,'0007','Yus Suwandari','Asd','','2019/06/13 11:18:18','','2019/06/20'),(132,'C_000005','000003','Masuk','2019/06/14 14:43:15','2019,06,14 14:43:15',NULL,'0007','Yus Suwandari','Akta Pendirian CV','J_0003','2019/06/14 14:43:15','','2019/06/15'),(133,'C_000006','000004','Masuk','2019/06/14 14:47:09','2019,06,14 14:47:09',NULL,'0008','Esthi Herlina','Akta Pendirian Perseroan Terbatas ( PT )','J_0001','2019/06/14 14:47:09','','2019/06/21');
 /*!40000 ALTER TABLE `data_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +423,6 @@ CREATE TABLE `data_persyaratan_pekerjaan` (
 
 LOCK TABLES `data_persyaratan_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_persyaratan_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_persyaratan_pekerjaan` VALUES (408,'000001','C_000003','N_0006','KTP (Kartu Tanda Penduduk)','J_0002'),(409,'000001','C_000003','N_0002','Nomor pokok wajib pajak (NPWP)','J_0002'),(410,'000001','C_000003','N_0009','Anggaran Dasar beserta SK','J_0002'),(411,'000001','C_000003','N_0029','NIB (Nomor Induk Berusaha)','J_0002'),(412,'000001','C_000003','N_0030','Izin khusus lainnya (apabila ada)','J_0002'),(413,'000001','C_000003','N_0008','Persetujuan RUPS (BAR/PKR/PKPS)','J_0002'),(414,'000001','C_000003','N_0014','No. HP dan alamat email pmg saham dan pengurus','J_0002'),(415,'000001','C_000003','N_0053','Bukti Setor Modal/Neraca (jika modal naik)','J_0002'),(416,'000003','C_000005','N_0006','KTP (Kartu Tanda Penduduk)','J_0003'),(417,'000003','C_000005','N_0049','Nama PT/Yay/Perkumpulan/CV/Koperasi/Firma','J_0003'),(418,'000003','C_000005','N_0037','Kedudukan, almt lengkap PT, Yay, Perkumpulan, CV, Firma, Koperasi','J_0003'),(419,'000003','C_000005','N_0043','susunan permodalan (MD, MT, MS)','J_0003'),(420,'000003','C_000005','N_0044','susunan pesero aktif dan pesero pasif','J_0003'),(421,'000003','C_000005','N_0014','No. HP dan alamat email pmg saham dan pengurus','J_0003'),(422,'000003','C_000005','N_0039','Maksud Tujuan dan Kegiatan Usaha  ','J_0003'),(423,'000004','C_000006','N_0006','KTP (Kartu Tanda Penduduk)','J_0001'),(424,'000004','C_000006','N_0002','Nomor pokok wajib pajak (NPWP)','J_0001'),(425,'000004','C_000006','N_0049','Nama PT/Yay/Perkumpulan/CV/Koperasi/Firma','J_0001'),(426,'000004','C_000006','N_0037','Kedudukan, almt lengkap PT, Yay, Perkumpulan, CV, Firma, Koperasi','J_0001'),(427,'000004','C_000006','N_0043','susunan permodalan (MD, MT, MS)','J_0001'),(428,'000004','C_000006','N_0040','susunan pemegang saham dan pengurus','J_0001'),(429,'000004','C_000006','N_0014','No. HP dan alamat email pmg saham dan pengurus','J_0001'),(430,'000004','C_000006','N_0050','Pernyataan modal dan domisili','J_0001'),(431,'000004','C_000006','N_0039','Maksud Tujuan dan Kegiatan Usaha  ','J_0001'),(432,'000004','C_000006','N_0013','Persetujuan Dewan Komisaris','J_0001'),(433,'000004','C_000006','N_0012','Buku Nikah','J_0001'),(434,'000004','C_000006','N_0013','Persetujuan Dewan Komisaris','J_0001');
 /*!40000 ALTER TABLE `data_persyaratan_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +451,6 @@ CREATE TABLE `data_progress_pekerjaan` (
 
 LOCK TABLES `data_progress_pekerjaan` WRITE;
 /*!40000 ALTER TABLE `data_progress_pekerjaan` DISABLE KEYS */;
-INSERT INTO `data_progress_pekerjaan` VALUES (1,'000001','0007','Dalam Perjalanana dalam kelurahan....','13/06/2019 09:14:40'),(2,'000004','0008','dalam proses pembuatan CV','14/06/2019 14:47:27'),(3,'000004','0008','dalam proses pembuatan CV','14/06/2019 14:47:27');
 /*!40000 ALTER TABLE `data_progress_pekerjaan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,7 +526,7 @@ CREATE TABLE `sublevel_user` (
   PRIMARY KEY (`id_sublevel_user`),
   KEY `no_user` (`no_user`),
   CONSTRAINT `sublevel_user_ibfk_1` FOREIGN KEY (`no_user`) REFERENCES `user` (`no_user`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -480,6 +535,7 @@ CREATE TABLE `sublevel_user` (
 
 LOCK TABLES `sublevel_user` WRITE;
 /*!40000 ALTER TABLE `sublevel_user` DISABLE KEYS */;
+INSERT INTO `sublevel_user` VALUES (1,'0013','Level 3'),(5,'0012','Level 2'),(6,'0012','Level 3'),(7,'0011','Level 2'),(8,'0010','Level 2'),(9,'0009','Level 3'),(10,'0008','Level 2'),(11,'0007','Level 2'),(12,'0006','Level 2'),(13,'0005','Level 2'),(14,'0004','Level 2'),(17,'0002','Level 3'),(18,'0001','Level 3'),(19,'0001','Level 2'),(20,'0001','Level 1'),(21,'0014','Level 1'),(22,'0003','Level 4'),(23,'0001','Level 4');
 /*!40000 ALTER TABLE `sublevel_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -513,7 +569,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (14,'0001','admin','Admin','dedy@notaris-jakarta.com','0887487772','Super Admin','2019-05-27 06:29:54.683620','21232f297a57a5a743894a0e4a801fc3','5ceb83e2a6d5a.png','Aktif'),(20,'0002','wisnu','Wisnu Subroto N.A','yuniaryanto679@gmail.com','087877912311','User','2019-04-02 01:43:38.764832','ea6b2efbdd4255a9f1b3bbc6399b58f4',NULL,'Aktif'),(21,'0003','dian','Siti Rizki Dianti','dian@notaris-jakarta.com','085289885222','User','2019-04-01 02:39:45.400718','e1b1d45dcc900e3539ba69762603f963',NULL,'Aktif'),(22,'0004','prima','Prima Yuddy F Y','prima@notaris-jakarta.com','085263908704','User','2019-04-01 02:39:26.162350','d8f49869c8583b77ddb82847f3f1955f',NULL,'Aktif'),(23,'0005','dini','Pratiwi S Dini','dini@notaris-jakarta.com','081273602067','User','2019-04-01 02:39:10.277360','41a8e3d62e005f880e82ef061c571cc8',NULL,'Aktif'),(24,'0006','rifka','Rifka Ramadani','rifka@notaris-jakarta.com','087739397228','User','2019-04-01 02:38:59.368236','92d4f526576c8ad74cbab94ebb239790',NULL,'Aktif'),(25,'0007','yus','Yus Suwandari','yus@notaris-jakarta.com','081280716583','User','2019-06-13 02:13:45.582460','21232f297a57a5a743894a0e4a801fc3','5d01b1598e06d.png','Aktif'),(26,'0008','esthi','Esthi Herlina','esthi@notaris-jakarta.com','081517697047','User','2019-06-12 02:12:29.674979','debac5a803a64b50f4cf2211d921e589','5d005f8da4b9d.png','Aktif'),(27,'0009','ria','haryati Ardi','ria@notaris-jakarta.com','087871555505','User','2019-04-01 02:37:53.534903','85edfaa624cbcf1cfd892d0d9336976e',NULL,'Aktif'),(29,'0010','indy','indarty','indy@notaris-jakarta.com','087876227696','User','2019-04-30 07:58:46.952971','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(30,'0011','fitri','Fitri Senjayani','fitri@notaris-jakarta.com','08121923365','User','2019-04-30 08:01:14.303720','1df83ea9876252776d4b1e53baebc926',NULL,'Aktif'),(31,'0012','fadzri','MK Fadzri Patriajaya','fadzri@notaris-jakarta.com','087788105424','User','2019-05-21 08:03:22.489574','21232f297a57a5a743894a0e4a801fc3','5ce3b0ca77568.png','Aktif'),(32,'0013','rohmad300','agus rohmad','agusrohmad300@gmail.com','081806446192','User','2019-05-21 08:14:40.720325','21232f297a57a5a743894a0e4a801fc3','5cd8e0ff1ea56.png','Aktif'),(33,'0014','admin2','Dewantari Handayani SH.MPA','dewantari@notaris-jakarta.com','','User','2019-06-17 09:08:48.252449','c84258e9c39059a89ab77d846ddab909',NULL,'Aktif');
+INSERT INTO `user` VALUES (14,'0001','admin','Admin','dedy@notaris-jakarta.com','0887487772','Super Admin','2019-05-27 06:29:54.683620','21232f297a57a5a743894a0e4a801fc3','5ceb83e2a6d5a.png','Aktif'),(20,'0002','wisnu','Wisnu Subroto N.A','yuniaryanto679@gmail.com','087877912311','User','2019-04-02 01:43:38.764832','ea6b2efbdd4255a9f1b3bbc6399b58f4',NULL,'Aktif'),(21,'0003','dian','Siti Rizki Dianti','dian@notaris-jakarta.com','085289885222','User','2019-06-18 05:05:57.895092','21232f297a57a5a743894a0e4a801fc3',NULL,'Aktif'),(22,'0004','prima','Prima Yuddy F Y','prima@notaris-jakarta.com','085263908704','User','2019-04-01 02:39:26.162350','d8f49869c8583b77ddb82847f3f1955f',NULL,'Aktif'),(23,'0005','dini','Pratiwi S Dini','dini@notaris-jakarta.com','081273602067','User','2019-04-01 02:39:10.277360','41a8e3d62e005f880e82ef061c571cc8',NULL,'Aktif'),(24,'0006','rifka','Rifka Ramadani','rifka@notaris-jakarta.com','087739397228','User','2019-04-01 02:38:59.368236','92d4f526576c8ad74cbab94ebb239790',NULL,'Aktif'),(25,'0007','yus','Yus Suwandari','yus@notaris-jakarta.com','081280716583','User','2019-06-13 02:13:45.582460','21232f297a57a5a743894a0e4a801fc3','5d01b1598e06d.png','Aktif'),(26,'0008','esthi','Esthi Herlina','esthi@notaris-jakarta.com','081517697047','User','2019-06-12 02:12:29.674979','debac5a803a64b50f4cf2211d921e589','5d005f8da4b9d.png','Aktif'),(27,'0009','ria','haryati Ardi','ria@notaris-jakarta.com','087871555505','User','2019-04-01 02:37:53.534903','85edfaa624cbcf1cfd892d0d9336976e',NULL,'Aktif'),(29,'0010','indy','indarty','indy@notaris-jakarta.com','087876227696','User','2019-04-30 07:58:46.952971','9fbefd6f3a1c3c29e341415e7d48c386',NULL,'Aktif'),(30,'0011','fitri','Fitri Senjayani','fitri@notaris-jakarta.com','08121923365','User','2019-04-30 08:01:14.303720','1df83ea9876252776d4b1e53baebc926',NULL,'Aktif'),(31,'0012','fadzri','MK Fadzri Patriajaya','fadzri@notaris-jakarta.com','087788105424','User','2019-05-21 08:03:22.489574','21232f297a57a5a743894a0e4a801fc3','5ce3b0ca77568.png','Aktif'),(32,'0013','rohmad300','agus rohmad','agusrohmad300@gmail.com','081806446192','User','2019-05-21 08:14:40.720325','21232f297a57a5a743894a0e4a801fc3','5cd8e0ff1ea56.png','Aktif'),(33,'0014','admin2','Dewantari Handayani SH.MPA','dewantari@notaris-jakarta.com','-','User','2019-06-18 03:52:20.702496','c84258e9c39059a89ab77d846ddab909',NULL,'Aktif');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -526,4 +582,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-17 16:56:20
+-- Dump completed on 2019-06-18 16:59:32

@@ -9,6 +9,10 @@ $this->load->library('form_validation');
 $this->load->library('upload');
 $this->load->model('M_user2');
 
+if($this->session->userdata('sublevel')  != 'Level 2' ){
+redirect(base_url('Menu'));
+}
+
 }
 
 public function index(){

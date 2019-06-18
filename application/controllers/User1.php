@@ -9,13 +9,16 @@ $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
 
+if($this->session->userdata('sublevel')  != 'Level 1' ){
+redirect(base_url('Menu'));
+}
+
 }
 
 public function index(){
-$data_user  = $this->db->get_where('user',array ('sublevel'=>'Level 2'));   
 $data_tugas = $this->M_user1->data_tugas('Masuk');    
 $this->load->view('umum/V_header');
-$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas,'data_user'=>$data_user]); 
+$this->load->view('user1/V_user1',['data_tugas'=>$data_tugas]); 
 }
 
 public function download_berkas(){
@@ -98,10 +101,9 @@ redirect(404);
 }
 
 public function lihat_karyawan(){
-            $this->db->select('sublevel');
             $this->db->select('no_user');
             $this->db->select('nama_lengkap');
-$karyawan = $this->db->get_where('user',array('Level'=>'User','sublevel !=' =>'Level 1'));    
+$karyawan = $this->db->get_where('user',array('Level'=>'User'));    
 $this->load->view('umum/V_header');
 $this->load->view('user1/V_lihat_karyawan',['karyawan'=>$karyawan]);    
 }
@@ -110,19 +112,20 @@ $this->load->view('user1/V_lihat_karyawan',['karyawan'=>$karyawan]);
 public function lihat_pekerjaan(){
 $no_user = base64_decode($this->uri->segment(3));
 $proses  = base64_decode($this->uri->segment(4));
+$level  = base64_decode($this->uri->segment(5));
 if($no_user && $proses){
 $karyawan = $this->db->get_where('user',array('no_user'=>$no_user));    
 $sublevel = $karyawan->row_array();
 
 $this->load->view('umum/V_header');
-if($sublevel['sublevel'] == 'Level 2'){
+if($level == 'Level 2'){
 $this->db->select('*');
 $this->db->from('data_pekerjaan');
 $this->db->join('user','user.no_user = data_pekerjaan.no_user');
 $this->db->join('data_client', 'data_client.no_client = data_pekerjaan.no_client');
 $this->db->where(array('data_pekerjaan.status_pekerjaan'=>$proses,'data_pekerjaan.no_user'=>$no_user));
 $data = $this->db->get();
-$data_user  = $this->db->get_where('user',array ('sublevel'=>'Level 2'));   
+$data_user  = $this->db->get_where('user',array ('level'=>'User'));   
 
 $this->load->view('user1/V_lihat_pekerjaan_level2',['data'=>$data,'data_user'=>$data_user]);
 }else{    

@@ -1,6 +1,4 @@
 <body  style="color: #edf5e1;">
- 
-
 <nav class="navbar navbar-expand-lg navbar-light bg-theme border-bottom">
     <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,43 +16,52 @@
 Pilihan
 </a>
 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-<a class="dropdown-item" href="<?php echo base_url('User1/profil') ?>">Profil</a>
-<a class="dropdown-item" href="<?php echo base_url('User1/riwayat_pekerjaan') ?>">Histori pekerjaan</a>
+<a class="dropdown-item" href="<?php echo base_url('Menu/profil') ?>">Profil</a>
+<a class="dropdown-item" href="<?php echo base_url('Menu/riwayat_pekerjaan') ?>">Histori pekerjaan</a>
 <div class="dropdown-divider"></div>
-<a class="dropdown-item" href="<?php echo base_url('User1/keluar') ?>">Keluar</a>
+<a class="dropdown-item" href="<?php echo base_url('Menu/keluar') ?>">Keluar</a>
 </div>
 </li>
 </ul>
 </div>
 </div>
 </nav>
-    
 <div class="container">
     <div class="row text-center mt-5 pt-5" style="color: #116466 ;"  >
         <div class="col"><p><h3 style="color:#FF8C00;">Selamat Datang <?php echo $this->session->userdata("nama_lengkap"); ?></h3>Aplikasi Management Tempat penyimpanan dokumen  untuk mempermudah anda dalam mengelola dan mencari dokumen </p></div>
     </div>
     <br><br>
     <div class="row text-center mt-5 " >
-        <div class="col-md-3">
+        
+        <div class="col-md-2 mx-auto">
             <a class="menu_utama" onclick="check_akses('Level 2','User2');"> 
             <span class="fa fa-folder fa-5x"></span><br>Dokumen Utama
         </a>
         </div>
         
-        <div class="col-md-3" >
+        <div class="col-md-2 mx-auto" >
         <a  class="menu_utama" onclick="check_akses('Level 3','User3');"> 
             <span class="fa fa-folder-plus fa-5x"></span><br>Dokumen Perizinan
         </a>
         </div>   
         
-        <div class="col-md-3">
+       
+        
+        <div class="col-md-2 mx-auto">
+        <a class="menu_utama" onclick="check_akses('Level 4','Resepsionis');"> 
+            <span class="fa fa-address-book fa-5x"></span><br>Receptionist
+         </a>    
+       </div>
+       
+         <div class="col-md-2 mx-auto">
         <a class="menu_utama" onclick="check_akses('Level 1','User1');"> 
             <span class="fa fa-user-cog fa-5x"></span><br>Admin
          </a>    
        </div>
+         
         
-        <div class="col">
-        <a  class="menu_utama" onclick="check_akses('Admin');"> 
+        <div class="col-md-2 mx-auto">
+        <a  class="menu_utama" onclick="check_akses('Admin','Dashboard');"> 
             <span class="fa fa-cogs fa-5x"></span><br>Setting
         </a>    
         </div>

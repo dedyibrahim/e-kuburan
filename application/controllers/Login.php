@@ -7,15 +7,7 @@ $this->load->library('Session');
 $this->load->model('M_proses_login');
 
 
-if($this->session->userdata('sublevel') == 'Level 1'){
-redirect(base_url('Menu'));
-}elseif ($this->session->userdata('sublevel') == 'Level 2') {
-redirect(base_url('Menu'));
-}elseif ($this->session->userdata('sublevel') == 'Level 3') {
-redirect(base_url('Menu'));
-} elseif ($this->session->userdata('level') == "Super Admin") {
-redirect(base_url('Menu'));
-} elseif ($this->session->userdata('level' == "Admin")){
+if($this->session->userdata('username')){
 redirect(base_url('Menu'));
 }
 
