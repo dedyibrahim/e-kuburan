@@ -24,6 +24,27 @@ $this->datatables->from('data_user');
 $this->datatables->add_column('view',"<button class='btn btn-sm btn-danger '  onclick=hapus_user('$1'); ><i class='fa fa-trash'></i></button>",'id_data_user');
 return $this->datatables->generate();
 }
+
+function json_data_perpanjang(){
+$this->datatables->select('id_data_perpanjang,'
+.'data_perpanjang.status as status,'
+.'data_jenazah.nama_jenazah as nama_jenazah,'
+.'data_jenazah.nik_jenazah as nik_jenazah,'
+.'data_jenazah.nama_ahli_waris as nama_ahli_waris,'
+.'data_jenazah.nik_ahli_waris as nik_ahli_waris,'
+.'data_jenazah.tanggal_expired as tanggal_expired,'
+);
+
+$this->datatables->from('data_perpanjang');
+$this->datatables->join('data_jenazah', 'data_jenazah.nik_jenazah = data_perpanjang.nik_jenazah');
+$this->datatables->add_column('view',""
+        . "<button class='btn btn-sm btn-danger '  onclick=proses('Tolak','$2'); >Tolak</button> || "
+        . "<button class='btn btn-sm btn-success ' onclick=proses('Berhasil','$2'); >Berhasil</button> || "
+        . "<button class='btn btn-sm btn-primary ' onclick=download('$2'); >Download</button>"
+        . "",'id_data_perpanjang,nik_jenazah');
+return $this->datatables->generate();
+}
+
 function json_data_jenazah(){
     
 $this->datatables->select('id_data_jenazah,'
@@ -35,6 +56,7 @@ $this->datatables->select('id_data_jenazah,'
 .'data_jenazah.blok_agama as blok_agama,'
 .'data_jenazah.jenis_kelamin as jenis_kelamin,'
 .'data_jenazah.tanggal_wafat as tanggal_wafat,'
+.'data_jenazah.tanggal_expired as tanggal_expired,'
 );
 $this->datatables->from('data_jenazah');
 $this->datatables->add_column('view',"<a href='". base_url('Dashboard/print_invoices/$1')."'><button class='btn btn-sm btn-success'   ><i class='fa fa-print'></i> Invoices </button></a>",'id_data_jenazah');

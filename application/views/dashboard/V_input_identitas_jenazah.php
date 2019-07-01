@@ -81,11 +81,11 @@ Lengkapi berkas jenazah
 
 <hr>
 <label>Pemesanan makam Rp.800.000</label>
-<input type="checkbox" class="form-check-inline" onclick="tambah_biaya_makam('pemesanan_makam');"><br>
+<input type="checkbox" <?php if($this->session->userdata('pemesanan_makam')){ echo "checked=''";} ?> class="form-check-inline" onclick="tambah_biaya_makam('pemesanan_makam');"><br>
 <label>Gunakan Batu nisan Rp.300.000</label>
-<input type="checkbox" class="form-check-inline" onclick="tambah_biaya_makam('batu_nisan');"><br>
+<input type="checkbox" <?php if($this->session->userdata('batu_nisan')){ echo "checked=''";} ?> class="form-check-inline" onclick="tambah_biaya_makam('batu_nisan');"><br>
 <label>Biaya Perpanjang / 5 tahun Rp.100.000</label>
-<input type="checkbox" class="form-check-inline" onclick="tambah_biaya_makam('perpanjang');">
+<input type="checkbox" <?php if($this->session->userdata('perpanjang')){ echo "checked=''";} ?> class="form-check-inline" onclick="tambah_biaya_makam('perpanjang');">
 
 <div class="card-header text-center">
 <label>Total Bayar</label>    
@@ -242,6 +242,8 @@ customClass: 'animated bounceInDown'
 Toast.fire({
 type: r.status,
 title: r.message
+}).then(function(){
+window.location.href="<?php echo base_url('Dashboard/data_jenazah') ?>";    
 });
 }
 });

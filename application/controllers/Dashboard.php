@@ -18,9 +18,13 @@ redirect(base_url('Login'));
 } 
 
 public function index(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_dashboard');
+$this->input_ahli_waris();
+    
 } 
+public function perpanjang_makam(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_perpanjang_makam');
+}
 
 public function user(){
 $this->load->view('umum/V_header');
@@ -84,6 +88,11 @@ redirect(404);
 public function json_data_user(){
 echo $this->M_dashboard->json_data_user();       
 }
+
+public function json_data_perpanjang(){
+echo $this->M_dashboard->json_data_perpanjang();       
+}
+
 public function json_data_jenazah(){
 echo $this->M_dashboard->json_data_jenazah();       
 }
@@ -306,10 +315,13 @@ $data_jenazah = array(
 'nama_ahli_waris'   => $input['nama_ahli_waris'],
 'tanggal_lahir'     => $input['tanggal_lahir'],
 'tanggal_wafat'     => $input['tanggal_wafat'],
+'tanggal_expired'   => date('Y/m/d',strtotime("+5 years")),
 'nik_jenazah'       => $input['nik_jenazah'],
 'nama_jenazah'      => $input['nama_jenazah'],
 'jenis_kelamin'     => $input['jenis_kelamin'],
 );
+
+
 
 $this->M_dashboard->simpan_jenazah($data_jenazah);    
 
@@ -417,6 +429,10 @@ $status = array(
 );
 echo json_encode($status);
 
+unset($_SESSION['pemesanan_makam']);   
+unset($_SESSION['perpanjang']);   
+unset($_SESSION['batu_nisan']);   
+
 }else{
 redirect(404);    
 }
@@ -454,7 +470,8 @@ $str .="<tr style ='background:#1ABB9C; font-size:15px; '  >"
 . "<td align='center' >Nama Ahli waris</td>"
 . "<td align='center' >Nik Ahli Waris</td>"
 . "<td align='center' >Blok Makam</td>"
-. "<td align='center' >Tanggal Wafat</td></tr>";
+. "<td align='center' >Tanggal Wafat</td>"
+. "<td align='center' >Expired Makam</td></tr>";
 
 $no =1;
 foreach ($query->result_array() as $d){
@@ -468,6 +485,7 @@ $str .="<tr>"
 . "<td>".$d['nik_ahli_waris']."</td>"
 . "<td>".$d['nama_makam']."</td>"
 . "<td>".$d['tanggal_wafat']."</td>"
+. "<td>".$d['tanggal_expired']."</td>"
 . "</tr>";   
 }
 
@@ -551,6 +569,10 @@ $str .= "<table align='center' style='width:80%' border ='1' cellpading ='0' cel
         . "<td>".$query['tanggal_wafat']."</td>"
         . "</tr>"
         . "<tr>"
+        . "<td>Expired Makam</td>"
+        . "<td>".$query['tanggal_expired']."</td>"
+        . "</tr>"
+        . "<tr>"
         . "<td>Nama Ahli waris</td>"
         . "<td>".$query['nama_ahli_waris']."</td>"
         . "</tr>"
@@ -599,6 +621,37 @@ $dompdf->set_paper("A4","landscape");
 $dompdf->render();
 $dompdf->stream('laporan'.'.pdf', array('Attachment'=>0)); 
         
+}
+
+public function proses_perpanjang(){
+if($this->input->post()){
+$input = $this->input->post();
+if($input['status'] == "Berhasil"){
+
+$update_expired = array(
+'tanggal_expired'   => date('Y/m/d',strtotime("+5 years")),
+);
+$this->db->update('data_jenazah',$update_expired,array('nik_jenazah'=>$input['nik_jenazah']));
+$this->db->update('data_perpanjang',array('status'=>$input['status']),array('nik_jenazah'=>$input['nik_jenazah']));
+
+
+}else if($input['status'] == "Tolak"){
+$this->db->update('data_perpanjang',array('status'=>$input['status']),array('nik_jenazah'=>$input['nik_jenazah']));  
+}
+
+}else{
+redirect(404);    
+}
+    
+}
+
+public function download($nik_jenazah){
+    
+$data = $this->db->get_where('data_perpanjang',array('nik_jenazah'=>$nik_jenazah))->row_array();
+
+force_download('./uploads/bukti_transfer/'.$data['bukti_transfer'], NULL);    
+
+
 }
 
 }

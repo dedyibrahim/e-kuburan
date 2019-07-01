@@ -39,6 +39,7 @@
 <th  align="center" aria-controls="datatable-fixed-header"  >blok makam</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >agama</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >tgl wafat</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >tgl expired makam</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >aksi</th>
 </thead>
 <tbody align="center">
@@ -98,6 +99,7 @@ columns: [
 {"data": "nama_makam"},
 {"data": "blok_agama"},
 {"data": "tanggal_wafat"},
+{"data": "tanggal_expired"},
 {"data": "view"}
 
 ],

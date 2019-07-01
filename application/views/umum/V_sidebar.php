@@ -15,6 +15,10 @@
 <a class="list-group-item list-group-item-action" href="<?php echo base_url('Dashboard/data_jenazah') ?>">Data Jenazah<i class="fa fa-list-ul float-right"></i></a>
 </li>
 
+<li>
+<a class="list-group-item list-group-item-action" href="<?php echo base_url('Dashboard/perpanjang_makam') ?>">Perpanjang makam<i class="fa fa-list-ul float-right"></i></a>
+</li>
+
     
 <?php if($this->session->userdata('level') == 'Admin'){ ?>
 <li class="active">

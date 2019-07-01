@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2019 at 03:46 AM
+-- Generation Time: Jul 01, 2019 at 09:21 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 7.0.4
 
@@ -42,7 +42,8 @@ CREATE TABLE `data_ahli_waris` (
 --
 
 INSERT INTO `data_ahli_waris` (`id_data_ahli_waris`, `nik`, `nama`, `alamat`, `no_tlp`, `status_berkas`, `hubungan_keluarga`, `file_ktp`) VALUES
-(2, '327106230198', 'Dedi ibrahim', 'Kp.Sumurwangi Kel.Kayumanis Kec.Tanah Sareal Kota Bogor', '081289903664', 'Terupload', 'Adik', '8dc6ed2db9473fb5f8fad06efa9c1692.jpg');
+(2, '327106230198', 'Dedi ibrahim', 'Kp.Sumurwangi Kel.Kayumanis Kec.Tanah Sareal Kota Bogor', '081289903664', 'Terupload', 'Adik', '8dc6ed2db9473fb5f8fad06efa9c1692.jpg'),
+(3, '327106230197', 'Subarjo', 'Jl.Raya Narogong', '089878833', 'Terupload', 'Ayah', '53924670252fee48e05bab02d5539917.jpg');
 
 -- --------------------------------------------------------
 
@@ -62,22 +63,14 @@ CREATE TABLE `data_berkas_jenazah` (
 --
 
 INSERT INTO `data_berkas_jenazah` (`id_data_berkas_jenazah`, `nama_lampiran`, `file`, `berkas`) VALUES
-(24, 'KTP Jenazah', 'f6a742e734b42bdc68ee1be28b61062b.jpg', '32689978836677'),
-(25, 'Surat pengantar RT RW', '6b9beb38c4b16cafa8ec3113e26ed28d.jpg', '32689978836677'),
-(26, 'Surat pengantar rumah sakit', '6fcebefc7d3147f72a0fe2281545f9ca.jpg', '32689978836677'),
-(27, 'Kartu Keluarga', 'e2e9cc236e2d27f01d16c3c4cd3f5cbc.jpg', '32689978836677'),
-(28, 'KTP Jenazah', '2a9e2f4da0f8280015f5333540e9d820.jpg', '32689978836677'),
-(29, 'Surat pengantar RT RW', 'd13b3daf7fbbea8fd9cc331264ba5dec.jpg', '32689978836677'),
-(30, 'Surat pengantar rumah sakit', 'ce4669472fd759f831993f521abcc728.jpg', '32689978836677'),
-(31, 'Kartu Keluarga', 'cc369724fd5d3fa6f79d0ec3b42539a7.jpg', '32689978836677'),
-(32, 'KTP Jenazah', '63d74dd613aa2dbba89542f237d676a5.jpg', '32689978836677'),
-(33, 'Surat pengantar RT RW', '9252ba72b2fbea55cfdd753be355bd73.jpg', '32689978836677'),
-(34, 'Surat pengantar rumah sakit', 'ab332eac067c6c2d68b897b01963e76b.jpg', '32689978836677'),
-(35, 'Kartu Keluarga', '450384bcf9a477b7cce461db1101eb9c.jpg', '32689978836677'),
-(36, 'KTP Jenazah', '0a6551a4c1ada5ce87c1b2932f363027.jpg', '32689978836677'),
-(37, 'Surat pengantar RT RW', 'da77cbd6146d8492edb25d30a94e13e4.jpg', '32689978836677'),
-(38, 'Surat pengantar rumah sakit', '24f5ca2a31948b1256b6e4f176e13e1e.jpg', '32689978836677'),
-(39, 'Kartu Keluarga', '964b1b3fb9f110d579755149fa8f6d6d.jpg', '32689978836677');
+(56, 'KTP Jenazah', 'a0b5c96287132f2b8122f9362365d37c.jpg', '327106230196'),
+(57, 'Surat pengantar RT RW', 'c055cd156fb861ff1707f23af2c71c6a.jpg', '327106230196'),
+(58, 'Surat pengantar rumah sakit', '9c3911227a3bd1292aba435a4b6229ea.jpg', '327106230196'),
+(59, 'Kartu Keluarga', '173fd41751c4ee448ceb5630de21371f.jpg', '327106230196'),
+(60, 'KTP Jenazah', 'e36da9a99f8ece44d43620843b1bcf2c.jpg', '327106230195'),
+(61, 'Surat pengantar RT RW', '926881684a3ad8a611fd039346e84948.jpg', '327106230195'),
+(62, 'Surat pengantar rumah sakit', '89a7961a8a4ba59c57a2792dd9d20153.jpg', '327106230195'),
+(63, 'Kartu Keluarga', '07006b5dcaced32aa2249c35653f8e0b.jpg', '327106230195');
 
 -- --------------------------------------------------------
 
@@ -97,9 +90,12 @@ CREATE TABLE `data_biaya` (
 --
 
 INSERT INTO `data_biaya` (`id_data_biaya`, `nik_jenazah`, `jenis_biaya`, `jumlah_biaya`) VALUES
-(1, '32689978836677', 'Pemesanan makam', '800000'),
-(2, '32689978836677', 'Batu nisan', '300000'),
-(3, '32689978836677', 'Perpanjang', '100000');
+(16, '327106230196', 'Pemesanan makam', '800000'),
+(17, '327106230196', 'Batu nisan', '300000'),
+(18, '327106230196', 'Perpanjang', '100000'),
+(19, '327106230195', 'Pemesanan makam', '800000'),
+(20, '327106230195', 'Batu nisan', '300000'),
+(21, '327106230195', 'Perpanjang', '100000');
 
 -- --------------------------------------------------------
 
@@ -138,6 +134,7 @@ CREATE TABLE `data_jenazah` (
   `nama_ahli_waris` varchar(255) NOT NULL,
   `tanggal_lahir` varchar(255) NOT NULL,
   `tanggal_wafat` varchar(255) NOT NULL,
+  `tanggal_expired` varchar(255) NOT NULL,
   `nik_jenazah` varchar(255) NOT NULL,
   `nama_jenazah` varchar(255) NOT NULL,
   `jenis_kelamin` varchar(255) NOT NULL
@@ -147,11 +144,30 @@ CREATE TABLE `data_jenazah` (
 -- Dumping data for table `data_jenazah`
 --
 
-INSERT INTO `data_jenazah` (`id_data_jenazah`, `blok_agama`, `blok_makam`, `nama_makam`, `nik_ahli_waris`, `nama_ahli_waris`, `tanggal_lahir`, `tanggal_wafat`, `nik_jenazah`, `nama_jenazah`, `jenis_kelamin`) VALUES
-(14, 'Islam', 'BLOK A', 'BLOK A1', '327106230198', 'Dedi ibrahim', '2019/06/30', '2019/06/30', '32689978836677', 'Pak Puat', 'Perumpuan'),
-(15, 'Islam', 'BLOK A', 'BLOK A2', '327106230198', 'Dedi ibrahim', '2019/06/30', '2019/07/03', '32689978836677', 'Zaenudin', 'Laki-laki'),
-(16, 'Islam', 'BLOK A', 'BLOK A3', '327106230198', 'Dedi ibrahim', '2019/06/30', '2019/08/07', '32689978836677', 'Zaenudin', 'Laki-laki'),
-(17, 'Islam', 'BLOK A', 'BLOK A6', '327106230198', 'Dedi ibrahim', '2019/06/30', '2019/06/30', '32689978836677', 'Pak Puat', 'Perumpuan');
+INSERT INTO `data_jenazah` (`id_data_jenazah`, `blok_agama`, `blok_makam`, `nama_makam`, `nik_ahli_waris`, `nama_ahli_waris`, `tanggal_lahir`, `tanggal_wafat`, `tanggal_expired`, `nik_jenazah`, `nama_jenazah`, `jenis_kelamin`) VALUES
+(23, 'Islam', 'BLOK A', 'BLOK A1', '327106230198', 'Dedi ibrahim', '2019/07/02', '2019/07/02', '2024/07/01', '327106230196', 'Markonah', 'Perumpuan'),
+(24, 'Kristen', 'BLOK B', 'BLOK B2', '327106230197', 'Subarjo', '2019/07/02', '2019/07/02', '2024/07/01', '327106230195', 'Zaenudin', 'Laki-laki');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_perpanjang`
+--
+
+CREATE TABLE `data_perpanjang` (
+  `id_data_perpanjang` int(11) NOT NULL,
+  `nik_jenazah` varchar(255) NOT NULL,
+  `bukti_transfer` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `data_perpanjang`
+--
+
+INSERT INTO `data_perpanjang` (`id_data_perpanjang`, `nik_jenazah`, `bukti_transfer`, `status`) VALUES
+(3, '327106230196', 'bd1653f1d5a2fe5b4588eef04e3e9310.jpg', 'Berhasil'),
+(4, '327106230195', '8ae9007750fdb52c66ca1eabeee4ebca.jpg', 'Tolak');
 
 -- --------------------------------------------------------
 
@@ -218,6 +234,13 @@ ALTER TABLE `data_jenazah`
   ADD KEY `blok_makam` (`blok_makam`);
 
 --
+-- Indexes for table `data_perpanjang`
+--
+ALTER TABLE `data_perpanjang`
+  ADD PRIMARY KEY (`id_data_perpanjang`),
+  ADD KEY `nik_jenazah` (`nik_jenazah`);
+
+--
 -- Indexes for table `data_user`
 --
 ALTER TABLE `data_user`
@@ -231,17 +254,17 @@ ALTER TABLE `data_user`
 -- AUTO_INCREMENT for table `data_ahli_waris`
 --
 ALTER TABLE `data_ahli_waris`
-  MODIFY `id_data_ahli_waris` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_data_ahli_waris` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `data_berkas_jenazah`
 --
 ALTER TABLE `data_berkas_jenazah`
-  MODIFY `id_data_berkas_jenazah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id_data_berkas_jenazah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `data_biaya`
 --
 ALTER TABLE `data_biaya`
-  MODIFY `id_data_biaya` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_data_biaya` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `data_blok`
 --
@@ -251,7 +274,12 @@ ALTER TABLE `data_blok`
 -- AUTO_INCREMENT for table `data_jenazah`
 --
 ALTER TABLE `data_jenazah`
-  MODIFY `id_data_jenazah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_data_jenazah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT for table `data_perpanjang`
+--
+ALTER TABLE `data_perpanjang`
+  MODIFY `id_data_perpanjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `data_user`
 --
@@ -279,6 +307,12 @@ ALTER TABLE `data_biaya`
 ALTER TABLE `data_jenazah`
   ADD CONSTRAINT `data_jenazah_ibfk_1` FOREIGN KEY (`nik_ahli_waris`) REFERENCES `data_ahli_waris` (`nik`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `data_jenazah_ibfk_2` FOREIGN KEY (`blok_makam`) REFERENCES `data_blok` (`nama_blok`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `data_perpanjang`
+--
+ALTER TABLE `data_perpanjang`
+  ADD CONSTRAINT `data_perpanjang_ibfk_1` FOREIGN KEY (`nik_jenazah`) REFERENCES `data_jenazah` (`nik_jenazah`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
