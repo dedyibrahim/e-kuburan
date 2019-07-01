@@ -2,771 +2,103 @@
 class Dashboard extends CI_Controller{
 public function __construct() {
 parent::__construct();
+require_once (APPPATH.'third_party/dompdf/dompdf_config.inc.php');
+        
+
 $this->load->helper('download');
 $this->load->library('session');
 $this->load->model('M_dashboard');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
-if($this->session->userdata('level') != 'Super Admin'){
-redirect(base_url('Menu'));
+if(!$this->session->userdata('nama_depan') ){
+redirect(base_url('Login'));
 }
 
 } 
-
 
 public function index(){
-$this->setting();    
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_dashboard');
 } 
 
-public function hapus_persyaratan(){
-if($this->input->post()){
-$input = $this->input->post();
-echo print_r($input);
-$this->db->delete('data_persyaratan',array('id_data_persyaratan'=>$input['id_data_persyaratan']));
-}else{
-redirect(404);    
-}    
-}
-
-public function get_persyaratan(){
-if($this->input->post()){
-$input = $this->input->post();
-$data = $this->db->get_where('data_persyaratan',array('no_jenis_dokumen'=>$input['no_jenis_dokumen']));
-
-echo "<table class='table table-sm table-bordered table-striped table-hover'>"
-. "<tr>"
-."<th>Nama File</th>"
-."<th class='text-center'>Aksi</th>"
-. "</tr>";
-foreach ($data->result_array() as $d){
-echo  "<tr class='hapus_syarat".$d['id_data_persyaratan']."'>"
-."<td >".$d['nama_dokumen']."</td>"
-."<td  class='text-center'><button onclick=hapus_syarat(".$d['id_data_persyaratan']."); class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>"
-. "</tr>";    
-}
-
-echo "</table>";
-
-
-}else{
-redirect(4);    
-}    
-    
-}
-
-public function keluar(){
-$this->session->sess_destroy();
-redirect (base_url('Login'));
-}
-
-public function setting(){
-if($this->session->userdata('level') == "Super Admin"){    
-$user           = $this->M_dashboard->data_user();
-$nama_dokumen   = $this->M_dashboard->data_nama_dokumen();
-$nama_jenis     = $this->M_dashboard->data_jenis();
-
+public function user(){
 $this->load->view('umum/V_header');
-$this->load->view('dashboard/V_setting',['user'=>$user,'nama_dokumen'=>$nama_dokumen,'nama_jenis'=>$nama_jenis]);
-}else{
-redirect(404);    
+$this->load->view('dashboard/V_user');
 }
 
-}
-
-public function simpan_jenis_dokumen(){
+public function  simpan_user(){
 if($this->input->post()){
+$input = $this->input->post();
+$hasil_cek = $this->M_dashboard->cek_user(array('username'=>$input['username']));
 
-$jumlah_jenis        = $this->M_dashboard->data_jenis()->num_rows()+1;
-$no_jenis            = str_pad($jumlah_jenis,4,"0",STR_PAD_LEFT);
+if($hasil_cek->num_rows() == 1){
+$status = array(
+'status'    =>'error',
+'message'   =>'Username sudah digunakan'
+);   
+}elseif($input['password'] != $input['ulangi_password']){
 
-
-$data = array(
-'no_jenis_dokumen' =>"J_".$no_jenis,
-'pekerjaan'        =>$this->input->post('pekerjaan'),
-'nama_jenis'       =>$this->input->post('jenis_dokumen'),
-'pembuat_jenis'    => $this->session->userdata('nama_lengkap'),  
+$status = array(
+'status'    =>'error',
+'message'   =>'Password yang dimasukan tidak sama'
 );    
-$this->M_dashboard->simpan_jenis($data);
-
-$status = array(
-"status"=>"Berhasil"
-);
-echo json_encode($status);
-
 }else{
-redirect(404);    
-}
-}
-
-public function simpan_user(){
-if($this->input->post()){
-$input = $this->input->post();
-
-
-$jumlah_user        = $this->M_dashboard->data_user()->num_rows()+1;
-$angka              = 4;
-$no_user            = str_pad($jumlah_user, $angka ,"0",STR_PAD_LEFT);
-
 $data = array(
-'no_user'      => $no_user,  
-'username'     => $input['username'],  
-'nama_lengkap' => $input['nama_lengkap'],
-'level'        => $input['level'],
-'status'       => $input['status'],
-'email'        => $input['email'],
-'phone'        => $input['phone'],
-'password'     => md5($input['password'])
-);
-
-$this->M_dashboard->simpan_user($data);
-
-$status = array(
-"status"=>"Berhasil"
-);
-echo json_encode($status);
-}else{
-redirect(404);    
-}
-}
-public function getUser(){
-if($this->input->post()){
-$query = $this->M_dashboard->ambil_user($this->input->post('id_user'))->row_array();
-echo json_encode($query);
-
-}else{
-redirect(404);    
-}  
-
-}
-
-public function update_user(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$data = array(
+'nama_depan'    => $input['nama_depan'],
+'nama_belakang' => $input['nama_belakang'],
+'nama_lengkap'  => $input['nama_depan']." ".$input['nama_belakang'],
+'level'         => $input['level'],   
 'username'      => $input['username'],
-'nama_lengkap'  => $input['nama_lengkap'],
-'level'         => $input['level'],
-'status'        => $input['status'],        
-'email'         => $input['email'],        
-'phone'         => $input['phone'],        
+'password'      => password_hash($input['password'],PASSWORD_DEFAULT),    
 );
-
-$this->M_dashboard->update_user($data,$this->input->post('id_user'));
 $status = array(
-"status"=>"Berhasil"
+'status'    =>'success',
+'message'   =>'User baru berhasil ditambahkan'
 );
+$this->M_dashboard->simpan_user($data);
+}
 echo json_encode($status);
+
 }else{
 redirect(404);    
 }
 }
-
-
-public function simpan_nama_dokumen(){
+public function hapus_user(){
 if($this->input->post()){
-
-$jumlah_nama_dokumen        = $this->M_dashboard->data_nama_dokumen()->num_rows()+1;
-$no_nama_dokumen            = str_pad($jumlah_nama_dokumen,4 ,"0",STR_PAD_LEFT);
-
-
-$data = array(
-'no_nama_dokumen'   => "N_".$no_nama_dokumen,
-'nama_dokumen'      => $this->input->post('nama_dokumen'),
-'pembuat'           => $this->session->userdata('nama_lengkap'),   
-);
-$this->M_dashboard->simpan_nama_dokumen($data);
-
-$status = array(
-"status"=>"Berhasil"
-);
-echo json_encode($status);
-
-}else{    
+    
+    
+$this->db->delete('data_user',array('id_data_user'=>$this->input->post('id_data_user')));    
+}else{
 redirect(404);    
 }    
-
 }
-public function getJenis(){
-if($this->input->post()){
-$data_jenis = $this->M_dashboard->getJenis($this->input->post('id_jenis_dokumen'))->row_array();
-
-$data = array(
-'id_jenis_dokumen' => $data_jenis['id_jenis_dokumen'],    
-'no_jenis_dokumen' => $data_jenis['no_jenis_dokumen'],
-'nama_jenis'       => $data_jenis['nama_jenis'],   
-);
-echo json_encode($data);
-
+public function hapus_blok(){
+if($this->input->post()){   
+$this->db->delete('data_blok',array('id_data_blok'=>$this->input->post('id_data_blok')));    
 }else{
 redirect(404);    
-}
-}
-public function getSyarat(){
-if($this->input->post()){
-$query= $this->M_dashboard->getSyarat($this->input->post('no_jenis_dokumen'));
-
-if($query->num_rows() > 0){
-
-foreach ($query->result_array() as $data_jenis){
-$data[] = array(
-'id_syarat_dokumen' => $data_jenis['id_syarat_dokumen'],    
-'no_jenis_dokumen'  => $data_jenis['no_jenis_dokumen'],
-'no_nama_dokumen'   => $data_jenis['no_nama_dokumen'],
-'nama_syarat'       => $data_jenis['nama_syarat'],   
-'status_syarat'     => $data_jenis['status_syarat'],   
-);
-}
-echo json_encode($data);
-}else{
-$status = array(
-"status"=>"null"
-);
-echo json_encode($status);   
-
-}
-}else{
-redirect(404);    
-}
-
-}
-public function cari_nama_dokumen(){
-$term = strtolower($this->input->get('term'));    
-$query = $this->M_dashboard->cari_nama_dokumen($term);
-
-foreach ($query as $d) {
-$json[]= array(
-'label'                    => $d->nama_dokumen,   
-'id_nama_dokumen'          => $d->id_nama_dokumen,
-'no_nama_dokumen'          => $d->no_nama_dokumen,
-'nama_dokumen'             => $d->nama_dokumen,
-);   
-}
-echo json_encode($json);
-}
-
-
-public function json_data_jenis_dokumen(){
-echo $this->M_dashboard->json_data_jenis_dokumen();       
-}
-public function json_data_daftar_persyaratan(){
-echo $this->M_dashboard->json_data_daftar_persyaratan();       
+}    
 }
 
 public function json_data_user(){
 echo $this->M_dashboard->json_data_user();       
 }
-public function json_data_jenis(){
-echo $this->M_dashboard->json_data_jenis();       
+public function json_data_jenazah(){
+echo $this->M_dashboard->json_data_jenazah();       
 }
 
-public function json_data_client(){
-echo $this->M_dashboard->json_data_client();       
-}
-public function json_data_perorangan(){
-echo $this->M_dashboard->json_data_perorangan();       
+public function json_data_blok(){
+echo $this->M_dashboard->json_data_blok();       
 }
 
-public function json_dokumen_proses(){
-echo $this->M_dashboard->json_dokumen_proses();       
+public function json_data_ahli_waris(){
+echo $this->M_dashboard->json_data_ahli_waris();       
 }
 
-public function json_data_nama_dokumen(){
-echo $this->M_dashboard->json_data_nama_dokumen();       
-}
-public function json_data_berkas(){
-echo $this->M_dashboard->json_data_berkas();       
-}
-public function json_data_pekerjaan(){
-echo $this->M_dashboard->json_data_pekerjaan();       
-}
-
-public function data_dokumen(){
-
-$query = $this->db->get_where('nama_dokumen',array('id_nama_dokumen'=>$this->input->post('id_nama_dokumen')))->row_array();
-
-$data = array(
-'id_nama_dokumen' =>$query['id_nama_dokumen'],    
-'no_nama_dokumen' =>$query['no_nama_dokumen'],   
-'nama_dokumen'    =>$query['nama_dokumen'],
-);
-
-echo json_encode($data);
-
-}
-
-public function data_pekerjaan(){
-if($this->input->post()){
-$input = $this->input->post();    
-
-$query = $this->db->get_where('data_jenis_dokumen',array('id_jenis_dokumen'=>$input['id_jenis_dokumen']))->row_array();
-$data = array(
-'no_jenis_dokumen' =>$query['no_jenis_dokumen'],
-'pekerjaan'        =>$query['pekerjaan'],
-'nama_jenis'       =>$query['nama_jenis'],
-);    
-echo json_encode($data);
-
-
-}else{
-redirect(404);    
-}
-
-}
-public function update_jenis_pekerjaan(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$data = array(
-'no_jenis_dokumen' =>$input['no_jenis_dokumen'],
-'pekerjaan'        =>$input['pekerjaan'],
-'nama_jenis'       =>$input['nama_jenis'],
-'pembuat_jenis'    => $this->session->userdata('nama_lengkap'),  
-);
-
-$this->db->update('data_jenis_dokumen',$data,array('id_jenis_dokumen'=>$input['id_jenis_dokumen']));
-
-$status = array(
-"status"=>"success",
-"pesan"=>"Data pekerjaan berhasil diperbaharui"
-);
-
-echo json_encode($status);
-    
-}else{
-redirect(404);    
-}       
-}
-
-public function update_nama_dokumen(){
-if($this->input->post()){    
-$input = $this->input->post();
-
-$data = array(
-'no_nama_dokumen'   => $input['no_nama_dokumen'],
-'nama_dokumen'      => $input['nama_dokumen'],
-'pembuat'           => $this->session->userdata('nama_lengkap'),   
-);
-$this->db->update('nama_dokumen',$data,array('id_nama_dokumen'=>$input['id_nama_dokumen']));
-
-$status = array(
-"status"=>"success",
-"pesan"=>"Nama dokumen berhasil diperbaharui"
-);
-
-echo json_encode($status);
-    
-}else{
-redirect(404);    
-}    
-}
-
-
-public function jenis_dokumen(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_jenis_dokumen');
-}
-
-public function  data_user(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_data_user');    
-}
-
-public function nama_dokumen(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_nama_dokumen');
-
-}
-
-public function create_client(){
-if($this->input->post()){
-if($this->session->userdata('level') == "User"){    
-$status = array(
-"status"     =>"error",
-"pesan"  => "Anda tidak memiliki akses untuk membuat pekerjaan" 
-);
-echo json_encode($status);
-}else{   
-$data = $this->input->post();
-
-$h_berkas = $this->M_dashboard->hitung_berkas()->num_rows()+1;
-$h_client = $this->M_dashboard->data_client()->num_rows()+1;
-
-$no_client= str_pad($h_client,6 ,"0",STR_PAD_LEFT);
-$no_berkas= str_pad($h_berkas,6 ,"0",STR_PAD_LEFT);
-
-$id_berkas =  date("Ymd")."/".$this->session->userdata('no_user')."/".$no_berkas; 
-if(file_exists("berkas/".$no_berkas)){
-$status = array(
-"status"     =>"Gagal",
-"pesan"     =>"File direktori sudah dibuat"   
-);
-echo json_encode($status);    
-
-
-}else{
-
-$data_client = array(
-'no_client'                 => "C_".$no_client,    
-'jenis_client'              => $data['data'][0]['jenis_client'],    
-'nama_client'               => $data['data'][3]['badan_hukum'],
-'alamat_client'             => $data['data'][4]['alamat_badan_hukum'],    
-'tanggal_daftar'            => date('Y/m/d'),    
-'pembuat_client'            => $this->session->userdata('nama_lengkap'),    
-'no_user'                   => $this->session->userdata('no_user'),    
-);    
-
-$this->db->insert('data_client',$data_client);
-
-
-$data_r = array(
-'no_client'          => "C_".$no_client,    
-'id_berkas'          => $id_berkas,
-'no_berkas'          => $no_berkas,    
-'folder_berkas'      => "file_".$no_berkas,    
-'status_berkas'      => "Proses",    
-'tanggal_dibuat'     => date('Y/m/d'),
-'count_up'           => date('M,d,Y,H:i:s'),        
-'no_user'            => $this->session->userdata('no_user'),    
-'pembuat_berkas'     => $this->session->userdata('nama_lengkap'),    
-'jenis_perizinan'    => $data['data'][1]['jenis_akta'],
-'id_jenis'           => $data['data'][2]['id_jenis'],
-);
-
-$this->db->insert('data_berkas',$data_r);
-
-
-$data_utama = array(
-'no_client'          => "C_".$no_client,    
-'no_berkas'          => $no_berkas,    
-'file_berkas'        => "file_".$no_berkas,    
-'draft'              => NULL,
-'minuta'             => NULL,
-'salinan'             => NULL,
-);
-
-$this->db->insert('data_dokumen_utama',$data_utama);
-
-
-
-}
-
-mkdir("berkas/"."file_".$no_berkas,0755);
-
-$status = array(
-"status"     =>"Berhasil",
-"no_berkas"  => base64_encode($no_berkas) 
-);
-echo json_encode($status);
-}
-
-}else{
-redirect(404);    
-}
-
-}
-
-public function proses_berkas(){
-$data           = $this->M_dashboard->data_berkas($this->uri->segment(3));    
-
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_proses_berkas',['data'=>$data]);
-}
-
-public function pekerjaan_proses(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_pekerjaan_proses');
-}
-
-
-
-
-public function data_client(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_data_client');
-
-}
-
-
-public function getCLient(){
-if($this->input->post()){
-$query = $this->M_dashboard->cari_client($this->input->post('no_client'))->row_array();
-
-$data = array(
-'no_client'         =>  $query['no_client'],
-'nama_client'       =>  $query['nama_client'],
-'alamat_client'     =>  $query['alamat_client'],    
-);
-
-echo json_encode($data);
-}else{
-redirect(404);
-}    
-}
-
-
-public function data_perorangan(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_data_perorangan');
-
-}
-
-public function simpan_persyaratan(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$data = array(
-'nama_dokumen'      =>$input['nama_dokumen'], 
-'no_nama_dokumen'   =>$input['no_nama_dokumen'], 
-'no_jenis_dokumen'  =>$input['no_jenis_dokumen']   
-);
-
-$this->db->insert('data_persyaratan',$data);
-
-$status = array(
-"status"      =>"success",
-"pesan"       =>"Persyaratan berhasil ditambahkan" 
-);
-
-echo json_encode($status);
-}else{
-redirect(404);    
-} 
-    
-}
-
-
-public function simpan_pekerjaan_user(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$data_syarat = $this->db->get_where('data_syarat_jenis_dokumen',array('id_syarat_dokumen'=>$input['id_syarat_dokumen']))->row_array();    
-
-$data = array (
-'perizinan' =>$input['nama_user'],
-'no_user'   =>$input['no_user']        
-);
-$this->db->update('data_syarat_jenis_dokumen',$data,array('id_syarat_dokumen'=>$input['id_syarat_dokumen']));
-
-$data2 = array(
-'nama_lengkap'      => $input['nama_user'],
-'no_user'           => $input['no_user'],
-'no_nama_dokumen'   => $data_syarat['no_nama_dokumen'],
-'no_berkas'         => $data_syarat['no_berkas'],
-);
-$this->db->insert('data_pengurus_perizinan',$data2);
-
-
-}else{
-redirect(404);    
-}
-}
-
-public function simpan_meta(){
-if($this->input->post()){
-$input = $this->input->post();
-$data = array(
-'no_nama_dokumen' =>$input['no_nama_dokumen'],
-'nama_meta'       =>$input['nama_meta'], 
-);
-$this->db->insert('data_meta',$data);    
-$status = array(
-"status"      =>"success",
-"pesan"       =>"Meta dokumen berhasil ditambahkan" 
-);
-echo json_encode($status);    
-}else{
-redirect(404);    
-}       
-}
-
-public function lihat_data_meta(){
-if($this->input->post()){
-$data = $this->db->get_where('data_meta',array('no_nama_dokumen'=>$this->input->post('no_nama_dokumen')));
-if($data->num_rows() >0){
-echo "<table class='table table-sm  table-striped table-hover'>"
-        . "<tr>"
-        . "<th>No</th>"
-        . "<th>Nama meta</th>"
-        . "<th>Aksi</th>"
-        . "</tr>";
-
-$h =1;
-foreach ($data->result_array() as $d){
-echo "<tr>"
-    . "<td>".$h++."</td>"
-    . "<td>".$d['nama_meta']."</td>"
-    . "<td><button class='btn btn-danger btn-sm' onclick=hapus_meta('".$d['id_data_meta']."')><span class='fa fa-trash'></span></button></td>"
-    . "</tr>";
-}
-echo "</table>";
-}else{
-echo "<h3 align='center'>Tidak ada data meta yang bisa ditampilkan</h3>";    
-}   
-    
-}else{
-redirect(404);    
-}    
-}
-
-public function hapus_data_meta(){
-if($this->input->post()){
-$this->db->delete('data_meta',array('id_data_meta'=>$this->input->post('id_data_meta')));    
-}else{
-redirect(404);    
-}    
-}
-
-
-public function cari_file(){
-if($this->input->post()){
-$input = $this->input->post();
-$dalam_bentuk_lampiran  = $this->M_dashboard->cari_lampiran($input);
-$dalam_bentuk_informasi = $this->M_dashboard->cari_informasi($input);
-
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_pencarian',['dalam_bentuk_lampiran'=>$dalam_bentuk_lampiran,'dalam_bentuk_informasi'=>$dalam_bentuk_informasi]);
-
-
-}else{
-redirect(404);    
-}    
-}
-public function data_berkas(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_data_berkas');
-    
-}
-
-
-public function json_data_berkas_client($no_client){
-echo $this->M_dashboard->json_data_berkas_client($no_client);       
-}
-
-public function lihat_berkas_client(){
-$data_client = $this->M_dashboard->data_client_where($this->uri->segment(3));    
-
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_lihat_berkas_client',['data_client'=>$data_client]);
-
-}
-public function download_berkas_informasi(){
-$data = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$this->uri->segment(3)))->row_array();    
-$file_path = "./berkas/".$data['nama_folder']."/".$data['lampiran']; 
-$info = new SplFileInfo($data['lampiran']);
-force_download($data['nama_informasi'].".".$info->getExtension(), file_get_contents($file_path));
-}
-public function download_berkas(){
-$data = $this->db->get_where('data_berkas',array('id_data_berkas'=>$this->uri->segment(3)))->row_array();    
-$file_path = "./berkas/".$data['nama_folder']."/".$data['nama_berkas']; 
-$info = new SplFileInfo($data['nama_berkas']);
-force_download($data['nama_file'].".".$info->getExtension(), file_get_contents($file_path));
-}
-
-public function profil(){
-$no_user = $this->session->userdata('no_user');
-$data_user = $this->M_dashboard->data_user_where($no_user);
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_profil',['data_user'=>$data_user]);
-
-}
-
-public function lihat_informasi(){
-if($this->input->post()){
-$input = $this->input->post();    
-$query = $this->db->get_where('data_informasi_pekerjaan',array('id_data_informasi_pekerjaan'=>$input['id_data_informasi_pekerjaan']))->row_array();
-
-echo $query['data_informasi'];
-
-
-}else{
-redirect(404);    
-}
-}
-public function simpan_profile(){
-$foto_lama = $this->db->get_where('user',array('no_user'=>$this->session->userdata('no_user')))->row_array();
-if(!file_exists('./uploads/user/'.$foto_lama['foto'])){
-    
-}else{
-if($foto_lama['foto'] != NULL){
-unlink('./uploads/user/'.$foto_lama['foto']);    
-}   
-}
-
-$img =  $this->input->post();
-define('UPLOAD_DIR', './uploads/user/');
-$image_parts = explode(";base64,", $img['image']);
-$image_type_aux = explode("image/", $image_parts[0]);
-$image_type = $image_type_aux[1];
-$image_base64 = base64_decode($image_parts[1]);
-$file_name = uniqid() . '.png';
-$file = UPLOAD_DIR .$file_name;
-file_put_contents($file, $image_base64);
-$data = array(
-'foto' =>$file_name,    
-);
-$this->db->update('user',$data,array('no_user'=>$this->session->userdata('no_user')));
- 
-$status = array(
-"status"     => "success",
-"pesan"      => "Foto profil berhasil diperbaharui"    
-);
-echo json_encode($status);
-
-}
-
-
-public function update_user_profile(){
-if($this->input->post()){
-$input= $this->input->post();
-
-$data =array(
-'email'         =>$input['email'],
-'username'      =>$input['username'],
-'nama_lengkap'  =>$input['nama_lengkap'],
-'phone'         =>$input['phone']    
-);
-$this->db->where('no_user',$input['id_user']);
-$this->db->update('user',$data);
-
-
-$status = array(
-"status"     => "success",
-"pesan"      => "Data profil berhasil diperbaharui"    
-);
-echo json_encode($status);
-
-}else{
-redirect(404);    
-}
-
-}
-public function update_password(){
-if($this->input->post()){
-$data = array(
-'password' => md5($this->input->post('password'))
-);
-$this->db->update('user',$data,array('no_user'=>$this->input->post('no_user')));
- 
-$status = array(
-"status"     => "success",
-"pesan"      => "Password diperbaharui"    
-);
-echo json_encode($status);
-
-}else{
-redirect(404);    
-}    
-}
-
-public function riwayat_pekerjaan(){
-$this->load->view('umum/V_header');
-$this->load->view('dashboard/V_riwayat_pekerjaan');
-}
-
-public function json_data_riwayat(){
-echo $this->M_dashboard->json_data_riwayat();       
+public function keluar(){
+$this->session->sess_destroy();
+redirect (base_url('Login'));
 }
 
 public function set_toggled(){
@@ -781,85 +113,493 @@ unset($_SESSION['toggled']);
 echo print_r($this->session->userdata());
 }
 
-public function simpan_sublevel(){
+public function pengaturan_blok(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_pengaturan_blok');
+    
+}
+public function input_ahli_waris(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_input_ahli_waris');
+    
+}
+public function simpan_ahli_waris(){
+if($this->input->post()){
+$input = $this->input->post();
+$data = array(
+    'nik'               => $input['nik'],
+    'nama'              => $input['nama'],
+    'alamat'            => $input['alamat'],
+    'no_tlp'            => $input['no_tlp'],
+    'hubungan_keluarga' => $input['hubungan_keluarga']    
+    );
+   
+$this->M_dashboard->simpan_ahli_waris($data);
+
+$status = array(
+'status'    =>'success',
+'message'   =>'Ahli waris berhasil ditambahkan'
+);
+echo json_encode($status);
+
+
+}else{
+redirect(404);    
+}
+    
+}
+
+public function simpan_blok(){
 if($this->input->post()){
 $input = $this->input->post();
 
+$data= array(
+'nama_blok'     => $input['nama_blok'],
+'jumlah_makam'  => $input['jumlah_makam'],
+'nama_agama'    => $input['nama_agama'] 
+);
+
+$this->M_dashboard->simpan_blok($data);
+
+$status = array(
+'status' =>'success',
+'message' =>'Blok Makam berhasil disimpan'    
+);
+
+echo json_encode($status);
+
+}else{
+redirect(404);    
+}       
+}
+public function simpan_ktp_waris(){
+if($this->input->post()){
+$config['upload_path']          = './uploads/ktp_ahli_waris';
+$config['allowed_types']        = 'gif|jpg|png';
+$config['encrypt_name']        = TRUE;
+
+$this->upload->initialize($config);
+
+if (!$this->upload->do_upload('ktp')){  
+$status = array(
+'status' =>"error",
+'message' =>$this->upload->display_error(),   
+);
+
+}else{
 $data = array(
-'no_user'	=>$input['no_user'],
-'sublevel'	=>$input['sublevel'],
+'file_ktp'           => $this->upload->data('file_name'),    
+'status_berkas' => "Terupload"    
 );
 
-$query = $this->db->get_where('sublevel_user',$data);
-
-if($query->num_rows() == 0){
-$status = array(
-"status"     => "success",
-"pesan"      => "Sublevel berhasil disimpan"    
-);
-$this->db->insert('sublevel_user',$data);
-
-}else{
+$this->M_dashboard->simpan_file_ktp($data,$this->input->post('id_data_ahli_waris'));    
 
 $status = array(
-"status"     => "warning",
-"pesan"      => "Sublevel ".$input['sublevel']." Sudah dimasukan"    
+'status' =>'success',
+'message' =>'File KTP brhasil Dilampirkan'    
 );
-
 }
-
 echo json_encode($status);
 
-
 }else{
-redirect(404);	
+redirect(404);    
 }
 
 }
-public function data_sublevel(){
+public function hapus_berkas(){
+if($this->input->post('id_data_ahli_waris')){
+$query = $this->M_dashboard->data_ahli_waris_where(array('id_data_ahli_waris'=>$this->input->post('id_data_ahli_waris')))->row_array();
+
+if(file_exists('./uploads/ktp_ahli_waris/'.$query['file_ktp'])){
+unlink('./uploads/ktp_ahli_waris/'.$query['file_ktp']);    
+}
+$this->db->delete('data_ahli_waris',array('id_data_ahli_waris'=>$query['id_data_ahli_waris']));
+    
+}else{
+redirect(404);    
+}
+}
+
+public function input_identitas_jenazah(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_input_identitas_jenazah');
+    
+}
+public function data_blok_makam(){
+if($this->input->post()){
+    
+$query = $this->M_dashboard->data_blok_makam($this->input->post('agama'));
+
+echo "<option></option>";
+foreach ($query->result_array() as $data){
+echo "<option value='".$data['id_data_blok']."'>".$data['nama_blok']."</option>" ;   
+}
+}else{
+redirect(404);    
+}
+    
+}
+
+public function tampilkan_makam(){
 if($this->input->post()){
 
-$data = $this->db->get_where('sublevel_user',array('no_user'=>$this->input->post('no_user')));
-
-echo "<table class='table table-striped table-hover table-sm'><tr>
-<td>Sublevel</td>
-<td class='text-center'>Aksi</td>
-</tr>";
-foreach ($data->result_array() as $d){
-
-echo "<tr><td>".$d['sublevel']."</td>
-<td class='text-center'><button onclick=hapus_sublevel('".$d['id_sublevel_user']."') class='btn btn-sm btn-danger'><span class='fa fa-trash'></span></button></td>
-</tr>";
+$query = $this->db->get_where('data_blok',array('id_data_blok'=>$this->input->post('id_data_blok')))->row_array();
+echo "<div class='row'>";
+for($i=1; $i<$query['jumlah_makam']; $i++){
+echo '<div class="col-md-1 m-2"><div class="custom-control custom-radio">
+<input
+';
+$cek_makam = $this->db->get_where('data_jenazah',array('nama_makam'=>$query['nama_blok'].$i));        
+if($cek_makam->num_rows() == 1){
+ echo "disabled=''";    
+}        
+echo 'onclick="isi_makam(\''.$query['nama_blok'].$i.'\');" type="radio" id="customRadio'.$i.'" name="customRadio" class="custom-control-input">
+<label class="custom-control-label" for="customRadio'.$i.'">'.$query['nama_blok'].$i.'</label>
+</div></div>';    
 }
-echo "</table>";
-
+echo "</div>";
 
 }else{
-redirect(404);	
+redirect(404);    
 }
 
 }
 
-public function hapus_sublevel(){
+public function cari_ahli_waris(){
 if($this->input->post()){
-$this->db->delete('sublevel_user',array('id_sublevel_user'=>$this->input->post('id_sublevel_user')));
+$input = $this->input->post();
 
-$status = array(
-"status"     => "success",
-"pesan"      => "Sublevel terhapus",    
+$query = $this->M_dashboard->data_ahli_waris_where(array('nik'=>$input['nik']));
+if($query->num_rows() > 0){
+$d = $query->row_array();
+
+$data = array(
+'status'          =>"success",   
+'nama_ahli_waris' => $d['nama']    
+);
+   
+}else{
+$data = array(
+'status'          =>NULL,   
+'nama_ahli_waris' => "Tidak Ditemukan"    
+);
+   
+    
+}
+echo json_encode($data);
+
+}else{
+redirect(404);    
+}       
+}
+public function simpan_jenazah(){
+if($this->input->post()){
+
+$input= $this->input->post();
+
+
+$data_jenazah = array(
+'blok_agama'        => $input['blok_agama'],
+'blok_makam'        => $input['blok_makam'],
+'nama_makam'        => $input['nama_makam'],
+'nik_ahli_waris'    => $input['nik_ahli_waris'],
+'nama_ahli_waris'   => $input['nama_ahli_waris'],
+'tanggal_lahir'     => $input['tanggal_lahir'],
+'tanggal_wafat'     => $input['tanggal_wafat'],
+'nik_jenazah'       => $input['nik_jenazah'],
+'nama_jenazah'      => $input['nama_jenazah'],
+'jenis_kelamin'     => $input['jenis_kelamin'],
 );
 
+$this->M_dashboard->simpan_jenazah($data_jenazah);    
 
+
+
+$config['upload_path']          = './uploads/berkas_jenazah';
+$config['allowed_types']        = 'gif|jpg|png';
+$config['encrypt_name']        = TRUE;
+
+$this->upload->initialize($config);
+        
+//upload ktp jenazah
+if(!$this->upload->do_upload('ktp_jenazah')){  
+$status = array(
+'status' =>"error",
+'message' =>$this->upload->display_errors(),   
+);
+}else{
+$data = array(
+'nama_lampiran' => 'KTP Jenazah',
+'file'          => $this->upload->data('file_name'),
+'berkas'        => $input['nik_jenazah']    
+);
+$this->db->insert('data_berkas_jenazah',$data);
+
+}
+
+//upload pengantar rt rw//
+if (!$this->upload->do_upload('pengantar_rt_rw')){  
+$status = array(
+'status' =>"error",
+'message' =>$this->upload->display_errors(),   
+);
+}else{
+$data = array(
+'nama_lampiran' => 'Surat pengantar RT RW',
+'file'          => $this->upload->data('file_name'),
+'berkas'        => $input['nik_jenazah']    
+);    
+$this->db->insert('data_berkas_jenazah',$data);
+}
+//upload pengantar rumah sakit//
+if (!$this->upload->do_upload('pengantar_rumah_sakit')){  
+$status = array(
+'status' =>"error",
+'message' =>$this->upload->display_errors(),   
+);
+}else{
+$data = array(
+'nama_lampiran' => 'Surat pengantar rumah sakit',
+'file'          => $this->upload->data('file_name'),
+'berkas'        => $input['nik_jenazah']    
+);    
+$this->db->insert('data_berkas_jenazah',$data);
+}
+
+//upload KK//
+if (!$this->upload->do_upload('kartu_kk')){  
+$status = array(
+'status' =>"error",
+'message' =>$this->upload->display_errors(),   
+);
+}else{
+$data = array(
+'nama_lampiran' => 'Kartu Keluarga',
+'file'          => $this->upload->data('file_name'),
+'berkas'        => $input['nik_jenazah']    
+);    
+$this->db->insert('data_berkas_jenazah',$data);
+}
+
+
+if($this->session->userdata('pemesanan_makam')) {
+$biaya = array(
+'nik_jenazah'  =>$input['nik_jenazah'],
+'jenis_biaya'  =>'Pemesanan makam',
+'jumlah_biaya' =>'800000'    
+);
+$this->M_dashboard->input_biaya($biaya);    
+}
+
+if($this->session->userdata('batu_nisan')) {
+$biaya = array(
+'nik_jenazah'  =>$input['nik_jenazah'],
+'jenis_biaya'  =>'Batu nisan',
+'jumlah_biaya' =>'300000'    
+);
+$this->M_dashboard->input_biaya($biaya);    
+}
+
+if($this->session->userdata('perpanjang')) {
+$biaya = array(
+'nik_jenazah'  =>$input['nik_jenazah'],
+'jenis_biaya'  =>'Perpanjang',
+'jumlah_biaya' =>'100000'    
+);
+$this->M_dashboard->input_biaya($biaya);    
+}
+
+
+
+$status = array(
+'status' =>'success',
+'message' =>'Data Jenazah berhasil dimasukan'    
+);
 echo json_encode($status);
 
-
-
 }else{
-redirect(404);	
+redirect(404);    
 }
 
+    
 }
 
+public function data_jenazah(){
+$this->load->view('umum/V_header');
+$this->load->view('dashboard/V_data_jenazah');
+    
+}
+
+public function buat_laporan(){
+if($this->input->post()){
+$input = $this->input->post();
+$tanggal =  explode(" - ", $input['tanggal']);
+$awal   = $tanggal[0];
+$akhir  = $tanggal[1];     
+
+$this->db->select('');
+$this->db->from('data_jenazah');
+$this->db->where('tanggal_wafat >=',$awal);
+$this->db->where('tanggal_wafat <=',$akhir);
+$query = $this->db->get();
+
+$str  ="<p align='center' style='font-size:20px' >LAPORAN DATA MAKAM PERTANGGAL <br>".$awal." - ".$akhir."</p>";
+$str .= "<table style ='border: 1px solid #ddd; width:100%;'>";
+$str .="<tr style ='background:#1ABB9C; font-size:15px; '  >"
+. "<td>No</td>"
+. "<td  align='center'>Nama Jenazah</td>"
+. "<td align='center' >Nik Jenazah</td>"
+. "<td align='center' >Jenis Kelamin</td>"
+. "<td align='center' >Agama</td>"
+. "<td align='center' >Nama Ahli waris</td>"
+. "<td align='center' >Nik Ahli Waris</td>"
+. "<td align='center' >Blok Makam</td>"
+. "<td align='center' >Tanggal Wafat</td></tr>";
+
+$no =1;
+foreach ($query->result_array() as $d){
+$str .="<tr>"
+. "<td>".$no++."</td>"
+. "<td>".$d['nama_jenazah']."</td>"
+. "<td>".$d['nik_jenazah']."</td>"
+. "<td>".$d['jenis_kelamin']."</td>"
+. "<td>".$d['blok_agama']."</td>"
+. "<td>".$d['nama_ahli_waris']."</td>"
+. "<td>".$d['nik_ahli_waris']."</td>"
+. "<td>".$d['nama_makam']."</td>"
+. "<td>".$d['tanggal_wafat']."</td>"
+. "</tr>";   
+}
+
+
+$dompdf = new DOMPDF();
+$dompdf->load_html($str);
+$dompdf->set_paper("A4","landscape");
+$dompdf->render();
+$dompdf->stream('laporan'.'.pdf', array('Attachment'=>0));    
+}else{
+    
+}
+    
+}
+
+public function hitung_biaya(){
+if($this->input->post()){
+$input = $this->input->post();
+
+
+if($input['jenis_biaya'] == 'pemesanan_makam'){
+if(!$this->session->userdata('pemesanan_makam')) {
+$this->session->set_userdata(array('pemesanan_makam'=>'800000'));    
+}else{
+unset($_SESSION['pemesanan_makam']);   
+}
+}
+
+
+if($input['jenis_biaya'] == 'batu_nisan'){
+if(!$this->session->userdata('batu_nisan')) {
+$this->session->set_userdata(array('batu_nisan'=>'300000'));    
+}else{
+unset($_SESSION['batu_nisan']);   
+}
+}
+
+if($input['jenis_biaya'] == 'perpanjang'){
+if(!$this->session->userdata('perpanjang')) {
+$this->session->set_userdata(array('perpanjang'=>'100000'));    
+}else{
+unset($_SESSION['perpanjang']);   
+}
+}
+
+$total = 0 + $this->session->userdata('pemesanan_makam') +$this->session->userdata('batu_nisan') + $this->session->userdata('perpanjang');
+echo "RP. ".number_format($total);    
+}else{
+redirect(404);    
+}
+    
+}
+
+public function print_invoices(){
+$param = $this->uri->segment(3);    
+$this->db->select('*');
+$this->db->from('data_jenazah');
+$this->db->join('data_ahli_waris', 'data_ahli_waris.nik = data_jenazah.nik_ahli_waris');
+$this->db->where('data_jenazah.id_data_jenazah',$param);
+$query = $this->db->get()->row_array();
+$str  ="<p align='center' style='font-size:20px' >DATA PEMESANAN MAKAM</p>";
+
+$str .= "<table align='center' style='width:80%' border ='1' cellpading ='0' cellspacing='0'>"
+        . "<tr>"
+        . "<td colspan='2'>Invoices No.".$query['tanggal_wafat']."/".$query['id_data_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Jenazah</td>"
+        . "<td>".$query['nama_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nik Jenazah</td>"
+        . "<td>".$query['nik_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Jenis Kelamin</td>"
+        . "<td>".$query['jenis_kelamin']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>tanggal wafat</td>"
+        . "<td>".$query['tanggal_wafat']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Ahli waris</td>"
+        . "<td>".$query['nama_ahli_waris']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nik ahli waris</td>"
+        . "<td>".$query['nik_ahli_waris']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Agama</td>"
+        . "<td>".$query['blok_agama']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Makam</td>"
+        . "<td>".$query['nama_makam']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td colspan='2'>Rincian Biaya yang harus dibayarkan</td>"
+        . "</tr>";
+        
+$data_biaya = $this->db->get_where('data_biaya',array('nik_jenazah'=>$query['nik_jenazah']));
+$total =0;
+foreach ($data_biaya->result_array() as $d){
+$str .= "</tr>"
+. "<tr>"
+. "<td >".$d['jenis_biaya']."</td>"
+. "<td >Rp.".number_format($d['jumlah_biaya'])."</td>"
+. "</tr>";
+$total +=$d['jumlah_biaya'];
+}   
+
+$str .="<tr>"
+. "<td colspan='2'>Total yang harus dibayarkan</td>"
+. "</tr>"
+. "<tr>"
+. "<td  colspan='2'><b>Rp.".number_format($total)."</b></td>"
+. "</tr>";
+
+        
+        $str .="</table>";
+
+
+
+$dompdf = new DOMPDF();
+$dompdf->load_html($str);
+$dompdf->set_paper("A4","landscape");
+$dompdf->render();
+$dompdf->stream('laporan'.'.pdf', array('Attachment'=>0)); 
+        
+}
 
 }
 

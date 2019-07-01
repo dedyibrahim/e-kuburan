@@ -2485,8 +2485,8 @@ fieldset:disabled a.btn {
 
 .btn-success {
   color: #fff;
-  background-color:#DAA520;
-  border-color: #DAA520;
+  background-color:#28a745;
+  border-color: #28a745;
 }
 
 .btn-white {
@@ -2497,8 +2497,8 @@ fieldset:disabled a.btn {
 
 .btn-success:hover {
   color: #fff;
-  background-color: #DAA520;
-  border-color: #DAA520;
+  background-color:#28a745;
+  border-color: #28a745;
 }
 
 .btn-success:focus, .btn-success.focus {
@@ -6449,7 +6449,7 @@ button.bg-danger:focus {
   background-color: #f8f9fa !important;
 }
 .bg-theme {
-    background-color: #116466 !important;
+    background-color: #000 !important;
     color:#fff;
     //background-color: #2F4F4F !important;
    }
@@ -9903,7 +9903,7 @@ a.text-dark:hover, a.text-dark:focus {
 background-color: #2F4F4F;    
 }
 .bg_data{
-background-color: #FF8C00;  
+background-color: #000;  
 color:#fff;
 margin-top:3%;
 text-decoration:none;  
@@ -10049,10 +10049,10 @@ top:0.9em;
     width: 20rem;   
 }
 .bg_login{
-background-color:#696969;
+background-color:#4E4E50;
 width: 100wh;
 height: 90vh;
-color: #DAA520;
+color: #0000;
 background-size: 400% 400%;
 -webkit-animation: Gradient 15s ease infinite;
 -moz-animation: Gradient 15s ease infinite;

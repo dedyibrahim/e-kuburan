@@ -5,58 +5,9 @@
 <span class="navbar-toggler-icon"></span>
 </button>
     
-<form class="input-group  col-md-9 mx-auto" id="adv-search" action="<?php echo base_url('Dashboard/cari_file') ?>" method="post" >        
-<input type="hidden" class="form-control" name="<?php echo  $this->security->get_csrf_token_name() ?>" value="<?php echo $this->security->get_csrf_hash() ?>" />
-<input type="text" class="form-control" name="cari_dokumen" id="pencarian_nama_dokumen" placeholder="Cari File Dokumen" />
-<div class="btn-group" role="group">
-<button type="submit" style="padding: 0.63rem 0.75rem;" type="button" class="btn btn-success"><span class="fa fa-search" aria-hidden="true"></span></button>
-</div>
 
-</form>
     
-    <style>
-
-.dropdown.dropdown-lg .dropdown-menu {
-    margin-top: -1px;
-    padding: 6px 20px;
-}
-.input-group-btn .btn-group {
-    display: flex !important;
-}
-.btn-group .btn {
-    border-radius: 0;
-    margin-left: -1px;
-}
-.btn-group .btn:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-.btn-group .form-horizontal .btn[type="submit"] {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.form-horizontal .form-group {
-    margin-left: 0;
-    margin-right: 0;
-}
-.form-group .form-control:last-child {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-}
-
-@media screen and (min-width: 768px) {
-    #adv-search {
-        width: 500px;
-        margin: 0 auto;
-    }
-    .dropdown.dropdown-lg {
-        position: static !important;
-    }
-    .dropdown.dropdown-lg .dropdown-menu {
-        min-width: 600px;
-    }
-}
-    </style>
+    
     
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -68,8 +19,6 @@
 Pilihan
 </a>
 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-<a class="dropdown-item" href="<?php echo base_url('Dashboard/profil') ?>">Profil</a>
-<a class="dropdown-item" href="<?php echo base_url('Dashboard/riwayat_pekerjaan') ?>">Histori pekerjaan</a>
 <div class="dropdown-divider"></div>
 <a class="dropdown-item" href="<?php echo base_url('Dashboard/keluar') ?>">Keluar</a>
 </div>
@@ -81,70 +30,33 @@ Pilihan
 
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-3"><a   style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_berkas') ?>">
+
+<div class="col  "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_jenazah') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
-<span class="fa fa-file-word float-right fa-3x sticky-top"></span>
-Data berkas <br>
+<span class="fa fa-users float-right fa-3x sticky-top"></span>
+Data Jenazah<br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2 bg_data_bawah">total data berkas<div class="float-right">
-    <?php 
-$query3 = $this->db->get_where('data_berkas',array('pengupload !='=>NULL))->num_rows();
-
-echo $query3;
-?>
-</div></div>
-</div></a>	
-</div>	
-<div class="col-md-3 "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_client') ?>">
-<div class="bg_data rounded-top">
-<div class="p-2">
-<span class="fa fa-user-tie float-right fa-3x sticky-top"></span>
-Data client <br>
-<h4>&nbsp;</h4>
-</div>
-<div class="footer p-2 bg_data_bawah">Total data client  <div class="float-right">
-    <?php 
-$query1 = $this->db->get('data_client')->num_rows();
-
-echo $query1;
-?>
-</div></div>
-</div></a>	
-</div>	
-
-
-<div class="col-md-3  "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/pekerjaan_proses') ?>">
-<div class="bg_data rounded-top">
-<div class="p-2">
-<span class="fa fa-exchange-alt float-right fa-3x sticky-top"></span>
-Pekerjaan diproses<br>
-<h4>&nbsp;</h4>
-</div>
-<div class="footer p-2 bg_data_bawah">Total pekerjaan diproses 
-<div class="float-right"><?php 
-$query = $this->db->get_where('data_pekerjaan',array('status_pekerjaan'=>"Proses"))->num_rows();
-
-echo $query;
-?>
+    
+<div class="footer p-2 bg_data_bawah">Total data jenazah 
+<div class="float-right">
+<?php echo $this->db->get('data_jenazah')->num_rows() ?>    
 </div>
 </div>
 </div>	</a>
 </div>
 
-<div class="col-md-3 "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/data_user') ?>">
+<div class="col "><a  style="text-decoration:none;" href="<?php echo base_url('Dashboard/input_ahli_waris') ?>">
 <div class="bg_data rounded-top">
 <div class="p-2">
 <span class="fa fa-users float-right fa-3x sticky-top"></span>
-Data user <br>
+Data Ahli Waris <br>
 <h4>&nbsp;</h4>
 </div>
-<div class="footer p-2 bg_data_bawah" >Total data user <div class="float-right">
-<?php 
-$query2 = $this->db->get('user')->num_rows();
-echo $query2;
-?>
+<div class="footer p-2 bg_data_bawah" >Total data ahli waris <div class="float-right">
+<?php echo $this->db->get('data_ahli_waris')->num_rows() ?>    
+
 </div></div>
 </div></a>	
 </div>	
