@@ -79,7 +79,7 @@ redirect(404);
 }
 public function hapus_blok(){
 if($this->input->post()){   
-$this->db->delete('data_blok',array('id_data_blok'=>$this->input->post('id_data_blok')));    
+$this->db->delete('data_blok',array('id_blok'=>$this->input->post('id_blok')));    
 }else{
 redirect(404);    
 }    
@@ -134,15 +134,18 @@ $this->load->view('dashboard/V_input_ahli_waris');
 }
 public function simpan_ahli_waris(){
 if($this->input->post()){
+$id_ahli_waris    = str_pad($this->db->get('data_ahli_waris')->num_rows()+1,4,"0",STR_PAD_LEFT);
+    
 $input = $this->input->post();
 $data = array(
-    'nik'               => $input['nik'],
-    'nama'              => $input['nama'],
-    'alamat'            => $input['alamat'],
-    'no_tlp'            => $input['no_tlp'],
-    'hubungan_keluarga' => $input['hubungan_keluarga']    
-    );
-   
+'id_ahli_waris'     => 'AW'.$id_ahli_waris,    
+'nik_ahli_waris'    => $input['nik'],
+'nama'              => $input['nama'],
+'alamat'            => $input['alamat'],
+'no_tlp'            => $input['no_tlp'],
+'hubungan_keluarga' => $input['hubungan_keluarga']    
+);
+
 $this->M_dashboard->simpan_ahli_waris($data);
 
 $status = array(
@@ -161,8 +164,10 @@ redirect(404);
 public function simpan_blok(){
 if($this->input->post()){
 $input = $this->input->post();
+$nama_blok    = str_pad($this->db->get('data_blok')->num_rows()+1,2,"0",STR_PAD_LEFT);
 
 $data= array(
+'id_blok'       => "BLOK".$nama_blok,
 'nama_blok'     => $input['nama_blok'],
 'jumlah_makam'  => $input['jumlah_makam'],
 'nama_agama'    => $input['nama_agama'] 
@@ -201,7 +206,7 @@ $data = array(
 'status_berkas' => "Terupload"    
 );
 
-$this->M_dashboard->simpan_file_ktp($data,$this->input->post('id_data_ahli_waris'));    
+$this->M_dashboard->simpan_file_ktp($data,$this->input->post('id_ahli_waris'));    
 
 $status = array(
 'status' =>'success',
@@ -216,13 +221,13 @@ redirect(404);
 
 }
 public function hapus_berkas(){
-if($this->input->post('id_data_ahli_waris')){
-$query = $this->M_dashboard->data_ahli_waris_where(array('id_data_ahli_waris'=>$this->input->post('id_data_ahli_waris')))->row_array();
+if($this->input->post('id_ahli_waris')){
+$query = $this->M_dashboard->data_ahli_waris_where(array('id_ahli_waris'=>$this->input->post('id_ahli_waris')))->row_array();
 
 if(file_exists('./uploads/ktp_ahli_waris/'.$query['file_ktp'])){
 unlink('./uploads/ktp_ahli_waris/'.$query['file_ktp']);    
 }
-$this->db->delete('data_ahli_waris',array('id_data_ahli_waris'=>$query['id_data_ahli_waris']));
+$this->db->delete('data_ahli_waris',array('id_ahli_waris'=>$query['id_ahli_waris']));
     
 }else{
 redirect(404);    
@@ -241,7 +246,7 @@ $query = $this->M_dashboard->data_blok_makam($this->input->post('agama'));
 
 echo "<option></option>";
 foreach ($query->result_array() as $data){
-echo "<option value='".$data['id_data_blok']."'>".$data['nama_blok']."</option>" ;   
+echo "<option value='".$data['id_blok']."'>".$data['nama_blok']."</option>" ;   
 }
 }else{
 redirect(404);    
@@ -252,13 +257,13 @@ redirect(404);
 public function tampilkan_makam(){
 if($this->input->post()){
 
-$query = $this->db->get_where('data_blok',array('id_data_blok'=>$this->input->post('id_data_blok')))->row_array();
+$query = $this->db->get_where('data_blok',array('id_blok'=>$this->input->post('id_blok')))->row_array();
 echo "<div class='row'>";
 for($i=1; $i<$query['jumlah_makam']; $i++){
 echo '<div class="col-md-1 m-2"><div class="custom-control custom-radio">
 <input
 ';
-$cek_makam = $this->db->get_where('data_jenazah',array('nama_makam'=>$query['nama_blok'].$i));        
+$cek_makam = $this->db->get_where('detail_pemesanan',array('no_blok'=>$query['nama_blok']."".$i));        
 if($cek_makam->num_rows() == 1){
  echo "disabled=''";    
 }        
@@ -278,13 +283,14 @@ public function cari_ahli_waris(){
 if($this->input->post()){
 $input = $this->input->post();
 
-$query = $this->M_dashboard->data_ahli_waris_where(array('nik'=>$input['nik']));
+$query = $this->M_dashboard->data_ahli_waris_where(array('nik_ahli_waris'=>$input['nik']));
 if($query->num_rows() > 0){
 $d = $query->row_array();
 
 $data = array(
 'status'          =>"success",   
-'nama_ahli_waris' => $d['nama']    
+'nama_ahli_waris' => $d['nama'],    
+'id_ahli_waris' => $d['id_ahli_waris']    
 );
    
 }else{
@@ -303,16 +309,13 @@ redirect(404);
 }
 public function simpan_jenazah(){
 if($this->input->post()){
-
 $input= $this->input->post();
 
+$id_jenazah = "JNZ".str_pad($this->db->get('data_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
 
 $data_jenazah = array(
-'blok_agama'        => $input['blok_agama'],
-'blok_makam'        => $input['blok_makam'],
-'nama_makam'        => $input['nama_makam'],
-'nik_ahli_waris'    => $input['nik_ahli_waris'],
-'nama_ahli_waris'   => $input['nama_ahli_waris'],
+'id_jenazah'        => $id_jenazah,    
+'id_ahli_waris'     => $input['id_ahli_waris']       ,
 'tanggal_lahir'     => $input['tanggal_lahir'],
 'tanggal_wafat'     => $input['tanggal_wafat'],
 'tanggal_expired'   => date('Y/m/d',strtotime("+5 years")),
@@ -322,8 +325,19 @@ $data_jenazah = array(
 );
 
 
-
 $this->M_dashboard->simpan_jenazah($data_jenazah);    
+
+
+$id_detail_pemesanan = "IDP".str_pad($this->db->get('data_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
+
+$detail_pemesanan =array(
+'id_detail_pemesanan'=> $id_detail_pemesanan,
+'id_jenazah'         => $id_jenazah,
+'id_blok'            => $input['blok_makam'],
+'no_blok'            => $input['nama_makam'],
+);
+
+$this->db->insert('detail_pemesanan',$detail_pemesanan);
 
 
 
@@ -332,7 +346,8 @@ $config['allowed_types']        = 'gif|jpg|png';
 $config['encrypt_name']        = TRUE;
 
 $this->upload->initialize($config);
-        
+
+$id_berkas_jenazah = "BJ".str_pad($this->db->get('data_berkas_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);        
 //upload ktp jenazah
 if(!$this->upload->do_upload('ktp_jenazah')){  
 $status = array(
@@ -341,13 +356,17 @@ $status = array(
 );
 }else{
 $data = array(
-'nama_lampiran' => 'KTP Jenazah',
-'file'          => $this->upload->data('file_name'),
-'berkas'        => $input['nik_jenazah']    
+'nama_berkas'         => 'KTP Jenazah',
+'file'                => $this->upload->data('file_name'),
+'id_berkas_jenazah'   => $id_berkas_jenazah,
+'id_jenazah'          => $id_jenazah  
 );
 $this->db->insert('data_berkas_jenazah',$data);
 
 }
+
+
+$id_berkas_jenazah = "BJ".str_pad($this->db->get('data_berkas_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
 
 //upload pengantar rt rw//
 if (!$this->upload->do_upload('pengantar_rt_rw')){  
@@ -356,13 +375,17 @@ $status = array(
 'message' =>$this->upload->display_errors(),   
 );
 }else{
-$data = array(
-'nama_lampiran' => 'Surat pengantar RT RW',
-'file'          => $this->upload->data('file_name'),
-'berkas'        => $input['nik_jenazah']    
-);    
+$data = array(    
+'nama_berkas'         => 'Surat pengantar RT RW',
+'file'                => $this->upload->data('file_name'),
+'id_berkas_jenazah'   => $id_berkas_jenazah,
+'id_jenazah'          => $id_jenazah  
+);
+
 $this->db->insert('data_berkas_jenazah',$data);
 }
+$id_berkas_jenazah = "BJ".str_pad($this->db->get('data_berkas_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
+
 //upload pengantar rumah sakit//
 if (!$this->upload->do_upload('pengantar_rumah_sakit')){  
 $status = array(
@@ -371,12 +394,14 @@ $status = array(
 );
 }else{
 $data = array(
-'nama_lampiran' => 'Surat pengantar rumah sakit',
-'file'          => $this->upload->data('file_name'),
-'berkas'        => $input['nik_jenazah']    
+'nama_berkas'         => 'Surat pengantar rumah sakit',
+'file'                => $this->upload->data('file_name'),
+'id_berkas_jenazah'   => $id_berkas_jenazah,
+'id_jenazah'          => $id_jenazah  
 );    
 $this->db->insert('data_berkas_jenazah',$data);
 }
+$id_berkas_jenazah = "BJ".str_pad($this->db->get('data_berkas_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
 
 //upload KK//
 if (!$this->upload->do_upload('kartu_kk')){  
@@ -386,39 +411,55 @@ $status = array(
 );
 }else{
 $data = array(
-'nama_lampiran' => 'Kartu Keluarga',
-'file'          => $this->upload->data('file_name'),
-'berkas'        => $input['nik_jenazah']    
+'nama_berkas'         => 'Kartu Keluarga',
+'file'                => $this->upload->data('file_name'),
+'id_berkas_jenazah'   => $id_berkas_jenazah,
+'id_jenazah'          => $id_jenazah  
 );    
 $this->db->insert('data_berkas_jenazah',$data);
 }
 
 
+$id_pembayaran = "INV".str_pad($this->db->get('data_pembayaran')->num_rows()+1,4,"0",STR_PAD_LEFT);
+
 if($this->session->userdata('pemesanan_makam')) {
-$biaya = array(
-'nik_jenazah'  =>$input['nik_jenazah'],
-'jenis_biaya'  =>'Pemesanan makam',
-'jumlah_biaya' =>'800000'    
+
+$data_pembayaran = array(
+'id_pembayaran'         => $id_pembayaran,
+'tanggal_pembayaran'    => date('Y/m/d'),
+'jenis_biaya'           => 'Pemesanan makam',
+'jumlah_biaya'          => '800000',    
+'id_detail_pemesanan'     => $id_detail_pemesanan
 );
-$this->M_dashboard->input_biaya($biaya);    
+
+$this->M_dashboard->input_biaya($data_pembayaran);    
 }
+$id_pembayaran = "INV".str_pad($this->db->get('data_pembayaran')->num_rows()+1,4,"0",STR_PAD_LEFT);
 
 if($this->session->userdata('batu_nisan')) {
-$biaya = array(
-'nik_jenazah'  =>$input['nik_jenazah'],
-'jenis_biaya'  =>'Batu nisan',
-'jumlah_biaya' =>'300000'    
+$data_pembayaran = array(
+'id_pembayaran'         => $id_pembayaran,
+'tanggal_pembayaran'    => date('Y/m/d'),
+'jenis_biaya'           =>'Batu nisan',
+'jumlah_biaya'          =>'300000',    
+'id_detail_pemesanan'     => $id_detail_pemesanan
 );
-$this->M_dashboard->input_biaya($biaya);    
+
+$this->M_dashboard->input_biaya($data_pembayaran);    
 }
+$id_pembayaran = "INV".str_pad($this->db->get('data_pembayaran')->num_rows()+1,4,"0",STR_PAD_LEFT);
 
 if($this->session->userdata('perpanjang')) {
-$biaya = array(
-'nik_jenazah'  =>$input['nik_jenazah'],
-'jenis_biaya'  =>'Perpanjang',
-'jumlah_biaya' =>'100000'    
+$data_pembayaran = array(
+'id_pembayaran'         => $id_pembayaran,
+'tanggal_pembayaran'    => date('Y/m/d'),
+'jenis_biaya'           =>'Perpanjang',
+'jumlah_biaya'          =>'100000',    
+'id_detail_pemesanan'     => $id_detail_pemesanan
 );
-$this->M_dashboard->input_biaya($biaya);    
+
+
+$this->M_dashboard->input_biaya($data_pembayaran);    
 }
 
 
@@ -427,6 +468,7 @@ $status = array(
 'status' =>'success',
 'message' =>'Data Jenazah berhasil dimasukan'    
 );
+
 echo json_encode($status);
 
 unset($_SESSION['pemesanan_makam']);   
@@ -543,14 +585,18 @@ public function print_invoices(){
 $param = $this->uri->segment(3);    
 $this->db->select('*');
 $this->db->from('data_jenazah');
-$this->db->join('data_ahli_waris', 'data_ahli_waris.nik = data_jenazah.nik_ahli_waris');
-$this->db->where('data_jenazah.id_data_jenazah',$param);
+$this->db->join('data_ahli_waris', 'data_ahli_waris.id_ahli_waris = data_jenazah.id_ahli_waris');
+$this->db->join('detail_pemesanan', 'detail_pemesanan.id_jenazah = data_jenazah.id_jenazah');
+$this->db->where('data_jenazah.id_jenazah',$param);
 $query = $this->db->get()->row_array();
+
+
+
 $str  ="<p align='center' style='font-size:20px' >DATA PEMESANAN MAKAM</p>";
 
 $str .= "<table align='center' style='width:80%' border ='1' cellpading ='0' cellspacing='0'>"
         . "<tr>"
-        . "<td colspan='2'>Invoices No.".$query['tanggal_wafat']."/".$query['id_data_jenazah']."</td>"
+        . "<td colspan='2'>Invoices No.".$query['tanggal_wafat']."/".$query['id_jenazah']."</td>"
         . "</tr>"
         . "<tr>"
         . "<td>Nama Jenazah</td>"
@@ -574,25 +620,21 @@ $str .= "<table align='center' style='width:80%' border ='1' cellpading ='0' cel
         . "</tr>"
         . "<tr>"
         . "<td>Nama Ahli waris</td>"
-        . "<td>".$query['nama_ahli_waris']."</td>"
+        . "<td>".$query['nama']."</td>"
         . "</tr>"
         . "<tr>"
         . "<td>Nik ahli waris</td>"
         . "<td>".$query['nik_ahli_waris']."</td>"
         . "</tr>"
         . "<tr>"
-        . "<td>Agama</td>"
-        . "<td>".$query['blok_agama']."</td>"
-        . "</tr>"
-        . "<tr>"
         . "<td>Nama Makam</td>"
-        . "<td>".$query['nama_makam']."</td>"
+        . "<td>".$query['no_blok']."</td>"
         . "</tr>"
         . "<tr>"
         . "<td colspan='2'>Rincian Biaya yang harus dibayarkan</td>"
         . "</tr>";
         
-$data_biaya = $this->db->get_where('data_biaya',array('nik_jenazah'=>$query['nik_jenazah']));
+$data_biaya = $this->db->get_where('data_pembayaran',array('id_detail_pemesanan'=>$query['id_detail_pemesanan']));
 $total =0;
 foreach ($data_biaya->result_array() as $d){
 $str .= "</tr>"
@@ -614,13 +656,11 @@ $str .="<tr>"
         $str .="</table>";
 
 
-
 $dompdf = new DOMPDF();
 $dompdf->load_html($str);
-$dompdf->set_paper("A4","landscape");
+$dompdf->set_paper("A4");
 $dompdf->render();
 $dompdf->stream('laporan'.'.pdf', array('Attachment'=>0)); 
-        
 }
 
 public function proses_perpanjang(){
@@ -631,12 +671,12 @@ if($input['status'] == "Berhasil"){
 $update_expired = array(
 'tanggal_expired'   => date('Y/m/d',strtotime("+5 years")),
 );
-$this->db->update('data_jenazah',$update_expired,array('nik_jenazah'=>$input['nik_jenazah']));
-$this->db->update('data_perpanjang',array('status'=>$input['status']),array('nik_jenazah'=>$input['nik_jenazah']));
+$this->db->update('data_jenazah',$update_expired,array('id_jenazah'=>$input['id_jenazah']));
+$this->db->update('data_perpanjang',array('status'=>$input['status']),array('id_jenazah'=>$input['id_jenazah']));
 
 
 }else if($input['status'] == "Tolak"){
-$this->db->update('data_perpanjang',array('status'=>$input['status']),array('nik_jenazah'=>$input['nik_jenazah']));  
+$this->db->update('data_perpanjang',array('status'=>$input['status']),array('id_jenazah'=>$input['id_jenazah']));  
 }
 
 }else{
@@ -647,7 +687,7 @@ redirect(404);
 
 public function download($nik_jenazah){
     
-$data = $this->db->get_where('data_perpanjang',array('nik_jenazah'=>$nik_jenazah))->row_array();
+$data = $this->db->get_where('data_perpanjang',array('id_perpanjang'=>$nik_jenazah))->row_array();
 
 force_download('./uploads/bukti_transfer/'.$data['bukti_transfer'], NULL);    
 

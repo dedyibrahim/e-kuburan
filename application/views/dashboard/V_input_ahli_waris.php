@@ -86,7 +86,7 @@ Input Ahli Waris
 formData = new FormData();
 formData.append('token',getCookie("token"));
 formData.append('ktp',$(".file_ktp")[0].files[0]);
-formData.append('id_data_ahli_waris',$(".id_data_ahli_waris").val());
+formData.append('id_ahli_waris',$(".id_data_ahli_waris").val());
 
  $.ajax({
 url: "<?php echo base_url('Dashboard/simpan_ktp_waris') ?>",
@@ -121,7 +121,7 @@ function hapus_berkas(id_data_ahli_waris){
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/hapus_berkas') ?>",
-data:"token="+getCookie('token')+"&id_data_ahli_waris="+id_data_ahli_waris,
+data:"token="+getCookie('token')+"&id_ahli_waris="+id_data_ahli_waris,
 success:function(){
 refresh_table_data_ahli_waris();
 }
@@ -253,10 +253,10 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_ahli_waris",
+"data": "id_ahli_waris",
 "orderable": false
 },
-{"data": "nik"},
+{"data": "nik_ahli_waris"},
 {"data": "nama"},
 {"data": "alamat"},
 {"data": "no_tlp"},

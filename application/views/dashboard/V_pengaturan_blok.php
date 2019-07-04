@@ -10,7 +10,9 @@ Pengaturan Blok
 <div class="row">
 <div class="col">
 <label>Nama Blok</label>
-<input type="text"  name="nama_blok"  class="form-control nama_blok required" placeholder="Nama Blok" accept="text/plain"> 
+<input type="text" name="nama_blok"  class="form-control nama_blok required" placeholder="Nama blok" accept="text/plain"> 
+</div>
+<div class="col">
 <label>Jumlah Makam</label>
 <input type="text" name="jumlah_makam"  class="form-control jumlah_makam required" placeholder="Jumlah makam" accept="text/plain"> 
 </div>
@@ -21,9 +23,12 @@ Pengaturan Blok
 <option value="Kristen">Kristen</option>
 <option value="Budha">Budha</option>
 </select>
-<label>&nbsp;</label>
-<button type="submit" class="btn btn-success btn-block">Simpan Blok <span class="fa fa-save"></span></button>
 </div>    
+    <div class="col">
+        <label>&nbsp;</label>
+<button type="submit" class="btn btn-success btn-block">Simpan Blok <span class="fa fa-save"></span></button>
+
+    </div>
 </form>
 </div>
     
@@ -33,6 +38,7 @@ Pengaturan Blok
 <table style="width:100%;" id="data_blok" class="table table-striped table-condensed table-sm table-bordered  table-hover table-sm"><thead>
 <tr role="row">
 <th  align="center" aria-controls="datatable-fixed-header"  >No</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >ID BLok</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >Nama Blok</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >Jumlah makam</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >Nama Agama</th>
@@ -137,9 +143,10 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_blok",
+"data": "id_blok",
 "orderable": false
 },
+{"data": "id_blok"},
 {"data": "nama_blok"},
 {"data": "jumlah_makam"},
 {"data": "nama_agama"},
@@ -164,11 +171,11 @@ $('#data_blok').val( json.lastInput );
 });
 }
 
-function hapus_blok(id_data_blok){
+function hapus_blok(id_blok){
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/hapus_blok') ?>",
-data:"token="+getCookie('token')+"&id_data_blok="+id_data_blok,
+data:"token="+getCookie('token')+"&id_blok="+id_blok,
 success:function(){
 refresh_table_blok();
 }

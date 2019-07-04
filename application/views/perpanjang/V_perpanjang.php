@@ -55,7 +55,7 @@ $(".simpan_bukti").click(function(){
 formData = new FormData();
 formData.append('token',getCookie("token"));
 formData.append('bukti_transfer',$(".bukti_transfer")[0].files[0]);
-formData.append('nik_jenazah',$(".nik_jenazah").val());
+formData.append('id_jenazah',$(".nik_jenazah").val());
 
 
  $.ajax({

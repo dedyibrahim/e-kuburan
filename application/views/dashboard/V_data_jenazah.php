@@ -37,7 +37,6 @@
 <th  align="center" aria-controls="datatable-fixed-header"  >nik ahli waris</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >jenis_kelamin</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >blok makam</th>
-<th  align="center" aria-controls="datatable-fixed-header"  >agama</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >tgl wafat</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >tgl expired makam</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >aksi</th>
@@ -88,7 +87,7 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_jenazah",
+"data": "id_jenazah",
 "orderable": false
 },
 {"data": "nama_jenazah"},
@@ -97,7 +96,6 @@ columns: [
 {"data": "nik_ahli_waris"},
 {"data": "jenis_kelamin"},
 {"data": "nama_makam"},
-{"data": "blok_agama"},
 {"data": "tanggal_wafat"},
 {"data": "tanggal_expired"},
 {"data": "view"}

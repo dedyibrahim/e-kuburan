@@ -50,6 +50,7 @@ Blok Makam
 <input type="tex" onkeyup="cari_ahli_waris();" class="form-control required nik_ahli_waris"  accept="text/plain" >
 <label>Nama Ahli Waris</label>
 <input type="tex" name="nama_ahli_waris"  class="form-control required nama_ahli_waris" placeholder="" disabled="" accept="text/plain" >
+<input type="hidden" name="id_ahli_waris"  class="form-control required id_ahli_waris"   placeholder="" disabled="" accept="text/plain" >
 <label>Tanggal Lahir</label>
 <input type="text" name="tanggal_lahir" disabled="" class="tanggal tanggal_lahir form-control data_jenazah required"  accept="text/plain"  />
 <label>Tanggal Wafat</label>
@@ -139,6 +140,7 @@ var r = JSON.parse(data);
 if(r.status == 'success'){
 $(".data_jenazah").removeAttr("disabled",true);
 $(".nama_ahli_waris").val(r.nama_ahli_waris);
+$(".id_ahli_waris").val(r.id_ahli_waris);
 }else{
 
 }
@@ -160,7 +162,7 @@ var blok_makam = $(".blok_makam option:selected").val();
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/tampilkan_makam') ?>",
-data:"token="+getCookie('token')+"&id_data_blok="+blok_makam,
+data:"token="+getCookie('token')+"&id_blok="+blok_makam,
 success:function(data){
 $(".data_makam").html(data);
 
@@ -204,10 +206,9 @@ $(".simpan_perizinan").attr("disabled", true);
 
 formData = new FormData();
 formData.append('token',getCookie("token"));
-formData.append('blok_agama',$(".blok_agama option:selected").val());
-formData.append('blok_makam',$(".blok_makam option:selected").text());
+formData.append('blok_makam',$(".blok_makam option:selected").val());
 formData.append('nama_makam',$(".nama_makam").val());
-formData.append('nik_ahli_waris',$(".nik_ahli_waris").val());
+formData.append('id_ahli_waris',$(".id_ahli_waris").val());
 formData.append('nama_ahli_waris',$(".nama_ahli_waris").val());
 formData.append('tanggal_lahir',$(".tanggal_lahir").val());
 formData.append('tanggal_wafat',$(".tanggal_wafat").val());

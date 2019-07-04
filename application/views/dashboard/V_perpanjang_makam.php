@@ -68,7 +68,7 @@ d.token = '<?php echo $this->security->get_csrf_hash(); ?>';
 },
 columns: [
 {
-"data": "id_data_perpanjang",
+"data": "id_jenazah",
 "orderable": false
 },
 {"data": "nama_jenazah"},
@@ -105,7 +105,7 @@ function proses(status,nik_jenazah){
 $.ajax({
 type:"post",
 url:"<?php echo base_url('Dashboard/proses_perpanjang') ?>",
-data:"token="+getCookie('token')+"&status="+status+"&nik_jenazah="+nik_jenazah,
+data:"token="+getCookie('token')+"&status="+status+"&id_jenazah="+nik_jenazah,
 success:function(){
 refresh_table_perpanjang();
 }
