@@ -121,7 +121,7 @@ $(function() {
     singleDatePicker: false,
     showDropdowns: true,
     locale: {
-      format: 'YYYY/MM/DD'
+      format: 'YYYY-MM-DD'
     }
   });
 });

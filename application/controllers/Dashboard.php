@@ -495,10 +495,13 @@ $tanggal =  explode(" - ", $input['tanggal']);
 $awal   = $tanggal[0];
 $akhir  = $tanggal[1];     
 
-$this->db->select('');
+$this->db->select('*');
 $this->db->from('data_jenazah');
-$this->db->where('tanggal_wafat >=',$awal);
-$this->db->where('tanggal_wafat <=',$akhir);
+$this->db->join('data_ahli_waris', 'data_ahli_waris.id_ahli_waris = data_jenazah.id_ahli_waris');
+$this->db->join('detail_pemesanan', 'detail_pemesanan.id_jenazah = data_jenazah.id_jenazah');
+$this->db->join('data_blok', 'data_blok.id_blok =  detail_pemesanan.id_blok');
+$this->db->where('data_jenazah.tanggal_wafat >=',$awal);
+$this->db->where('data_jenazah.tanggal_wafat <=',$akhir);
 $query = $this->db->get();
 
 $str  ="<p align='center' style='font-size:20px' >LAPORAN DATA MAKAM PERTANGGAL <br>".$awal." - ".$akhir."</p>";
@@ -522,21 +525,23 @@ $str .="<tr>"
 . "<td>".$d['nama_jenazah']."</td>"
 . "<td>".$d['nik_jenazah']."</td>"
 . "<td>".$d['jenis_kelamin']."</td>"
-. "<td>".$d['blok_agama']."</td>"
-. "<td>".$d['nama_ahli_waris']."</td>"
+. "<td>".$d['nama_agama']."</td>"
+. "<td>".$d['nama']."</td>"
 . "<td>".$d['nik_ahli_waris']."</td>"
-. "<td>".$d['nama_makam']."</td>"
+. "<td>".$d['no_blok']."</td>"
 . "<td>".$d['tanggal_wafat']."</td>"
 . "<td>".$d['tanggal_expired']."</td>"
 . "</tr>";   
 }
 
 
+
 $dompdf = new DOMPDF();
 $dompdf->load_html($str);
 $dompdf->set_paper("A4","landscape");
 $dompdf->render();
-$dompdf->stream('laporan'.'.pdf', array('Attachment'=>0));    
+$dompdf->stream('laporan'.'.pdf', array('Attachment'=>0)); 
+
 }else{
     
 }
