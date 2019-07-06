@@ -4,7 +4,7 @@ public function __construct() {
 parent::__construct();
 require_once (APPPATH.'third_party/dompdf/dompdf_config.inc.php');
         
-
+$this->load->library('email');
 $this->load->helper('download');
 $this->load->library('session');
 $this->load->model('M_dashboard');
@@ -22,6 +22,7 @@ $this->input_ahli_waris();
     
 } 
 public function perpanjang_makam(){
+    
 $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_perpanjang_makam');
 }
@@ -48,7 +49,10 @@ $status = array(
 'message'   =>'Password yang dimasukan tidak sama'
 );    
 }else{
+ $id_user    = "USR".str_pad($this->db->get('data_user')->num_rows()+1,4,"0",STR_PAD_LEFT);
+   
 $data = array(
+'id_data_user'  => $id_user,    
 'nama_depan'    => $input['nama_depan'],
 'nama_belakang' => $input['nama_belakang'],
 'nama_lengkap'  => $input['nama_depan']." ".$input['nama_belakang'],
@@ -132,15 +136,74 @@ $this->load->view('umum/V_header');
 $this->load->view('dashboard/V_input_ahli_waris');
     
 }
+
+function randomPassword() {
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass); //turn the array into a string
+}
+
+
 public function simpan_ahli_waris(){
 if($this->input->post()){
-$id_ahli_waris    = str_pad($this->db->get('data_ahli_waris')->num_rows()+1,4,"0",STR_PAD_LEFT);
-    
 $input = $this->input->post();
+
+$id_ahli_waris    = "AW".str_pad($this->db->get('data_ahli_waris')->num_rows()+1,4,"0",STR_PAD_LEFT);
+
+$cek_nik = $this->db->get_where('data_ahli_waris',array('nik_ahli_waris'=> $input['nik']));
+if($cek_nik->num_rows() == 1){
+
+$status = array(
+'status'    =>'error',
+'message'   =>'Nik ahli waris sudah terdaftar'
+);
+echo json_encode($status);
+    
+    
+}else{
+$password_random =  $this->randomPassword();
+
+$config = Array(
+'protocol'  => 'smtp',
+'smtp_host' => 'ssl://smtp.googlemail.com',
+'smtp_port' => 465,
+'smtp_user' => 'sintamasnah@gmail.com',
+'smtp_pass' => 'admin@112233',
+'mailtype'  => 'html',
+'charset'   => 'iso-8859-1',
+'wordwrap'  => TRUE
+);
+
+$this->email->initialize($config);
+$this->email->set_newline("\r\n");
+$this->email->from("sintamasnah@gmail.com");
+$this->email->to($input['email']);
+$this->email->subject('Konfirmasi akun E-TPU');
+
+$data_kirim  ="<h3>Terimakasih anda telah melakukan pendaftaran di E-TPU</h3><br>";
+$data_kirim .="<p>data pemesanan makam dapat anda lihat dihalaman ".base_url()." "
+            . "dengan cara memasukan nik dan password dibawah ini</p>";
+$data_kirim .="<p>NIK : ".$input['nik']."<br>"
+        . "Password : ".$password_random."</p>";
+$data_kirim .="<p>Jangan beritahukan password ini kepada siapapun kecuali orang yang anda tunjuk sebagai ahli waris "
+        . "berikutnya. <br>"
+        . "Atas perhatian dan kerjasamanya kami ucapkan terimakasih.</p>";
+
+$this->email->message($data_kirim);
+if (!$this->email->send()){    
+echo $this->email->print_debugger();
+}else{
 $data = array(
-'id_ahli_waris'     => 'AW'.$id_ahli_waris,    
+'id_ahli_waris'     => $id_ahli_waris,    
 'nik_ahli_waris'    => $input['nik'],
+'password'          => password_hash($password_random,PASSWORD_DEFAULT),   
 'nama'              => $input['nama'],
+'email'             => $input['email'],
 'alamat'            => $input['alamat'],
 'no_tlp'            => $input['no_tlp'],
 'hubungan_keluarga' => $input['hubungan_keluarga']    
@@ -154,6 +217,10 @@ $status = array(
 );
 echo json_encode($status);
 
+    
+} 
+    
+}
 
 }else{
 redirect(404);    
@@ -307,6 +374,108 @@ echo json_encode($data);
 redirect(404);    
 }       
 }
+
+public function email_pemesanan($param){
+$this->db->select('*');
+$this->db->from('data_jenazah');
+$this->db->join('data_ahli_waris', 'data_ahli_waris.id_ahli_waris = data_jenazah.id_ahli_waris');
+$this->db->join('detail_pemesanan', 'detail_pemesanan.id_jenazah = data_jenazah.id_jenazah');
+$this->db->where('data_jenazah.id_jenazah',$param);
+$query = $this->db->get()->row_array();
+
+
+
+$str  ="<p align='center' style='font-size:20px' >DATA PEMESANAN MAKAM</p>";
+
+$str .= "<table align='center' style='width:80%' border ='1' cellpading ='0' cellspacing='0'>"
+        . "<tr>"
+        . "<td colspan='2'>Invoices No.".$query['tanggal_wafat']."/".$query['id_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Jenazah</td>"
+        . "<td>".$query['nama_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nik Jenazah</td>"
+        . "<td>".$query['nik_jenazah']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Jenis Kelamin</td>"
+        . "<td>".$query['jenis_kelamin']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>tanggal wafat</td>"
+        . "<td>".$query['tanggal_wafat']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Expired Makam</td>"
+        . "<td>".$query['tanggal_expired']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Ahli waris</td>"
+        . "<td>".$query['nama']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nik ahli waris</td>"
+        . "<td>".$query['nik_ahli_waris']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td>Nama Makam</td>"
+        . "<td>".$query['no_blok']."</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<td colspan='2'>Rincian Biaya yang harus dibayarkan</td>"
+        . "</tr>";
+        
+$data_biaya = $this->db->get_where('data_pembayaran',array('id_detail_pemesanan'=>$query['id_detail_pemesanan']));
+$total =0;
+foreach ($data_biaya->result_array() as $d){
+$str .= "</tr>"
+. "<tr>"
+. "<td >".$d['jenis_biaya']."</td>"
+. "<td >Rp.".number_format($d['jumlah_biaya'])."</td>"
+. "</tr>";
+$total +=$d['jumlah_biaya'];
+}   
+
+$str .="<tr>"
+. "<td colspan='2'>Total yang harus dibayarkan</td>"
+. "</tr>"
+. "<tr>"
+. "<td  colspan='2'><b>Rp.".number_format($total)."</b></td>"
+. "</tr>";
+
+        
+        $str .="</table>";
+    
+
+$config = Array(
+'protocol'  => 'smtp',
+'smtp_host' => 'ssl://smtp.googlemail.com',
+'smtp_port' => 465,
+'smtp_user' => 'sintamasnah@gmail.com',
+'smtp_pass' => 'admin@112233',
+'mailtype'  => 'html',
+'charset'   => 'iso-8859-1',
+'wordwrap'  => TRUE
+);
+
+$this->email->initialize($config);
+$this->email->set_newline("\r\n");
+$this->email->from("sintamasnah@gmail.com");
+$this->email->to($query['email']);
+$this->email->subject('Detail pemesanan makam');
+
+$this->email->message($str);
+if (!$this->email->send()){    
+echo $this->email->print_debugger();
+}else{        
+return "berhasil";
+    
+}       
+        
+}
+
 public function simpan_jenazah(){
 if($this->input->post()){
 $input= $this->input->post();
@@ -324,11 +493,10 @@ $data_jenazah = array(
 'jenis_kelamin'     => $input['jenis_kelamin'],
 );
 
-
 $this->M_dashboard->simpan_jenazah($data_jenazah);    
 
-
 $id_detail_pemesanan = "IDP".str_pad($this->db->get('data_jenazah')->num_rows()+1,4,"0",STR_PAD_LEFT);
+
 
 $detail_pemesanan =array(
 'id_detail_pemesanan'=> $id_detail_pemesanan,
@@ -462,18 +630,21 @@ $data_pembayaran = array(
 $this->M_dashboard->input_biaya($data_pembayaran);    
 }
 
+$cek = $this->email_pemesanan($id_jenazah);
 
-
+if($cek == 'berhasil'){
 $status = array(
 'status' =>'success',
 'message' =>'Data Jenazah berhasil dimasukan'    
 );
 
 echo json_encode($status);
+}
 
 unset($_SESSION['pemesanan_makam']);   
 unset($_SESSION['perpanjang']);   
 unset($_SESSION['batu_nisan']);   
+
 
 }else{
 redirect(404);    

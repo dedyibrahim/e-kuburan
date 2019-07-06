@@ -8,54 +8,24 @@ $this->load->library('session');
 $this->load->library('Datatables');
 $this->load->library('form_validation');
 $this->load->library('upload');
+$this->load->model('M_perpanjang');
+$this->load->library('recaptcha');
+
+if(!$this->session->userdata('nik_ahli_waris')){
+redirect(base_url('Pemakaman'));
+}
 } 
 
 public function index(){
-$this->load->view('umum/V_header');
+$this->load->view('umum/V_header');    
 $this->load->view('perpanjang/V_perpanjang');
 }
 
 
-public function cari_jenazah(){
-if($this->input->post()){
-$input = $this->input->post();
-
-$this->db->select('*');
-$this->db->from('data_ahli_waris');
-$this->db->join('data_jenazah', 'data_jenazah.id_ahli_waris = data_ahli_waris.id_ahli_waris');
-$this->db->where('data_ahli_waris.nik_ahli_waris',$input['nik_ahli_waris']);
-$data = $this->db->get();
-if($data->num_rows() >0){
-echo "<div class='text-center'><h3>Daftar jenazah dengan nik ahli waris <br>".$input['nik_ahli_waris']."</h3></di>";    
-echo "<table class='table table-bordered table-sm table-condensed'>"
-    . "<tr>"
-        . "<td>Nama Jenazah</td>"
-        . "<td>Nama Ahli waris</td>"
-        . "<td>Tanggal Wafat</td>"
-        . "<td>Tanggal Expired</td>"
-        . "<td>Aksi</td>"
-        . "</tr>";
-
-        foreach ($data->result_array() as $d){
-            echo "<tr>"
-            . "<td>".$d['nama_jenazah']."</td>"
-            . "<td>".$d['nama']."</td>"
-            . "<td>".$d['tanggal_wafat']."</td>"
-            . "<td>".$d['tanggal_expired']."</td>"
-                    . "<td class='text-center'><button onclick=perpanjang_makam('".$d['id_jenazah']."'); class='btn btn-success btn-sm '><span class='fa fa-upload'></span> Upload Bukti transfer</td>"
-                    . "</tr>";
-        }
 
 
- echo "</table>";    
-}else{
-echo "<div class='text-center'><h3>Tidak dapat menemukan jenazah dengan nik ahli waris <br>".$input['nik_ahli_waris']."</h3></di>";    
-}
-    
-}else{
-redirect(404);    
-}
-    
+public function json_data_perpanjang(){
+echo $this->M_perpanjang->json_data_jenazah();       
 }
 
 public function simpan_bukti_perpanjang(){
@@ -97,6 +67,10 @@ echo json_encode($status);
 redirect(404);    
 }
 
+}
+public function logout(){
+$this->session->sess_destroy();
+redirect (base_url('Pemakaman'));
 }
 
 

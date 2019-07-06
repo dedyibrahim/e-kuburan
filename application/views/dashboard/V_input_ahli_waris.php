@@ -14,6 +14,8 @@ Input Ahli Waris
 <input type="text" name="nik" class="form-control nik required" placeholder="Nik..." accept="text/plain">
 <label>Nama</label>
 <input type="text" name="nama" class="form-control nama required" placeholder="Nama . .. " accept="text/plain">
+<label>Email</label>
+<input type="text" name="email" class="form-control email  required" placeholder="Email" accept="text/plain">
 <label>Alamat</label>
 <textarea name="alamat" class="form-control alamat  required" placeholder="Alamat . . ." accept="text/plain"></textarea>
 
@@ -44,6 +46,7 @@ Input Ahli Waris
 <th  align="center" aria-controls="datatable-fixed-header"  >No</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >nik</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >nama</th>
+<th  align="center" aria-controls="datatable-fixed-header"  >email</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >alamat</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >no telepon</th>
 <th  align="center" aria-controls="datatable-fixed-header"  >hubungan keluarga</th>
@@ -155,6 +158,7 @@ formData = new FormData();
 formData.append('token',getCookie("token"));
 formData.append('nik',$(".nik").val()),
 formData.append('nama',$(".nama").val()),
+formData.append('email',$(".email").val()),
 formData.append('alamat',$(".alamat").val()),
 formData.append('no_tlp',$(".no_tlp").val()),
 formData.append('hubungan_keluarga',$(".hubungan_keluarga option:selected").val()),
@@ -258,6 +262,7 @@ columns: [
 },
 {"data": "nik_ahli_waris"},
 {"data": "nama"},
+{"data": "email"},
 {"data": "alamat"},
 {"data": "no_tlp"},
 {"data": "hubungan_keluarga"},

@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/xampp/htdocs/kuburan/application/views/umum/V_sidebar.php</file>
-            <file>file:/C:/xampp/htdocs/kuburan/application/models/M_dashboard.php</file>
-            <file>file:/C:/xampp/htdocs/kuburan/application/views/umum/V_navbar.php</file>
-            <file>file:/C:/xampp/htdocs/kuburan/application/controllers/Dashboard.php</file>
-            <file>file:/C:/xampp/htdocs/kuburan/application/views/dashboard/V_input_ahli_waris.php</file>
-            <file>file:/C:/xampp/htdocs/kuburan/application/views/dashboard/V_input_identitas_jenazah.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

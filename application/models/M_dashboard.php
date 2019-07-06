@@ -84,6 +84,7 @@ $this->datatables->select('id_ahli_waris,'
 .'data_ahli_waris.nama as nama,'
 .'data_ahli_waris.alamat as alamat,'
 .'data_ahli_waris.no_tlp as no_tlp,'
+.'data_ahli_waris.email as email,'        
 .'data_ahli_waris.status_berkas as status_berkas,'
 .'data_ahli_waris.hubungan_keluarga as hubungan_keluarga,'
 );
